@@ -37,10 +37,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void loadMenuFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        Fragment noteFragment = fm.findFragmentById(R.id.menu_container);
+        Fragment boardFragment = fm.findFragmentById(R.id.menu_container);
 
-        if (noteFragment != null) {
-            fm.beginTransaction().remove(noteFragment).commit();
+        if (boardFragment != null) {
+            fm.beginTransaction().remove(boardFragment).commit();
         }
 
         MenuFragment menuFragment = new MenuFragment();
@@ -49,10 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void boardFragment() {
         FragmentManager fm = getSupportFragmentManager();
-        Fragment noteFragment = fm.findFragmentById(R.id.board_container);
+        Fragment menuFragment = fm.findFragmentById(R.id.menu_container);
 
-        if (noteFragment != null) {
-            fm.beginTransaction().remove(noteFragment).commit();
+        if (menuFragment != null) {
+            fm.beginTransaction().remove(menuFragment).commit();
         }
 
         BoardFragment boardFragment = new BoardFragment();
