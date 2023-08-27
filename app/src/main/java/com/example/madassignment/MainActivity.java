@@ -24,13 +24,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Integer integer) {
                 if (integer == 0) {
-                    loadMenuFragment();
+                    loadMenuFragment(); // setClickValue == 0
                 }
                 if (integer == 1) {
-                    loadBoardFragment();
+                    loadBoardFragment(); // setClickValue == 1
                 }
                 if (integer == 2) {
-                    loadSettingsFragment();
+                    loadSettingsFragment(); // setClickValue == 2
                 }
             }
         });
