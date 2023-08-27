@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <!-- Visually appealing title to replace current -->
+        <!-- TODO: Visually appealing title to replace current -->
         <TextView
             android:id="@+id/menuTitle"
             android:layout_width="wrap_content"
@@ -21,28 +21,28 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/AI_Button" />
+            app:layout_constraintBottom_toTopOf="@id/aiButton" />
 
-        <!-- Temporary Button to be replaced with drawable -->
+        <!--TODO: Replace button with drawable -->
         <Button
-            android:id="@+id/AI_Button"
+            android:id="@+id/aiButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AI TEMP"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/Player_Button"
+            app:layout_constraintEnd_toStartOf="@+id/playerButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Temporary Button to be replaced with drawable -->
+        <!--TODO: Replace button with drawable -->
         <Button
-            android:id="@+id/Player_Button"
+            android:id="@+id/playerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="PL TEMP"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/AI_Button"
+            app:layout_constraintStart_toEndOf="@id/aiButton"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

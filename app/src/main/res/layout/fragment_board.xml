@@ -1,14 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/boardLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BoardFragment">
+    tools:context=".MenuFragment">
 
-    <!-- TODO: Make board fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/boardFragmentLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="PK TO MAKE BOARD PAGE" />
+        android:layout_height="match_parent" >
 
-</FrameLayout>
+        <!--TODO: Replace button with drawable (Settings Cog/Wheel) -->
+        <Button
+            android:id="@+id/settingsButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            app:layout_constraintHorizontal_bias="0.98"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
