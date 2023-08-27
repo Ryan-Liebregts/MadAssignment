@@ -1,0 +1,71 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settingsLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SettingsFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settingsFragmentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <!-- TODO: Visually appealing title to replace current -->
+        <TextView
+            android:id="@+id/settingsTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/profileButton" />
+
+        <!--TODO: Replace button with drawable -->
+        <Button
+            android:id="@+id/profileButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PROFILE TEMP"
+            app:layout_constraintBottom_toTopOf="@id/boardSizeButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/settingsTitle" />
+
+        <!--TODO: Replace button with drawable -->
+        <Button
+            android:id="@+id/boardSizeButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BOARD SIZE TEMP"
+            app:layout_constraintBottom_toTopOf="@id/winConditionButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profileButton" />
+
+        <!--TODO: Replace button with drawable -->
+        <Button
+            android:id="@+id/winConditionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WIN CONDITION TEMP"
+            app:layout_constraintBottom_toTopOf="@id/gameModesButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/boardSizeButton" />
+
+        <!--TODO: Replace button with drawable -->
+        <Button
+            android:id="@+id/gameModesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GAME MODES TEMP"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/winConditionButton" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
