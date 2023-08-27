@@ -68,13 +68,6 @@ public class BoardFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
 
-        settingsButton = view.findViewById(R.id.settingsButton);
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navModel.setClickedValue(2);
-            }
-        });
 
         return view;
     }
