@@ -3,29 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/menuLayout"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginTop="20dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NavigationBarFragment">
 
-        <ImageButton
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/backButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FFFFFF"
-            android:src="?attr/homeAsUpIndicator"
-            android:tag="back_button"
-            app:iconTint="#FC9B4C"
-            android:visibility="gone"/>
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/back_icon"
+        android:tag="back_button"
+        android:visibility="gone"
+        app:iconTint="#FC9B4C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/settingsButton"
         android:layout_width="65dp"
         android:layout_height="47dp"
-        android:backgroundTint="#FFFFFF"
-        android:src="@android:drawable/ic_menu_today"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/settings_cog"
         android:tag="back_button"
         android:visibility="visible"
         app:iconTint="#FC9B4C"
