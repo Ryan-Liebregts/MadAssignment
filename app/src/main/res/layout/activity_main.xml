@@ -18,7 +18,6 @@
         app:layout_constraintStart_toStartOf="parent">
     </FrameLayout>
 
-
     <FrameLayout
         android:id="@+id/board_container"
         android:layout_width="match_parent"
@@ -43,6 +42,28 @@
     <!-- Container for the settings -->
     <FrameLayout
         android:id="@+id/settings_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </FrameLayout>
+
+    <!-- Container for the profile -->
+    <FrameLayout
+        android:id="@+id/profile_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+    </FrameLayout>
+
+    <!-- Container for the customization -->
+    <FrameLayout
+        android:id="@+id/customize_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintTop_toTopOf="parent"

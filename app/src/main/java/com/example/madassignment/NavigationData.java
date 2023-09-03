@@ -12,9 +12,10 @@ public class NavigationData extends ViewModel {
 
     public NavigationData(){
         clickedValue = new MediatorLiveData<Integer>();
+        clickedValue.setValue(0);
+
         settingsClickedValue = new MediatorLiveData<Integer>();
         settingsClickedValue.setValue(0);
-        clickedValue.setValue(0);
 
     }
     public int getClickedValue(){
