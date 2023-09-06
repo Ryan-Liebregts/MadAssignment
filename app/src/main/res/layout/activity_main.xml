@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent">
     </FrameLayout>
 
-    // we now only have one main body container
+<!--    we now only have one main body container-->
     <FrameLayout
         android:id="@+id/body_container"
         android:layout_width="match_parent"
