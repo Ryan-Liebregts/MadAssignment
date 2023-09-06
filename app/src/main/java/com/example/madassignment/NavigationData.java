@@ -9,13 +9,14 @@ import java.util.LinkedList;
 public class NavigationData extends ViewModel {
 
     public MutableLiveData<Integer> clickedValue;
-    public MutableLiveData<LinkedList> historicalClickedValue;
+    public MutableLiveData<Integer> historicalClickedValue;
 
     public NavigationData(){
         clickedValue = new MediatorLiveData<Integer>();
         clickedValue.setValue(0);
 
-//        historicalClickedValue = new MediatorLiveData<LinkedList>();
+        historicalClickedValue = new MediatorLiveData<Integer>();
+        clickedValue.setValue(0);
 
     }
     public int getClickedValue(){
@@ -25,9 +26,9 @@ public class NavigationData extends ViewModel {
         clickedValue.setValue(value);
     }
 
-//    public int getHistoricalClickedValue() { return historicalClickedValue.getValue();}
-//
-//    public void setHistoricalClickedValue(int value) { historicalClickedValue.setValue(value);}
+    public int getHistoricalClickedValue() { return historicalClickedValue.getValue();}
+
+    public void setHistoricalClickedValue(int value) { historicalClickedValue.setValue(value);}
 
 
 

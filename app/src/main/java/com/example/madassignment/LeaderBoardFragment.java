@@ -1,4 +1,6 @@
 package com.example.madassignment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 
@@ -6,7 +8,11 @@ import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import androidx.recyclerview.widget.GridLayoutManager;
+
 import android.view.ViewGroup;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,10 +26,14 @@ public class LeaderBoardFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    ArrayList<LeaderBoardData> data;
+
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
+    private RecyclerView recyclerView;
     public LeaderBoardFragment() {
         // Required empty public constructor
     }
@@ -59,6 +69,25 @@ public class LeaderBoardFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_leader_board, container, false);
+        View view=  inflater.inflate(R.layout.fragment_leader_board, container, false);
+        recyclerView = view.findViewById(R.id.recView);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1,
+                GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(gridLayoutManager);
+
+        data = getLeaderBoardData();
+        LeaderBoardDataAdapter leaderBoardDataAdapter =new LeaderBoardDataAdapter(data);
+        recyclerView.setAdapter(leaderBoardDataAdapter);
+        return view;
     }
+
+    public ArrayList<LeaderBoardData> getLeaderBoardData() {
+        data = new ArrayList<LeaderBoardData>();
+        data.add(new LeaderBoardData("Ryan", 1, R.drawable.user_icon1, 2000));
+        data.add(new LeaderBoardData("PK", 2, R.drawable.user_icon2, 1900));
+        data.add(new LeaderBoardData("Yi", 3, R.drawable.user_icon3, 1800));
+        data.add(new LeaderBoardData("Jules", 4, R.drawable.user_icon4, 1700));
+        return data;
+    }
+
 }

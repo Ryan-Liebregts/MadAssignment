@@ -77,6 +77,7 @@ public class NavigationBarFragment extends Fragment {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                navigationData.setHistoricalClickedValue(navigationData.getClickedValue());
                 navigationData.setClickedValue(2);
 
             }
@@ -88,7 +89,10 @@ public class NavigationBarFragment extends Fragment {
                     navigationData.setClickedValue(2);
                 }
                 else if (navigationData.getClickedValue() == 2){
-                    navigationData.setClickedValue(1);
+                    navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                }
+                else if (navigationData.getClickedValue() == 5) {
+                    navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
                 }
             }
         });
@@ -96,6 +100,7 @@ public class NavigationBarFragment extends Fragment {
         leaderBoardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                navigationData.setHistoricalClickedValue(navigationData.getClickedValue());
                 navigationData.setClickedValue(5);
             }
         });
@@ -103,27 +108,37 @@ public class NavigationBarFragment extends Fragment {
         navigationData.clickedValue.observe(getActivity(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                if (integer == 1) { // This is the board
-                    settingsButton.setVisibility(View.VISIBLE);
-                    leaderBoardButton.setVisibility(View.VISIBLE);
-                    backButton.setVisibility(View.GONE);
+                switch(integer) {
+                    case 0:
+                        settingsButton.setVisibility(View.VISIBLE);
+                        leaderBoardButton.setVisibility(View.VISIBLE);
+                        backButton.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        settingsButton.setVisibility(View.VISIBLE);
+                        leaderBoardButton.setVisibility(View.VISIBLE);
+                        backButton.setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        settingsButton.setVisibility(View.GONE);
+                        leaderBoardButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.VISIBLE);
+                        break;
+                    case 3:
+                        settingsButton.setVisibility(View.GONE);
+                        leaderBoardButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.VISIBLE);
+                        break;
+                    case 4:
+                        settingsButton.setVisibility(View.GONE);
+                        leaderBoardButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.VISIBLE);
+                    case 5:
+                        settingsButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.VISIBLE);
+                        leaderBoardButton.setVisibility(View.GONE);
                 }
-                if (integer == 2) { //this is the settings page
-                    settingsButton.setVisibility(View.GONE);
-                    leaderBoardButton.setVisibility(View.GONE);
-                    backButton.setVisibility(View.VISIBLE);
 
-                }
-                if (integer == 3) { // this is the profile page
-                    settingsButton.setVisibility(View.GONE);
-                    leaderBoardButton.setVisibility(View.GONE);
-                    backButton.setVisibility(View.VISIBLE);
-                }
-                if (integer == 4) { // this is the customise profile page
-                    settingsButton.setVisibility(View.GONE);
-                    leaderBoardButton.setVisibility(View.GONE);
-                    backButton.setVisibility(View.VISIBLE);
-                }
             }
         });
         return view;

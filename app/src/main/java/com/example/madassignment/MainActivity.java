@@ -28,21 +28,27 @@ public class MainActivity extends AppCompatActivity {
 
                 switch(integer) {
                     case 0:
+                        System.out.println("The value is :" + String.valueOf(integer));
                         loadMenuFragment(); // setClickValue == 0
                         break;
                     case 1:
+                        System.out.println("The value is :" + String.valueOf(integer));
                         loadBoardFragment();
                         break;
                     case 2:
+                        System.out.println("The value is :" + String.valueOf(integer));
                         loadSettingsFragment();
                         break;
                     case 3:
+                        System.out.println("The value is :" + String.valueOf(integer));
                         loadProfileFragment();
                         break;
                     case 4:
+                        System.out.println("The value is :" + String.valueOf(integer));
                         loadCustomizeFragment();
                         break;
                     case 5:
+                        System.out.println("The value is :" + String.valueOf(integer));
                         loadLeaderBoardFragment();
                         break;
                 }
