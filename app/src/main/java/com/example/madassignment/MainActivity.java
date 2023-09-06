@@ -27,11 +27,17 @@ public class MainActivity extends AppCompatActivity {
                     loadMenuFragment(); // setClickValue == 0
                 }
                 if (integer == 1) {
-                    System.out.println("The menu button has been presssed");
+                    System.out.println("The menu button has been pressed");
                     loadBoardFragment();
                 }
                 if (integer == 2) {
                     loadSettingsFragment(); // setClickValue == 2
+                }
+                if (integer == 3) {
+                    loadProfileFragment();
+                }
+                if (integer == 4) {
+                    loadCustomizeFragment();
                 }
             }
         });
@@ -42,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         // Defines other fragments
         Fragment boardFragment = fm.findFragmentById(R.id.board_container);
         Fragment settingsFragment = fm.findFragmentById(R.id.settings_container);
+        Fragment profileFragment = fm.findFragmentById(R.id.profile_container);
+        Fragment customizeFragment = fm.findFragmentById(R.id.customize_container);
 
         //If currently active, removes boardFragment
         if (boardFragment != null) {
@@ -52,6 +60,17 @@ public class MainActivity extends AppCompatActivity {
         if (settingsFragment != null) {
             fm.beginTransaction().remove(settingsFragment).commit();
         }
+
+        //If currently active, removes profileFragment
+        if (profileFragment != null) {
+            fm.beginTransaction().remove(profileFragment).commit();
+        }
+
+        //If currently active, removes customizeFragment
+        if (customizeFragment != null) {
+            fm.beginTransaction().remove(customizeFragment).commit();
+        }
+
 
         MenuFragment menuFragment = new MenuFragment();
         fm.beginTransaction().replace(R.id.menu_container, menuFragment, "menuFragment").commit();
@@ -62,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
         // Defines other fragments
         Fragment menuFragment = fm.findFragmentById(R.id.menu_container);
         Fragment settingsFragment = fm.findFragmentById(R.id.settings_container);
-        System.out.println("We are in the function");
+        Fragment profileFragment = fm.findFragmentById(R.id.profile_container);
+        Fragment customizeFragment = fm.findFragmentById(R.id.customize_container);
+
         //If currently active, removes menuFragment
         if (menuFragment != null) {
             fm.beginTransaction().remove(menuFragment).commit();
@@ -72,6 +93,17 @@ public class MainActivity extends AppCompatActivity {
         if (settingsFragment != null) {
             fm.beginTransaction().remove(settingsFragment).commit();
         }
+
+        //If currently active, removes profileFragment
+        if (profileFragment != null) {
+            fm.beginTransaction().remove(profileFragment).commit();
+        }
+
+        //If currently active, removes customizeFragment
+        if (customizeFragment != null) {
+            fm.beginTransaction().remove(customizeFragment).commit();
+        }
+
 //
         BoardFragment boardFragment = new BoardFragment();
         fm.beginTransaction().replace(R.id.board_container, boardFragment, "boardFragment").commit();
@@ -82,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
         // Defines other fragments
         Fragment boardFragment = fm.findFragmentById(R.id.board_container);
         Fragment menuFragment = fm.findFragmentById(R.id.menu_container);
+        Fragment profileFragment = fm.findFragmentById(R.id.profile_container);
+        Fragment customizeFragment = fm.findFragmentById(R.id.customize_container);
 
         //If currently active, removes boardFragment
         if (boardFragment != null) {
@@ -93,8 +127,82 @@ public class MainActivity extends AppCompatActivity {
             fm.beginTransaction().remove(menuFragment).commit();
         }
 
+        //If currently active, removes profileFragment
+        if (profileFragment != null) {
+            fm.beginTransaction().remove(profileFragment).commit();
+        }
+
+        //If currently active, removes customizeFragment
+        if (customizeFragment != null) {
+            fm.beginTransaction().remove(customizeFragment).commit();
+        }
+
         SettingsFragment settingsFragment = new SettingsFragment();
         fm.beginTransaction().replace(R.id.settings_container, settingsFragment, "settingsFragment").commit();
+    }
+
+    private void loadProfileFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        // Defines other fragments
+        Fragment boardFragment = fm.findFragmentById(R.id.board_container);
+        Fragment settingsFragment = fm.findFragmentById(R.id.settings_container);
+        Fragment menuFragment = fm.findFragmentById(R.id.menu_container);
+        Fragment customizeFragment = fm.findFragmentById(R.id.customize_container);
+
+        //If currently active, removes boardFragment
+        if (boardFragment != null) {
+            fm.beginTransaction().remove(boardFragment).commit();
+        }
+
+        //If currently active, removes settingsFragment
+        if (settingsFragment != null) {
+            fm.beginTransaction().remove(settingsFragment).commit();
+        }
+
+        //If currently active, removes menuFragment
+        if (menuFragment != null) {
+            fm.beginTransaction().remove(menuFragment).commit();
+        }
+
+        //If currently active, removes customizeFragment
+        if (customizeFragment != null) {
+            fm.beginTransaction().remove(customizeFragment).commit();
+        }
+
+        ProfileFragment profileFragment = new ProfileFragment();
+        fm.beginTransaction().replace(R.id.profile_container, profileFragment, "profileFragment").commit();
+    }
+
+    private void loadCustomizeFragment() {
+        FragmentManager fm = getSupportFragmentManager();
+        // Defines other fragments
+        Fragment boardFragment = fm.findFragmentById(R.id.board_container);
+        Fragment settingsFragment = fm.findFragmentById(R.id.settings_container);
+        Fragment menuFragment = fm.findFragmentById(R.id.menu_container);
+        Fragment profileFragment = fm.findFragmentById(R.id.profile_container);
+
+        //If currently active, removes boardFragment
+        if (boardFragment != null) {
+            fm.beginTransaction().remove(boardFragment).commit();
+        }
+
+        //If currently active, removes settingsFragment
+        if (settingsFragment != null) {
+            fm.beginTransaction().remove(settingsFragment).commit();
+        }
+
+        //If currently active, removes menuFragment
+        if (menuFragment != null) {
+            fm.beginTransaction().remove(menuFragment).commit();
+        }
+
+        //If currently active, removes profileFragment
+        if (profileFragment != null) {
+            fm.beginTransaction().remove(profileFragment).commit();
+        }
+
+        CustomizeFragment customizeFragment = new CustomizeFragment();
+        fm.beginTransaction().replace(R.id.customize_container, customizeFragment, "customizeFragment").commit();
     }
 
 

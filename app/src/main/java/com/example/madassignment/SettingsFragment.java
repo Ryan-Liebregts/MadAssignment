@@ -8,7 +8,15 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,13 +30,21 @@ public class SettingsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    private Button backButton;
+    // Define Buttons & Spinners
+    private Button profileButton;
+    private Spinner boardSizeSpinner;
+    private Spinner winConditionSpinner;
+    private Button customizeButton;
 
+    // Define Navigation Model
     private NavigationData navModel;
+
+    // Define the list arrays for the spinners
+    String[] boardSizes = {"3 x 3", "4 x 4", "5 x 5"};
+    String[] winConditions = {"3", "4", "5"};
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -67,16 +83,81 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
+        // Define Buttons
+        profileButton = view.findViewById(R.id.profileButton);
+        boardSizeSpinner = view.findViewById(R.id.boardSizeSpinner);
+        winConditionSpinner = view.findViewById(R.id.winConditionSpinner);
+        customizeButton = view.findViewById(R.id.customizeButton);
 
-        // Define the buttons
-        backButton = view.findViewById(R.id.backButtonSettings);
-
-        backButton.setOnClickListener(new View.OnClickListener() {
+        profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navModel.setClickedValue(1);
+                navModel.setClickedValue(3);
             }
         });
+
+        customizeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navModel.setClickedValue(4);
+            }
+        });
+
+        // Create an ArrayAdapter to populate the boardSizeSpinner
+        ArrayAdapter<String> boardSizeAdapter = new ArrayAdapter<String>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                boardSizes
+        );
+
+        // Set the dropdown layout style
+        boardSizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set the adapter for the Spinner
+        boardSizeSpinner.setAdapter(boardSizeAdapter);
+
+//        This code handles the logic of what to do when a particular item is selected in the spinner
+//        boardSizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                // Handle the selected item here
+//                String selectedCity = boardSizes[position];
+//                // Do ...
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//                // Handle case where nothing is selected (optional)
+//            }
+//        });
+
+        // Create an ArrayAdapter to populate the boardSizeSpinner
+        ArrayAdapter<String> winConditionAdapter = new ArrayAdapter<String>(
+                requireContext(),
+                android.R.layout.simple_spinner_item,
+                winConditions
+        );
+
+        // Set the dropdown layout style
+        winConditionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // Set the adapter for the Spinner
+        winConditionSpinner.setAdapter(winConditionAdapter);
+
+//        This code handles the logic of what to do when a particular item is selected in the spinner
+//        winConditionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+//                // Handle the selected item here
+//                String selectedCity = winConditions[position];
+//                // Do ...
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parentView) {
+//                // Handle case where nothing is selected (optional)
+//            }
+//        });
 
         return view;
     }

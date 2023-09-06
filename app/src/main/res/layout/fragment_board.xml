@@ -434,6 +434,7 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+
     <!-- The code below was added by Jules to test board functionality -->
 
     <TextView
@@ -450,6 +451,5 @@
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <!-- The code above was added by Jules to test board functionality -->
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
