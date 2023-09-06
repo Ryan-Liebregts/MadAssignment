@@ -13,6 +13,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,7 +29,7 @@ public class LeaderBoardFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    ArrayList<LeaderBoardData> data;
+    List<User> data;
 
 
     // TODO: Rename and change types of parameters
@@ -81,13 +84,30 @@ public class LeaderBoardFragment extends Fragment {
         return view;
     }
 
-    public ArrayList<LeaderBoardData> getLeaderBoardData() {
-        data = new ArrayList<LeaderBoardData>();
-        data.add(new LeaderBoardData("Ryan", 1, R.drawable.user_icon1, 2000));
-        data.add(new LeaderBoardData("PK", 2, R.drawable.user_icon2, 1900));
-        data.add(new LeaderBoardData("Yi", 3, R.drawable.user_icon3, 1800));
-        data.add(new LeaderBoardData("Jules", 4, R.drawable.user_icon4, 1700));
+    public List<User> getLeaderBoardData() {
+        UserDao userDao = initialiseDB();
+
+        //Test data will remove when we have functionality to add users
+        User ryan = new User();
+        ryan.setUserName("Ryan");
+        ryan.setUserIcon(R.drawable.user_icon1);
+        ryan.setUserLosses(0);
+        ryan.setUserWins(10);
+
+        User PK = new User();
+        PK.setUserName("PK");
+        PK.setUserIcon(R.drawable.user_icon2);
+        PK.setUserLosses(4);
+        PK.setUserWins(8);
+//        userDao.insert(ryan, PK);
+        //end of test data
+
+        data = null;
+        data = userDao.getAllUsers();
         return data;
+    }
+    public UserDao initialiseDB() {
+        return UserDbInstance.getDatabase(getContext()).userDao();
     }
 
 }

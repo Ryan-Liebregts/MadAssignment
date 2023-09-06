@@ -18,6 +18,8 @@ public class LeaderBoardVH extends RecyclerView.ViewHolder{
         super(itemView);
         int hSize = parent.getMeasuredHeight() /10;
         ViewGroup.LayoutParams lp = itemView.getLayoutParams();
+        //this will be to dynamically set height according to screen size
+        //TODO
 //        lp.height = hSize;
         userRankTextBox = itemView.findViewById(R.id.user_rank);
         userNameTextBox = itemView.findViewById(R.id.user_name);

@@ -2,23 +2,20 @@ package com.example.madassignment;
 
 
 
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class LeaderBoardDataAdapter  extends RecyclerView.Adapter<LeaderBoardVH> {
 
-    ArrayList<LeaderBoardData> data;
+    List<User> data;
 
-    public LeaderBoardDataAdapter(ArrayList<LeaderBoardData> data){
+    public LeaderBoardDataAdapter(List<User> data){
         this.data = data;
     }
 
@@ -27,18 +24,24 @@ public class LeaderBoardDataAdapter  extends RecyclerView.Adapter<LeaderBoardVH>
     public LeaderBoardVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.leaderboard_list_item,parent,false);
-        LeaderBoardVH leaderBoardVH = new LeaderBoardVH(view, parent);
-        return leaderBoardVH;
+        return new LeaderBoardVH(view, parent);
     }
 
     @Override
     public void onBindViewHolder(@NonNull LeaderBoardVH holder, int position) {
-        LeaderBoardData singleRow = data.get(position);
+        User singleRow = data.get(position);
+        //set the name
         holder.userNameTextBox.setText(singleRow.getUserName());
+
+        //set icon
         int imageResId = singleRow.getUserIcon();
         holder.userIconImage.setImageResource(imageResId);
-        holder.userRankTextBox.setText(String.valueOf(singleRow.getUserRank()));
-        holder.userScoreTextBox.setText(String.valueOf(singleRow.getUserScore()));
+
+        //set rank
+        holder.userRankTextBox.setText(String.valueOf(position +1));
+
+        //set wins
+        holder.userScoreTextBox.setText(String.valueOf(singleRow.getUserWins()));
     }
 
     @Override
