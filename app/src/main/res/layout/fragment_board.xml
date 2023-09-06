@@ -79,8 +79,7 @@
                 android:id="@+id/playerIcon"
                 android:layout_width="65dp"
                 android:layout_height="87dp"
-                android:src="@drawable/player_1_icon"
-            />
+                android:src="@drawable/player_1_icon" />
         </LinearLayout>
 
         <TextView
@@ -237,6 +236,162 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
+        <!-- The code below was added by Jules to test board functionality -->
+        <LinearLayout
+            android:id="@+id/button_container1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            android:gravity= "center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <LinearLayout
+                android:id="@+id/button_container2"
+                android:layout_width="match_parent"
+                android:layout_height="91dp"
+                android:orientation="horizontal"
+                android:gravity= "center"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/button_container3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageButton
+                    android:id="@+id/buttonOne"
+                    android:layout_width="91dp"
+                    android:layout_height="91dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/buttonTwo"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/buttonTwo"
+                    android:layout_width="91dp"
+                    android:layout_height="91dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/buttonThree"
+                    app:layout_constraintStart_toEndOf="@+id/buttonOne"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/buttonThree"
+                    android:layout_width="91dp"
+                    android:layout_height="91dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/buttonTwo"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/button_container3"
+                android:layout_width="match_parent"
+                android:layout_height="91dp"
+                android:orientation="horizontal"
+                android:gravity= "center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/buttonFour"
+                    android:layout_width="91dp"
+                    android:layout_height="91dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/buttonFive"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/buttonFive"
+                    android:layout_width="91dp"
+                    android:layout_height="91dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/buttonSix"
+                    app:layout_constraintStart_toEndOf="@+id/buttonFour"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/buttonSix"
+                    android:layout_width="91dp"
+                    android:layout_height="91dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/buttonFive"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/button_container4"
+                android:layout_width="match_parent"
+                android:layout_height="91dp"
+                android:orientation="horizontal"
+                android:gravity= "center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageButton
+                    android:id="@+id/buttonSeven"
+                    android:layout_width="91dp"
+                    android:layout_height="91dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@+id/buttonEight"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/buttonEight"
+                    android:layout_width="91dp"
+                    android:layout_height="91dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/buttonNine"
+                    app:layout_constraintStart_toEndOf="@+id/buttonSeven"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/buttonNine"
+                    android:layout_width="91dp"
+                    android:layout_height="91dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="#00FFFFFF"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/buttonEight"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- The code above was added by Jules to test board functionality -->
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
@@ -268,27 +423,33 @@
                 android:src="@drawable/custom_icon_undo" />
 
             <ImageButton
+                android:id = "@+id/reset_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/custom_icon_restart"
                 android:backgroundTint="#00FFFFFF"/>
 
-
-
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <!-- The code below was added by Jules to test board functionality -->
 
+    <TextView
+        android:id="@+id/gameoverText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GAME OVER!"
+        android:textColor="#FF0000"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
-
-
-
-
-
-
+    <!-- The code above was added by Jules to test board functionality -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
