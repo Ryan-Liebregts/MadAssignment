@@ -24,14 +24,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Integer integer) {
                 if (integer == 0) {
-                    loadMenuFragment();
+                    loadMenuFragment(); // setClickValue == 0
                 }
                 if (integer == 1) {
                     System.out.println("The menu button has been pressed");
                     loadBoardFragment();
                 }
                 if (integer == 2) {
-                    loadSettingsFragment();
+                    loadSettingsFragment(); // setClickValue == 2
                 }
                 if (integer == 3) {
                     loadProfileFragment();

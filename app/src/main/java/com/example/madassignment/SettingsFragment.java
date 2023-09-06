@@ -46,7 +46,6 @@ public class SettingsFragment extends Fragment {
     String[] boardSizes = {"3 x 3", "4 x 4", "5 x 5"};
     String[] winConditions = {"3", "4", "5"};
 
-
     public SettingsFragment() {
         // Required empty public constructor
     }
@@ -84,7 +83,6 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-
         // Define Buttons
         profileButton = view.findViewById(R.id.profileButton);
         boardSizeSpinner = view.findViewById(R.id.boardSizeSpinner);
