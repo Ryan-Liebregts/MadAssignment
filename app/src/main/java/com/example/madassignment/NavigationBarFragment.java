@@ -72,24 +72,73 @@ public class NavigationBarFragment extends Fragment {
         NavigationData navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
         ImageButton backButton = view.findViewById(R.id.backButton);
         ImageButton settingsButton = view.findViewById(R.id.settingsButton);
+        ImageButton leaderBoardButton = view.findViewById(R.id.leaderBoardButton);
 
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                navigationData.setHistoricalClickedValue(navigationData.getClickedValue());
+                navigationData.setClickedValue(2);
 
-               navigationData.setSettingsValue(1);
-               navigationData.setClickedValue(2);
-               settingsButton.setVisibility(View.GONE);
-               backButton.setVisibility(View.VISIBLE);
             }
         });
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navigationData.setSettingsValue(0);
-                navigationData.setClickedValue(1);
-                settingsButton.setVisibility(View.VISIBLE);
-                backButton.setVisibility(View.GONE);
+                if (navigationData.getClickedValue() == 4 || navigationData.getClickedValue() == 3) {
+                    navigationData.setClickedValue(2);
+                }
+                else if (navigationData.getClickedValue() == 2){
+                    navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                }
+                else if (navigationData.getClickedValue() == 5) {
+                    navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                }
+            }
+        });
+
+        leaderBoardButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navigationData.setHistoricalClickedValue(navigationData.getClickedValue());
+                navigationData.setClickedValue(5);
+            }
+        });
+
+        navigationData.clickedValue.observe(getActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                switch(integer) {
+                    case 0:
+                        settingsButton.setVisibility(View.VISIBLE);
+                        leaderBoardButton.setVisibility(View.VISIBLE);
+                        backButton.setVisibility(View.GONE);
+                        break;
+                    case 1:
+                        settingsButton.setVisibility(View.VISIBLE);
+                        leaderBoardButton.setVisibility(View.VISIBLE);
+                        backButton.setVisibility(View.GONE);
+                        break;
+                    case 2:
+                        settingsButton.setVisibility(View.GONE);
+                        leaderBoardButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.VISIBLE);
+                        break;
+                    case 3:
+                        settingsButton.setVisibility(View.GONE);
+                        leaderBoardButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.VISIBLE);
+                        break;
+                    case 4:
+                        settingsButton.setVisibility(View.GONE);
+                        leaderBoardButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.VISIBLE);
+                    case 5:
+                        settingsButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.VISIBLE);
+                        leaderBoardButton.setVisibility(View.GONE);
+                }
+
             }
         });
         return view;
