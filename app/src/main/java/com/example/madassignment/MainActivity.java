@@ -11,15 +11,15 @@ import android.os.Bundle;
 public class MainActivity extends AppCompatActivity {
 
     // Declare viewModel parameters
+    NavigationBarFragment navBarFragment = new NavigationBarFragment();
     NavigationData navigationData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         // Create viewModels
         navigationData = new ViewModelProvider(this).get(NavigationData.class);
-
+        loadNavBar();
         navigationData.clickedValue.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -27,7 +27,8 @@ public class MainActivity extends AppCompatActivity {
                     loadMenuFragment(); // setClickValue == 0
                 }
                 if (integer == 1) {
-                    loadBoardFragment(); // setClickValue == 1
+                    System.out.println("The menu button has been presssed");
+                    loadBoardFragment();
                 }
                 if (integer == 2) {
                     loadSettingsFragment(); // setClickValue == 2
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         // Defines other fragments
         Fragment menuFragment = fm.findFragmentById(R.id.menu_container);
         Fragment settingsFragment = fm.findFragmentById(R.id.settings_container);
-
+        System.out.println("We are in the function");
         //If currently active, removes menuFragment
         if (menuFragment != null) {
             fm.beginTransaction().remove(menuFragment).commit();
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         if (settingsFragment != null) {
             fm.beginTransaction().remove(settingsFragment).commit();
         }
-
+//
         BoardFragment boardFragment = new BoardFragment();
         fm.beginTransaction().replace(R.id.board_container, boardFragment, "boardFragment").commit();
     }
@@ -94,6 +95,19 @@ public class MainActivity extends AppCompatActivity {
 
         SettingsFragment settingsFragment = new SettingsFragment();
         fm.beginTransaction().replace(R.id.settings_container, settingsFragment, "settingsFragment").commit();
+    }
+
+
+    private void loadNavBar() {
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment frag = fm.findFragmentById(R.id.navBar_container);
+        if (frag!= null) {
+            fm.beginTransaction().replace(R.id.navBar_container, navBarFragment, "navBarFragment").commit();
+        }
+        else {
+            fm.beginTransaction().add(R.id.navBar_container, navBarFragment, "navBarFragment").commit();
+        }
+
     }
 
 }
