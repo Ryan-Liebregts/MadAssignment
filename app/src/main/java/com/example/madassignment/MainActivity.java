@@ -27,7 +27,6 @@ public class MainActivity extends AppCompatActivity {
                     loadMenuFragment(); // setClickValue == 0
                 }
                 if (integer == 1) {
-                    System.out.println("The menu button has been pressed");
                     loadBoardFragment();
                 }
                 if (integer == 2) {
