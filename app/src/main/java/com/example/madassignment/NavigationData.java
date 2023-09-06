@@ -4,18 +4,18 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.LinkedList;
 
 public class NavigationData extends ViewModel {
 
     public MutableLiveData<Integer> clickedValue;
-    public MutableLiveData<Integer> settingsClickedValue;
+    public MutableLiveData<LinkedList> historicalClickedValue;
 
     public NavigationData(){
         clickedValue = new MediatorLiveData<Integer>();
         clickedValue.setValue(0);
 
-        settingsClickedValue = new MediatorLiveData<Integer>();
-        settingsClickedValue.setValue(0);
+//        historicalClickedValue = new MediatorLiveData<LinkedList>();
 
     }
     public int getClickedValue(){
@@ -25,9 +25,9 @@ public class NavigationData extends ViewModel {
         clickedValue.setValue(value);
     }
 
-    public int getSettingsValue() { return settingsClickedValue.getValue();}
-
-    public void setSettingsValue(int value) { settingsClickedValue.setValue(value);}
+//    public int getHistoricalClickedValue() { return historicalClickedValue.getValue();}
+//
+//    public void setHistoricalClickedValue(int value) { historicalClickedValue.setValue(value);}
 
 
 

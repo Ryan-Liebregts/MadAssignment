@@ -24,6 +24,20 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
+        android:id="@+id/leaderBoardButton"
+        android:layout_width="70dp"
+        android:layout_height="57dp"
+        android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/leader_board_button_custom"
+        android:tag="back_button"
+        android:visibility="visible"
+        app:iconTint="#FC9B4C"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/settingsButton"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <ImageButton
         android:id="@+id/settingsButton"
         android:layout_width="65dp"
         android:layout_height="47dp"
