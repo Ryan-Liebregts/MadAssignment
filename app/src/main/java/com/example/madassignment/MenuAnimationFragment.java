@@ -53,7 +53,7 @@ public class MenuAnimationFragment extends Fragment {
 
         // Define UI Items
         menuTitle = view.findViewById(R.id.menuTitleAnimation);
-        lightSpotImageView = view.findViewById(R.id.lightSpotImageView);
+        lightSpotImageView = view.findViewById(R.id.lightSpot1);
 
         // Listen for when the view is laid out to get its height
         menuTitle.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -81,24 +81,6 @@ public class MenuAnimationFragment extends Fragment {
                 });
 
                 translateAnimationSet.start();
-
-                // Create a fade-in animation
-                fadeIn = new AlphaAnimation(0.0f, 1.0f);
-                fadeIn.setDuration(500); // Adjust the duration as needed
-                fadeIn.setFillAfter(true);
-
-                // Create a fade-out animation
-                fadeOut = new AlphaAnimation(1.0f, 0.0f);
-                fadeOut.setStartOffset(100); // Start the fade-out after x seconds
-                fadeOut.setDuration(500); // Adjust the duration as needed
-                fadeOut.setFillAfter(true);
-
-                // Create an animation set for repeating the fade-in and fade-out animations
-                fadeAnimationSet = new AnimationSet(true);
-                fadeAnimationSet.addAnimation(fadeIn);
-                fadeAnimationSet.addAnimation(fadeOut);
-                fadeAnimationSet.setRepeatMode(Animation.RESTART); // Repeat the animation
-                fadeAnimationSet.setRepeatCount(Animation.INFINITE); // Repeat indefinitely
 
                 // Remove the global layout listener to avoid multiple callbacks
                 menuTitle.getViewTreeObserver().removeOnGlobalLayoutListener(this);

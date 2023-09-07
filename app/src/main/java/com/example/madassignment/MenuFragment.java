@@ -54,9 +54,9 @@ public class MenuFragment extends Fragment {
         lightSpot2 = view.findViewById(R.id.lightSpot2);
         lightSpot3 = view.findViewById(R.id.lightSpot3);
 
-        fadeAnimation(lightSpot1);
-        fadeAnimation(lightSpot2);
-        fadeAnimation(lightSpot3);
+//        fadeAnimation(lightSpot1);
+//        fadeAnimation(lightSpot2);
+//        fadeAnimation(lightSpot3);
 
         if(navModel.getAnimationClickedValue() == 0) {
             navModel.setClickedValue(99);
