@@ -23,13 +23,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class MenuAnimationFragment extends Fragment {
-    private TextView menuTitle;
-    private ImageView lightSpotImageView;
+    private ImageView menuTitle;
+    private ImageView lightSpot1;
 
     private AnimatorSet translateAnimationSet;
-    private AnimationSet fadeAnimationSet;
-    private AlphaAnimation fadeIn;
-    private AlphaAnimation fadeOut;
 
     private NavigationData navModel;
 
@@ -53,7 +50,7 @@ public class MenuAnimationFragment extends Fragment {
 
         // Define UI Items
         menuTitle = view.findViewById(R.id.menuTitleAnimation);
-        lightSpotImageView = view.findViewById(R.id.lightSpot1);
+        lightSpot1 = view.findViewById(R.id.lightSpot1);
 
         // Listen for when the view is laid out to get its height
         menuTitle.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -62,11 +59,11 @@ public class MenuAnimationFragment extends Fragment {
                 // Calculate the final Y position to center the title on the screen
                 int screenHeight = menuTitle.getRootView().getHeight();
                 int titleHeight = menuTitle.getHeight();
-                float finalY = (screenHeight - titleHeight) / 2f;
+                float finalY = (screenHeight - titleHeight) / 2f - 500;
 
                 // Create a translation animation to make the title fall
                 ObjectAnimator translateY = ObjectAnimator.ofFloat(menuTitle, "translationY", -titleHeight, finalY);
-                translateY.setDuration(2000); // Set the duration in milliseconds
+                translateY.setDuration(4000); // Set the duration in milliseconds
                 translateY.setInterpolator(new AccelerateDecelerateInterpolator());
 
                 translateAnimationSet = new AnimatorSet();

@@ -20,7 +20,7 @@ public class MenuFragment extends Fragment {
     // Define UI Components
     private Button aiButton;
     private Button playerButton;
-    private TextView menuTitle;
+    private ImageView menuTitle;
     private ImageView lightSpot1;
     private ImageView lightSpot2;
     private ImageView lightSpot3;
@@ -54,15 +54,14 @@ public class MenuFragment extends Fragment {
         lightSpot2 = view.findViewById(R.id.lightSpot2);
         lightSpot3 = view.findViewById(R.id.lightSpot3);
 
-//        fadeAnimation(lightSpot1);
-//        fadeAnimation(lightSpot2);
-//        fadeAnimation(lightSpot3);
+        fadeAnimation(lightSpot1);
+        fadeAnimation(lightSpot2);
+        fadeAnimation(lightSpot3);
 
         if(navModel.getAnimationClickedValue() == 0) {
             navModel.setClickedValue(99);
         }
         else {
-            menuTitle.setAlpha(1);
             aiButton.setAlpha(1);
             playerButton.setAlpha(1);
         }
