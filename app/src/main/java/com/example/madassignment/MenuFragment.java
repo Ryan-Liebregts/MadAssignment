@@ -1,5 +1,6 @@
 package com.example.madassignment;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,7 +9,10 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,48 +21,24 @@ import android.widget.Button;
  */
 public class MenuFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
+    // Define UI Components
     private Button aiButton;
     private Button playerButton;
-    private String mParam1;
-    private String mParam2;
+    private TextView menuTitle;
+    private ImageView lightSpotImageView;
+    private AnimationDrawable lightSpotAnimation;
 
+    // Define ViewModels
     private NavigationData navModel;
 
     public MenuFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MenuFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MenuFragment newInstance(String param1, String param2) {
-        MenuFragment fragment = new MenuFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
     }
 
@@ -71,6 +51,27 @@ public class MenuFragment extends Fragment {
         // Define Buttons
         aiButton = view.findViewById(R.id.aiButton);
         playerButton = view.findViewById(R.id.playerButton);
+        menuTitle = view.findViewById(R.id.menuTitle);
+        lightSpotImageView = view.findViewById(R.id.lightSpotImageView);
+
+        lightSpotAnimation = (AnimationDrawable) lightSpotImageView.getDrawable();
+
+        // setting enter fade animation duration to 5 seconds
+        lightSpotAnimation.setEnterFadeDuration(5000);
+        // setting exit fade animation duration to 2 seconds
+        lightSpotAnimation.setExitFadeDuration(2000);
+
+        // Start the animation
+        lightSpotAnimation.start();
+
+        if(navModel.getAnimationClickedValue() == 0) {
+            navModel.setClickedValue(99);
+        }
+        else {
+            menuTitle.setAlpha(1);
+            aiButton.setAlpha(1);
+            playerButton.setAlpha(1);
+        }
 
         /* Both AI_Button and Player_Button currently only direct to the board fragment
             this is to be changed when the backend for the AI & player back-end is added.
@@ -90,5 +91,23 @@ public class MenuFragment extends Fragment {
         });
 
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Start the animation when the fragment is active
+        if (lightSpotAnimation != null && !lightSpotAnimation.isRunning()) {
+            lightSpotAnimation.start();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // Pause the animation when the fragment is not active
+        if (lightSpotAnimation != null && lightSpotAnimation.isRunning()) {
+            lightSpotAnimation.stop();
+        }
     }
 }

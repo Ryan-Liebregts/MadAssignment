@@ -5,6 +5,7 @@
     android:id="@+id/menuLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/wooden_background"
     tools:context=".MenuFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,5 +47,17 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/lightSpotImageView"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:src="@drawable/lightspot_animation_list"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.85"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
