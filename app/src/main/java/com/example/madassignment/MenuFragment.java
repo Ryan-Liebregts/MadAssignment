@@ -24,7 +24,7 @@ public class MenuFragment extends Fragment {
     private ImageView lightSpot1;
     private ImageView lightSpot2;
     private ImageView lightSpot3;
-    private AnimationSet animationSet;
+    private ImageView lightSpot4;
 
     // Define ViewModels
     private NavigationData navModel;
@@ -53,10 +53,12 @@ public class MenuFragment extends Fragment {
         lightSpot1 = view.findViewById(R.id.lightSpot1);
         lightSpot2 = view.findViewById(R.id.lightSpot2);
         lightSpot3 = view.findViewById(R.id.lightSpot3);
+        lightSpot4 = view.findViewById(R.id.lightSpot4);
 
-        fadeAnimation(lightSpot1);
-        fadeAnimation(lightSpot2);
-        fadeAnimation(lightSpot3);
+        fadeAnimation(lightSpot1, 1);
+        fadeAnimation(lightSpot2, 0);
+        fadeAnimation(lightSpot3, 0);
+        fadeAnimation(lightSpot4, 1);
 
         if(navModel.getAnimationClickedValue() == 0) {
             navModel.setClickedValue(99);
@@ -86,16 +88,28 @@ public class MenuFragment extends Fragment {
         return view;
     }
 
-    public void fadeAnimation(ImageView light_spot) {
+    public void fadeAnimation(ImageView light_spot, int offset) {
         // Create a fade-in animation
+        // Offset integer allows for variability in light spot fade behaviour
         AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
-        fadeIn.setDuration(1000); // Adjust the duration as needed
+        if (offset == 1) {
+            fadeIn.setDuration(1500); // Fade in after 0.5 seconds
+        }
+        else {
+            fadeIn.setDuration(1000); // Fade in after 1 second
+        }
         fadeIn.setFillAfter(true);
 
         // Create a fade-out animation
         AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
-        fadeOut.setStartOffset(1000); // Start the fade-out after 1 second
-        fadeOut.setDuration(1000); // Adjust the duration as needed
+        if (offset == 1) {
+            fadeOut.setStartOffset(1500);
+            fadeOut.setDuration(1500); // Fade out after 0.5 seconds
+        }
+        else {
+            fadeOut.setStartOffset(1000);
+            fadeOut.setDuration(1000); // Fade out after 1 second
+        }
         fadeOut.setFillAfter(true);
 
         fadeOut.setAnimationListener(new Animation.AnimationListener() {
