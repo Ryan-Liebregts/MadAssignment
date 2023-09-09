@@ -1,6 +1,6 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/icon" >
         <bitmap
-            android:src="@drawable/TicTacToeIMGShaded" />
+            android:src="@drawable/tic_tac_toe_title" />
     </item>
 </layer-list>

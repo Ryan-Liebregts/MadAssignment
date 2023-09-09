@@ -8,57 +8,35 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link MenuFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class MenuFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
+    // Define UI Components
     private Button aiButton;
     private Button playerButton;
-    private String mParam1;
-    private String mParam2;
+    private ImageView menuTitle;
+    private ImageView lightSpot1;
+    private ImageView lightSpot2;
+    private ImageView lightSpot3;
+    private ImageView lightSpot4;
 
+    // Define ViewModels
     private NavigationData navModel;
 
     public MenuFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MenuFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MenuFragment newInstance(String param1, String param2) {
-        MenuFragment fragment = new MenuFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
     }
 
@@ -71,6 +49,24 @@ public class MenuFragment extends Fragment {
         // Define Buttons
         aiButton = view.findViewById(R.id.aiButton);
         playerButton = view.findViewById(R.id.playerButton);
+        menuTitle = view.findViewById(R.id.menuTitle);
+        lightSpot1 = view.findViewById(R.id.lightSpot1);
+        lightSpot2 = view.findViewById(R.id.lightSpot2);
+        lightSpot3 = view.findViewById(R.id.lightSpot3);
+        lightSpot4 = view.findViewById(R.id.lightSpot4);
+
+        fadeAnimation(lightSpot1, 1);
+        fadeAnimation(lightSpot2, 0);
+        fadeAnimation(lightSpot3, 0);
+        fadeAnimation(lightSpot4, 1);
+
+        if(navModel.getAnimationClickedValue() == 0) {
+            navModel.setClickedValue(99);
+        }
+        else {
+            aiButton.setAlpha(1);
+            playerButton.setAlpha(1);
+        }
 
         /* Both AI_Button and Player_Button currently only direct to the board fragment
             this is to be changed when the backend for the AI & player back-end is added.
@@ -90,5 +86,68 @@ public class MenuFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void fadeAnimation(ImageView light_spot, int offset) {
+        // Create a fade-in animation
+        // Offset integer allows for variability in light spot fade behaviour
+        AlphaAnimation fadeIn = new AlphaAnimation(0.0f, 1.0f);
+        if (offset == 1) {
+            fadeIn.setDuration(1500); // Fade in after 0.5 seconds
+        }
+        else {
+            fadeIn.setDuration(1000); // Fade in after 1 second
+        }
+        fadeIn.setFillAfter(true);
+
+        // Create a fade-out animation
+        AlphaAnimation fadeOut = new AlphaAnimation(1.0f, 0.0f);
+        if (offset == 1) {
+            fadeOut.setStartOffset(1500);
+            fadeOut.setDuration(1500); // Fade out after 0.5 seconds
+        }
+        else {
+            fadeOut.setStartOffset(1000);
+            fadeOut.setDuration(1000); // Fade out after 1 second
+        }
+        fadeOut.setFillAfter(true);
+
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // Restart the specific animation within the set
+                light_spot.startAnimation(fadeIn);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                // Restart the specific animation within the set
+                light_spot.startAnimation(fadeOut);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        light_spot.startAnimation(fadeIn);
     }
 }

@@ -5,6 +5,7 @@
     android:id="@+id/menuLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/wooden_background"
     tools:context=".MenuFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -12,12 +13,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
 
-        <!-- TODO: Visually appealing title to replace current -->
-        <TextView
+        <ImageView
             android:id="@+id/menuTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TIC-TAC-TOE"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
+            android:src="@drawable/tictactoe_name_drawable"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -46,5 +46,53 @@
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/lightSpot1"
+        android:layout_width="20dp"
+        android:layout_height="40dp"
+        android:src="@drawable/light_spot1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.217" />
+
+    <ImageView
+        android:id="@+id/lightSpot2"
+        android:layout_width="30dp"
+        android:layout_height="60dp"
+        android:src="@drawable/light_spot2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.07" />
+
+    <ImageView
+        android:id="@+id/lightSpot3"
+        android:layout_width="20dp"
+        android:layout_height="40dp"
+        android:src="@drawable/light_spot3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.93"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.63" />
+
+    <ImageView
+        android:id="@+id/lightSpot4"
+        android:layout_width="30dp"
+        android:layout_height="80dp"
+        android:src="@drawable/light_spot4"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.678" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

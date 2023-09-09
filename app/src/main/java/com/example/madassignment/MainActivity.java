@@ -51,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadLeaderBoardFragment();
                         break;
+                    case 99:
+                        System.out.println("The value is :" + String.valueOf(integer));
+                        loadMenuAnimationFragment();
+                        break;
                 }
             }
         });
@@ -68,6 +72,22 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             fm.beginTransaction().add(R.id.body_container, menuFragment, "menuFragment").commit();
+        }
+
+    }
+
+    private void loadMenuAnimationFragment() {
+        // Defines other fragments
+        MenuAnimationFragment menuAnimationFragment = new MenuAnimationFragment();
+        Fragment mainContainer = fm.findFragmentById(R.id.body_container);
+
+
+        //If currently active, removes boardFragment
+        if (mainContainer != null) {
+            fm.beginTransaction().replace(R.id.body_container, menuAnimationFragment, "menuAnimationFragment").commit();
+        }
+        else {
+            fm.beginTransaction().add(R.id.body_container, menuAnimationFragment, "menuAnimationFragment").commit();
         }
 
     }
