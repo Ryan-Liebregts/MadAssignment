@@ -7,6 +7,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
+import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -15,12 +16,15 @@ public class MainActivity extends AppCompatActivity {
     NavigationData navigationData;
     FragmentManager fm = getSupportFragmentManager();
 
+    GameData gameData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Create viewModels
         navigationData = new ViewModelProvider(this).get(NavigationData.class);
+        gameData = new ViewModelProvider(this).get(GameData.class);
         loadNavBar();
         navigationData.clickedValue.observe(this, new Observer<Integer>() {
             @Override
