@@ -69,7 +69,12 @@ public class BoardFragment extends Fragment {
 
     // Variable declaration
     char[][] gameBoard;
-    int boardSize;
+    int boardSize; // TODO: collect this from Settings
+    int winConditionInput; // TODO: collect this from Settings
+    int locI;
+    int locJ;
+    int aiLocI;
+    int aiLocJ;
     boolean isPlayerGoingFirst, isThereAWinner, validInput = true, isPlayersTurn, isDraw;
     char playerMarker, aiMarker;
     ImageButton buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine, resetButton;
@@ -83,6 +88,8 @@ public class BoardFragment extends Fragment {
 
         // Set board size (for now it will be stuck at 3), and set isThereAWinner and isDraw to false
         boardSize = 3;
+        locI = 0;
+        locJ = 0;
         isThereAWinner = false;
         isDraw = false;
 
@@ -130,15 +137,16 @@ public class BoardFragment extends Fragment {
         buttonOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                locI=0;
+                locJ=0;
                 isPlayersTurn = true;
-                if(gameBoard[0][0] == '-'){
-                    gameBoard[0][0] = playerMarker; // If the space is free, place player marker
+                if(gameBoard[locI][locJ] == '-'){
+                    gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
                 }
                 else{
                     return; // If space is not free, don't do anything
                 }
-
-                buttonFunction();
+                buttonFunction(locI, locJ);
             }
         });
 
@@ -146,14 +154,16 @@ public class BoardFragment extends Fragment {
         buttonTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                locI=0;
+                locJ=1;
                 isPlayersTurn = true;
-                if(gameBoard[0][1] == '-'){
-                    gameBoard[0][1] = playerMarker; // If the space is free, place player marker
+                if(gameBoard[locI][locJ] == '-'){
+                    gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
                 }
                 else{
                     return; // If space is not free, don't do anything
                 }
-                buttonFunction();
+                buttonFunction(locI, locJ);
             }
         });
 
@@ -161,14 +171,16 @@ public class BoardFragment extends Fragment {
         buttonThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                locI=0;
+                locJ=2;
                 isPlayersTurn = true;
-                if(gameBoard[0][2] == '-'){
-                    gameBoard[0][2] = playerMarker; // If the space is free, place player marker
+                if(gameBoard[locI][locJ] == '-'){
+                    gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
                 }
                 else{
                     return; // If space is not free, don't do anything
                 }
-                buttonFunction();
+                buttonFunction(locI, locJ);
             }
         });
 
@@ -176,14 +188,16 @@ public class BoardFragment extends Fragment {
         buttonFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                locI=1;
+                locJ=0;
                 isPlayersTurn = true;
-                if(gameBoard[1][0] == '-'){
-                    gameBoard[1][0] = playerMarker; // If the space is free, place player marker
+                if(gameBoard[locI][locJ] == '-'){
+                    gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
                 }
                 else{
                     return; // If space is not free, don't do anything
                 }
-                buttonFunction();
+                buttonFunction(locI, locJ);
             }
         });
 
@@ -191,14 +205,16 @@ public class BoardFragment extends Fragment {
         buttonFive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                locI=1;
+                locJ=1;
                 isPlayersTurn = true;
-                if(gameBoard[1][1] == '-'){
-                    gameBoard[1][1] = playerMarker; // If the space is free, place player marker
+                if(gameBoard[locI][locJ] == '-'){
+                    gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
                 }
                 else{
                     return; // If space is not free, don't do anything
                 }
-                buttonFunction();
+                buttonFunction(locI, locJ);
             }
         });
 
@@ -206,14 +222,16 @@ public class BoardFragment extends Fragment {
         buttonSix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                locI=1;
+                locJ=2;
                 isPlayersTurn = true;
-                if(gameBoard[1][2] == '-'){
-                    gameBoard[1][2] = playerMarker; // If the space is free, place player marker
+                if(gameBoard[locI][locJ] == '-'){
+                    gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
                 }
                 else{
                     return; // If space is not free, don't do anything
                 }
-                buttonFunction();
+                buttonFunction(locI, locJ);
             }
         });
 
@@ -221,14 +239,16 @@ public class BoardFragment extends Fragment {
         buttonSeven.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                locI=2;
+                locJ=0;
                 isPlayersTurn = true;
-                if(gameBoard[2][0] == '-'){
-                    gameBoard[2][0] = playerMarker; // If the space is free, place player marker
+                if(gameBoard[locI][locJ] == '-'){
+                    gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
                 }
                 else{
                     return; // If space is not free, don't do anything
                 }
-                buttonFunction();
+                buttonFunction(locI, locJ);
             }
         });
 
@@ -236,14 +256,16 @@ public class BoardFragment extends Fragment {
         buttonEight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                locI=2;
+                locJ=1;
                 isPlayersTurn = true;
-                if(gameBoard[2][1] == '-'){
-                    gameBoard[2][1] = playerMarker; // If the space is free, place player marker
+                if(gameBoard[locI][locJ] == '-'){
+                    gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
                 }
                 else{
                     return; // If space is not free, don't do anything
                 }
-                buttonFunction();
+                buttonFunction(locI, locJ);
             }
         });
 
@@ -251,14 +273,16 @@ public class BoardFragment extends Fragment {
         buttonNine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                locI=2;
+                locJ=2;
                 isPlayersTurn = true;
-                if(gameBoard[2][2] == '-'){
-                    gameBoard[2][2] = playerMarker; // If the space is free, place player marker
+                if(gameBoard[locI][locJ] == '-'){
+                    gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
                 }
                 else{
                     return; // If space is not free, don't do anything
                 }
-                buttonFunction();
+                buttonFunction(locI, locJ);
             }
         });
 
@@ -274,11 +298,14 @@ public class BoardFragment extends Fragment {
     }
 
     // This functions executes when each board button is pressed
-    public void buttonFunction() {
+    public void buttonFunction(int pLocI, int pLocJ) {
+
+        // Sets the win condition in a row (set to 3 for now), TODO: attain from settings
+        winConditionInput = 3;
 
         // Update the UI, and check if there is a winner
         updateBoard3x3(gameBoard);
-        isThereAWinner = checkIfThereIsWinner(gameBoard);
+        isThereAWinner = checkIfThereIsWinner(gameBoard, winConditionInput, pLocI, pLocJ, isPlayersTurn);
 
         // It is a draw if all spaces on the board are taken and there is no winner
         isDraw = ((isAllSpacesTaken(gameBoard)) && (!isThereAWinner));
@@ -288,7 +315,7 @@ public class BoardFragment extends Fragment {
             isPlayersTurn = false;
             aiMove(gameBoard);
             updateBoard3x3(gameBoard);
-            isThereAWinner = checkIfThereIsWinner(gameBoard);
+            isThereAWinner = checkIfThereIsWinner(gameBoard, winConditionInput, aiLocI, aiLocJ, isPlayersTurn);
             isDraw = ((isAllSpacesTaken(gameBoard)) && (!isThereAWinner)); // It is a draw if all spaces on the board are taken and there is no winner
         }
 
@@ -309,60 +336,122 @@ public class BoardFragment extends Fragment {
             if(pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] != '-') validInput = false;
             else {
                 pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] = aiMarker;
+                aiLocI = aiMarkerCordsRow;
+                aiLocJ = aiMarkerCordsCol;
                 validInput = true;
             }
         } while(!validInput);
     }
 
-    // Checks if there is a winner on the board
-    // Modified version of the code obtained from: https://codereview.stackexchange.com/questions/116830/check-if-a-game-of-tic-tac-toe-has-a-winner
-    public boolean checkIfThereIsWinner(char[][] pGameBoard){
+    // Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]
+    public boolean checkConsecutiveMarkers(char[][] pGameBoard, int pWinConditionInput, int pLocI, int pLocJ, boolean pIsPlayersTurn, int pNextI, int pNextJ){
         int playerMarkerCount;
         int aiMarkerCount;
+        int indI;
+        int indJ;
+        boolean inARowForward;
+        boolean inARowReverse;
 
-        // Horizontal
-        for(int i = 0; i < pGameBoard.length; i++){
-            playerMarkerCount = 0;
-            aiMarkerCount = 0;
-            for(int j = 0; j < pGameBoard.length; j++){
-                if(pGameBoard[i][j] == playerMarker) playerMarkerCount++;
-                else if(pGameBoard[i][j] == aiMarker) aiMarkerCount++;
-            }
-            if(playerMarkerCount == pGameBoard.length || aiMarkerCount == pGameBoard.length) return true;
-        }
-
-        // Vertical
-        for(int i = 0; i < pGameBoard.length; i++){
-            playerMarkerCount = 0;
-            aiMarkerCount = 0;
-            for(int j = 0; j < pGameBoard.length; j++){
-                if(pGameBoard[j][i] == playerMarker) playerMarkerCount++;
-                else if(pGameBoard[j][i] == aiMarker) aiMarkerCount++;
-            }
-            if(playerMarkerCount == pGameBoard.length || aiMarkerCount == pGameBoard.length) return true;
-        }
-
-
-        // Left Diagonal
         playerMarkerCount = 0;
         aiMarkerCount = 0;
+        // If called for player, will check how many in a row both ways
+        if(pIsPlayersTurn == true) {
+            inARowForward = true;
+            inARowReverse = true;
+            indI = pLocI;
+            indJ = pLocJ;
+            playerMarkerCount = 1; // player counter = 1 because includes the currently placed marker
+            while(inARowForward == true) { // counts how many consecutive player counters forward
+                if (((indI + pNextI) < pGameBoard.length) && ((indI + pNextI) >= 0) && ((indJ + pNextJ) < pGameBoard.length) && ((indJ + pNextJ) >= 0)) { // makes sure next check is inside board
+                    if (pGameBoard[(indI + pNextI)][(indJ + pNextJ)] == playerMarker) {
+                        playerMarkerCount++; // if next forward consecutive space contains player marker, increase count
+                        indI = indI + pNextI;
+                        indJ = indJ + pNextJ;
+                    } else {
+                        inARowForward = false;
+                    }
+                } else {
+                    inARowForward = false;
+                }
+            }
+            indI = pLocI;
+            indJ = pLocJ;
 
-        for(int i = 0, j = 0; i < pGameBoard.length; i++, j++){
-            if(pGameBoard[i][j] == playerMarker) playerMarkerCount++;
-            else if(pGameBoard[i][j] == aiMarker) aiMarkerCount++;
+            while(inARowReverse==true){ // counts how many consecutive player counters reverse
+                if (((indI - pNextI) < pGameBoard.length) && ((indI - pNextI) >= 0) && ((indJ - pNextJ) < pGameBoard.length) && ((indJ - pNextJ) >= 0)) { // makes sure next check is inside board
+                    if (pGameBoard[(indI - pNextI)][(indJ - pNextJ)] == playerMarker) {
+                        playerMarkerCount++; // if next reverse consecutive space contains player marker, increase count
+                        indI = indI - pNextI;
+                        indJ = indJ - pNextJ;
+                    }
+                    else {
+                        inARowReverse=false;
+                    }
+                }
+                else {
+                    inARowReverse=false;
+                }
+            }
+        } else {
+            inARowForward = true;
+            inARowReverse = true;
+            indI = aiLocI;
+            indJ = aiLocJ;
+            aiMarkerCount = 1; // ai counter = 1 because includes the currently placed marker
+            while(inARowForward==true) { // counts how many consecutive ai counters forward
+                if (((indI + pNextI) < pGameBoard.length) && ((indI + pNextI) >= 0) && ((indJ + pNextJ) < pGameBoard.length) && ((indJ + pNextJ) >= 0)) {
+                    if (pGameBoard[(indI + pNextI)][(indJ + pNextJ)] == aiMarker) {
+                        aiMarkerCount++; // if next forward consecutive space contains ai marker, increase count
+                        indI = indI + pNextI;
+                        indJ = indJ + pNextJ;
+                    } else {
+                        inARowForward = false;
+                    }
+                } else {
+                    inARowForward = false;
+                }
+            }
+            indI = aiLocI;
+            indJ = aiLocJ;
+            while(inARowReverse==true){ // counts how many consecutive ai counters reverse
+                if (((indI - pNextI) < pGameBoard.length) && ((indI - pNextI) >= 0) && ((indJ - pNextJ) < pGameBoard.length) && ((indJ - pNextJ) >= 0)) {
+                    if (pGameBoard[(indI - pNextI)][(indJ - pNextJ)] == aiMarker) {
+                        aiMarkerCount++; // if next reverse consecutive space contains ai marker, increase count
+                        indI = indI - pNextI;
+                        indJ = indJ - pNextJ;
+                    }
+                    else {
+                        inARowReverse=false;
+                    }
+                }
+                else {
+                    inARowReverse=false;
+                }
+            }
         }
-        if(playerMarkerCount == pGameBoard.length || aiMarkerCount == pGameBoard.length) return true;
+        if(playerMarkerCount >= pWinConditionInput || aiMarkerCount >= pWinConditionInput) return true; // if either counter meets win condition, consecutive markers is true
+        return false;
+    }
 
-        // Right Diagonal
-        playerMarkerCount = 0;
-        aiMarkerCount = 0;
 
-        for(int i = 0, j = pGameBoard.length - 1; i < pGameBoard.length; i++, j--){
-            if(pGameBoard[i][j] == playerMarker) playerMarkerCount++;
-            else if(pGameBoard[i][j] == aiMarker) aiMarkerCount++;
+    // Checks if there is a winner on the board
+    public boolean checkIfThereIsWinner(char[][] pGameBoard, int pWinConditionInput, int pLocI, int pLocJ, boolean pIsPlayersTurn){
+        // Checks if there are enough markers in a row to meet the win condition
+        // Horizontal [0,+1]
+        if((checkConsecutiveMarkers(pGameBoard,pWinConditionInput,pLocI,pLocJ,pIsPlayersTurn,0,1))==true){
+            return true;
+            // Vertical [+1,0]
+        } else if ((checkConsecutiveMarkers(pGameBoard,pWinConditionInput,pLocI,pLocJ,pIsPlayersTurn,1,0))==true) {
+            return true;
+            // Diagonal Top Left Bottom Right [+1,+1]
+        } else if ((checkConsecutiveMarkers(pGameBoard,pWinConditionInput,pLocI,pLocJ,pIsPlayersTurn,1,1))==true) {
+            return true;
+            // Diagonal Top Right Bottom Left [+1,-1]
+        }  else if ((checkConsecutiveMarkers(pGameBoard,pWinConditionInput,pLocI,pLocJ,pIsPlayersTurn,1,-1))==true) {
+            return true;
+        } else {
+
         }
-        if(playerMarkerCount == pGameBoard.length || aiMarkerCount == pGameBoard.length) return true;
-
         return false;
     }
 
