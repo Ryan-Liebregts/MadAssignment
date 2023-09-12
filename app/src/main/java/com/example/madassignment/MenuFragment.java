@@ -81,11 +81,6 @@ public class MenuFragment extends Fragment {
         if(navModel.getAnimationClickedValue() == 0) {
             navModel.setClickedValue(99);
         }
-        else {
-            //TODO - Ryan sort this out
-//            aiButton.setAlpha(1);
-//            playerButton.setAlpha(1);
-        }
 
         /* Both AI_Button and Player_Button currently only direct to the board fragment
             this is to be changed when the backend for the AI & player back-end is added.
