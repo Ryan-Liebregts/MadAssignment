@@ -9,4 +9,6 @@
     <string name="_2000">2000</string>
     <string name="_1">1</string>
     <string name="sup">Sup</string>
+    <string name="user_name">User Name</string>
+    <string name="save_user">Save User</string>
 </resources>
