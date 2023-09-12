@@ -10,24 +10,33 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class MenuFragment extends Fragment {
 
     // Define UI Components
-    private Button aiButton;
-    private Button playerButton;
+    private ImageButton aiButton;
+    private ImageButton playerButton;
     private ImageView menuTitle;
     private ImageView lightSpot1;
     private ImageView lightSpot2;
     private ImageView lightSpot3;
     private ImageView lightSpot4;
 
+    private ImageButton winConditionLeft;
+    private ImageButton winConditionRight;
+
+    private ImageButton boardSizeLeft;
+    private ImageButton boardSizeRight;
+    private ImageView winImageContainer;
+
+    private ImageView boardImageContainer;
+
     // Define ViewModels
     private NavigationData navModel;
+
+    private GameData gameData;
 
     public MenuFragment() {
         // Required empty public constructor
@@ -38,6 +47,7 @@ public class MenuFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
+        gameData = new ViewModelProvider(getActivity()).get(GameData.class);
     }
 
     @Override
@@ -47,6 +57,10 @@ public class MenuFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
         // Define Buttons
+        winConditionLeft = view.findViewById(R.id.left_win_button);
+        winConditionRight= view.findViewById(R.id.right_win_button);
+        boardSizeRight = view.findViewById(R.id.right_board_button);
+        boardSizeLeft = view.findViewById(R.id.left_board_button);
         aiButton = view.findViewById(R.id.aiButton);
         playerButton = view.findViewById(R.id.playerButton);
         menuTitle = view.findViewById(R.id.menuTitle);
@@ -54,6 +68,10 @@ public class MenuFragment extends Fragment {
         lightSpot2 = view.findViewById(R.id.lightSpot2);
         lightSpot3 = view.findViewById(R.id.lightSpot3);
         lightSpot4 = view.findViewById(R.id.lightSpot4);
+
+        //define images
+        winImageContainer = view.findViewById(R.id.win_condition);
+        boardImageContainer = view.findViewById(R.id.board_size);
 
         fadeAnimation(lightSpot1, 1);
         fadeAnimation(lightSpot2, 0);
@@ -64,8 +82,9 @@ public class MenuFragment extends Fragment {
             navModel.setClickedValue(99);
         }
         else {
-            aiButton.setAlpha(1);
-            playerButton.setAlpha(1);
+            //TODO - Ryan sort this out
+//            aiButton.setAlpha(1);
+//            playerButton.setAlpha(1);
         }
 
         /* Both AI_Button and Player_Button currently only direct to the board fragment
@@ -75,6 +94,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 navModel.setClickedValue(1);
+                gameData.setGameMode(1);
             }
         });
 
@@ -82,8 +102,40 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 navModel.setClickedValue(1);
+                gameData.setGameMode(2);
+
             }
         });
+
+        winConditionLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleWinConditionClick(-1);
+            }
+        });
+
+        winConditionRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleWinConditionClick(1);
+            }
+        });
+
+        boardSizeLeft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleBoardSizeClick(-1);
+            }
+        });
+
+
+        boardSizeRight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                handleBoardSizeClick(1);
+            }
+        });
+
 
         return view;
     }
@@ -149,5 +201,63 @@ public class MenuFragment extends Fragment {
         });
 
         light_spot.startAnimation(fadeIn);
+    }
+
+    public void handleWinConditionClick(int direction ){
+        int winCondition = gameData.getWinCondition();
+        if(direction == -1) {
+            System.out.println("The left button is clicked");
+        }
+        else {
+            System.out.println("The right button is clicked");
+        }
+        winCondition += direction;
+        gameData.setWinCondition(winCondition);
+
+        switch (winCondition) {
+            case 3:
+                winConditionLeft.setEnabled(false);
+                winImageContainer.setImageResource(R.drawable.three_win_condition);
+                break;
+            case 4:
+                winConditionLeft.setEnabled(true);
+                winConditionRight.setEnabled(true);
+                winImageContainer.setImageResource(R.drawable.four_win_condition);
+                break;
+            case 5:
+                winConditionRight.setEnabled(false);
+                winImageContainer.setImageResource(R.drawable.five_win_condition);
+                break;
+        }
+    }
+
+    public void handleBoardSizeClick(int direction){
+        int boardSize = gameData.getBoardSize();
+        if(direction == -1) {
+            System.out.println("The left button is clicked");
+        }
+        else {
+            System.out.println("The right button is clicked");
+        }
+
+        boardSize += direction;
+        gameData.setBoardSize(boardSize);
+
+        switch (boardSize) {
+            case 3:
+                boardSizeLeft.setEnabled(false);
+                boardImageContainer.setImageResource(R.drawable.three_size_grid);
+                break;
+            case 4:
+                boardSizeLeft.setEnabled(true);
+                boardSizeRight.setEnabled(true);
+                boardImageContainer.setImageResource(R.drawable.four_size_grid
+                );
+                break;
+            case 5:
+                boardSizeRight.setEnabled(false);
+                boardImageContainer.setImageResource(R.drawable.five_size_grid);
+                break;
+        }
     }
 }

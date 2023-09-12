@@ -11,39 +11,120 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/menuFragmentLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
 
         <ImageView
             android:id="@+id/menuTitle"
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:src="@drawable/tictactoe_name_drawable"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/aiButton" />
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <!--TODO: Replace button with drawable -->
-        <Button
+        <LinearLayout
+            android:id="@+id/win_condition_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/menuTitle">
+
+            <ImageButton
+                android:id="@+id/left_win_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
+                android:clickable="false"
+                android:src="@drawable/icon_left" />
+
+            <ImageView
+                android:id="@+id/win_condition"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:scaleType="fitCenter"
+                android:src="@drawable/three_win_condition" />
+
+            <ImageButton
+                android:id="@+id/right_win_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
+                android:rotationY="180"
+                android:src="@drawable/icon_left" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/board_size_selector"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/win_condition_selector">
+
+            <ImageButton
+                android:id="@+id/left_board_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
+                android:clickable="false"
+                android:src="@drawable/icon_left" />
+
+            <ImageView
+                android:id="@+id/board_size"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
+                android:adjustViewBounds="true"
+                android:scaleType="centerInside"
+                android:src="@drawable/three_size_grid" />
+
+            <ImageButton
+                android:id="@+id/right_board_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="#00FFFFFF"
+                android:rotationY="180"
+                android:src="@drawable/icon_left" />
+        </LinearLayout>
+
+        <!--        TODO add guideline-->
+        <ImageButton
             android:id="@+id/aiButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="AI TEMP"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/playerButton"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/rounded_rectangle_border"
+            android:src="@drawable/custom_player_vs_ai_icon"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/board_size_selector" />
 
-        <!--TODO: Replace button with drawable -->
-        <Button
+        <ImageButton
             android:id="@+id/playerButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="PL TEMP"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/rounded_rectangle_border"
+            android:src="@drawable/custom_player_vs_player_icon"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/aiButton"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/aiButton" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
