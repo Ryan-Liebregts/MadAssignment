@@ -1,6 +1,5 @@
 package com.example.madassignment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +8,8 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -77,7 +78,7 @@ public class BoardFragment extends Fragment {
     int aiLocJ;
     boolean isPlayerGoingFirst, isThereAWinner, validInput = true, isPlayersTurn, isDraw;
     char playerMarker, aiMarker;
-    ImageButton buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine, resetButton;
+    ImageButton buttonOne, buttonTwo, buttonThree, buttonFour, buttonFive, buttonSix, buttonSeven, buttonEight, buttonNine, resetButton, undoButton;
     TextView gameOverText;
 
     @Override
@@ -123,6 +124,7 @@ public class BoardFragment extends Fragment {
         buttonNine = view.findViewById(R.id.buttonNine);
         resetButton = view.findViewById(R.id.reset_button);
         gameOverText = view.findViewById(R.id.gameoverText);
+        undoButton = view.findViewById(R.id.undo_button);
 
         // Set game over text as invisible
         gameOverText.setVisibility(View.INVISIBLE);
@@ -290,6 +292,22 @@ public class BoardFragment extends Fragment {
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Starts the reset button animation - updated by Ryan
+                Animation refresh = AnimationUtils.loadAnimation(getActivity(),R.anim.reset_rotation_anim);
+                resetButton.startAnimation(refresh);
+
+                resetGame(); //Reset the board
+            }
+        });
+
+        // Undo button listener
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Starts the undo button animation - updated by Ryan
+                Animation undo = AnimationUtils.loadAnimation(getActivity(),R.anim.undo_rotation_anim);
+                undoButton.startAnimation(undo);
+
                 resetGame(); //Reset the board
             }
         });

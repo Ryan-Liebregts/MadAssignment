@@ -1,6 +1,5 @@
 package com.example.madassignment;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +9,8 @@ import androidx.lifecycle.ViewModelProvider;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 
 /**
@@ -77,6 +78,9 @@ public class NavigationBarFragment extends Fragment {
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Starts the undo button animation - updated by Ryan
+                Animation settings = AnimationUtils.loadAnimation(getActivity(),R.anim.settings_rotation_anim);
+                settingsButton.startAnimation(settings);
                 navigationData.setHistoricalClickedValue(navigationData.getClickedValue());
                 navigationData.setClickedValue(2);
 

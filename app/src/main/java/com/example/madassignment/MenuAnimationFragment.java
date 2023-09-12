@@ -95,6 +95,15 @@ public class MenuAnimationFragment extends Fragment {
             }
         });
 
+        // Allows the user to be able to skip the startup animation
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navModel.setClickedValue(0);
+                navModel.setAnimationClickedValue(1);
+            }
+        });
+
         return view;
     }
 

@@ -417,19 +417,21 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
+                android:id="@+id/undo_button"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:backgroundTint="#00FFFFFF"
-                android:src="@drawable/custom_icon_undo" />
+                android:src="@drawable/undo_vector" />
 
+            <!-- Updated by Ryan to implement animated refresh button -->
             <ImageButton
-                android:id = "@+id/reset_button"
+                android:id="@+id/reset_button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:src="@drawable/custom_icon_restart"
-                android:backgroundTint="#00FFFFFF"/>
+                android:backgroundTint="#00FFFFFF"
+                android:src="@drawable/refresh_vector" />
 
         </LinearLayout>
 

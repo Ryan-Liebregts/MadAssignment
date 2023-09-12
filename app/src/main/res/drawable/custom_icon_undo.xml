@@ -1,5 +1,0 @@
-<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@android:id/icon">
-        <bitmap android:src="@drawable/undo_icon" android:tint="#FC9B4C" />
-    </item>
-</layer-list>
