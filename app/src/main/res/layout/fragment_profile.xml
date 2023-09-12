@@ -24,10 +24,10 @@
             android:fontFamily="monospace"
             android:textStyle="bold"
             android:text="User Name"
-            android:labelFor="@id/email_subject" />
+            android:labelFor="@id/user_text" />
         <EditText
+            android:id="@+id/user_text"
             android:textSize="30sp"
-            android:id="@+id/email_subject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -46,7 +46,6 @@
         android:textStyle="bold"
         android:layout_margin="20dp"
         android:text="Choose Avatar"
-        android:labelFor="@id/email_subject"
         app:layout_constraintTop_toBottomOf="@id/username_input"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,14 +53,20 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_icon"
         android:layout_margin="20dp"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_weight="2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/label_avatar"
         app:layout_constraintStart_toStartOf="parent"/>
 
-
-
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guide_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.75"
+        />
     <Button
         android:id="@+id/save_user_button"
         android:layout_width="wrap_content"
@@ -73,7 +78,7 @@
         app:layout_constraintTop_toBottomOf="@id/recycler_icon"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="20dp"
-        android:visibility="gone"
+        android:enabled="false"
         android:background="@drawable/input_box_design"
         />
 

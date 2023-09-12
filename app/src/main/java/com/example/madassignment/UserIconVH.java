@@ -11,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class UserIconVH extends RecyclerView.ViewHolder {
     ImageButton userIcon;
+
+    ImageButton userIconSelected;
     public UserIconVH(@NonNull View itemView, ViewGroup parent) {
         super(itemView);
-        int hSize = parent.getMeasuredHeight()/10;
-        ViewGroup.LayoutParams lp = itemView.getLayoutParams();
-//        lp.height = hSize;
+//        int hSize = parent.getMeasuredHeight()/10;
+//        ViewGroup.LayoutParams lp = itemView.getLayoutParams();
+////        lp.height = hSize;
         userIcon = itemView.findViewById(R.id.select_icon);
+        userIconSelected = itemView.findViewById((R.id.select_icon_selected));
 
     }
 }
