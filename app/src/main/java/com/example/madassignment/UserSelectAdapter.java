@@ -111,7 +111,7 @@ public class UserSelectAdapter extends RecyclerView.Adapter<LeaderBoardVH> {
 
 
     public void processClick(LeaderBoardVH holder, int imageResId, User singleRow ) {
-        System.out.println("Helllo I just got clicked");
+        System.out.println("Hello I just got clicked");
         if (gameData.getGameMode() == 1) {
             if(userModel.getUserId()  == singleRow.getId()) {
                 userModel.setUserName("");

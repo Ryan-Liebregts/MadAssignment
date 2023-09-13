@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -148,6 +146,13 @@ public class ProfileFragment extends Fragment {
         data.add(R.drawable.user_icon14);
         data.add(R.drawable.user_icon15);
         data.add(R.drawable.user_icon16);
+//        data.add(R.drawable.user_icon17);
+//        data.add(R.drawable.user_icon18);
+//        data.add(R.drawable.user_icon19);
+//        data.add(R.drawable.user_icon20);
+//        data.add(R.drawable.user_icon21);
+//        data.add(R.drawable.user_icon22);
+
         return data;
     }
 
