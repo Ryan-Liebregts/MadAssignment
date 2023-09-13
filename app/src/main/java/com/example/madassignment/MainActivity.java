@@ -59,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadMenuAnimationFragment();
                         break;
+                    case 6:
+                        System.out.println("The value is :" + String.valueOf(integer));
+                        loadUserSelectFragment();
+                        break;
                 }
             }
         });
@@ -169,6 +173,21 @@ public class MainActivity extends AppCompatActivity {
             fm.beginTransaction().add(R.id.body_container, leaderBoardFragment, "leaderBoardFragment").commit();
         }
     }
+
+    private void loadUserSelectFragment() {
+        // Defines  fragments
+        SelectUserFragment selectUserFragment = new SelectUserFragment();
+        Fragment bodyContainer = fm.findFragmentById(R.id.body_container);
+
+        //replaces or adds fragment according to if there is already a fragment
+        if (bodyContainer != null) {
+            fm.beginTransaction().replace(R.id.body_container, selectUserFragment, "selectUserFragment").commit();
+        }
+        else {
+            fm.beginTransaction().add(R.id.body_container, selectUserFragment, "selectUserFragment").commit();
+        }
+    }
+
 
 
     private void loadNavBar() {

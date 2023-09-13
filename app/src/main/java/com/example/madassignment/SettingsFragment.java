@@ -93,6 +93,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 navModel.setClickedValue(3);
+                navModel.setHistoricalClickedValue(2);
             }
         });
 
@@ -100,6 +101,8 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 navModel.setClickedValue(4);
+                navModel.setHistoricalClickedValue(2);
+
             }
         });
 
