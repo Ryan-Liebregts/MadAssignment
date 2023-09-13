@@ -1,7 +1,9 @@
 package com.example.madassignment;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,65 +17,35 @@ import android.widget.Button;
 
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SelectUserFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SelectUserFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private List<User> data;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private GameData gameData;
 
-    List<User> data;
+    private RecyclerView recyclerView;
 
-    GameData gameData;
+    private UserData userModel;
 
-    RecyclerView recyclerView;
+    private NavigationData navModel;
 
-    UserData userModel;
+    private Button continueButton;
 
-    NavigationData navModel;
+    private Button newCharButton;
 
-    Button continueButton;
+    private ConstraintLayout selectUserFragmentBackground;
 
-    Button newCharButton;
+    private AnimationDrawable animationDrawable;
 
     public SelectUserFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SelectUserFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SelectUserFragment newInstance(String param1, String param2) {
-        SelectUserFragment fragment = new SelectUserFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         gameData = new ViewModelProvider(getActivity()).get(GameData.class);
         userModel = new ViewModelProvider(getActivity()).get(UserData.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
@@ -89,6 +61,12 @@ public class SelectUserFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_user);
         continueButton = view.findViewById(R.id.continue_button);
         newCharButton = view.findViewById(R.id.create_user_button);
+
+        // Animates the background gradient
+        selectUserFragmentBackground = (ConstraintLayout) view.findViewById(R.id.select_user_fragment);
+        animationDrawable = (AnimationDrawable) selectUserFragmentBackground.getBackground();
+        animationDrawable.setEnterFadeDuration(3000);
+        animationDrawable.setExitFadeDuration(2000);
 
 
         //set recycler
@@ -175,6 +153,24 @@ public class SelectUserFragment extends Fragment {
     }
     public UserDao initialiseDB() {
         return UserDbInstance.getDatabase(getContext()).userDao();
+    }
+
+    // Starts the animation when fragment is active
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (animationDrawable != null && !animationDrawable.isRunning()) {
+            animationDrawable.start();
+        }
+    }
+
+    // Pauses the animation when the fragment is not active
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (animationDrawable != null && animationDrawable.isRunning()) {
+            animationDrawable.stop();
+        }
     }
 
 }

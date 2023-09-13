@@ -1,8 +1,11 @@
 package com.example.madassignment;
+
 import java.util.*;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -17,67 +20,36 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ProfileFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ProfileFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    ArrayList<Integer> data;
-    RecyclerView recyclerView;
+    private ArrayList<Integer> data;
+    private RecyclerView recyclerView;
 
-    EditText userNameTextBox;
+    private EditText userNameTextBox;
 
-    Button saveUserButton;
+    private Button saveUserButton;
 
-    UserData userModel;
+    private UserData userModel;
 
-    String userName;
+    private String userName;
 
     int userIcon;
 
-    NavigationData navModel;
+    private ConstraintLayout profileFragmentBackground;
 
+    private AnimationDrawable animationDrawable;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private NavigationData navModel;
 
     public ProfileFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProfileFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ProfileFragment newInstance(String param1, String param2) {
-        ProfileFragment fragment = new ProfileFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         userModel = new ViewModelProvider(getActivity()).get(UserData.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         UserDao userDao = initialiseDB();
@@ -99,6 +71,12 @@ public class ProfileFragment extends Fragment {
 
         saveUserButton = view.findViewById(R.id.save_user_button);
         userNameTextBox = view.findViewById(R.id.user_text);
+
+        // Animates the background gradient
+        profileFragmentBackground = (ConstraintLayout) view.findViewById(R.id.profile_fragment);
+        animationDrawable = (AnimationDrawable) profileFragmentBackground.getBackground();
+        animationDrawable.setEnterFadeDuration(3000);
+        animationDrawable.setExitFadeDuration(2000);
         userModel.userIcon.observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -166,6 +144,24 @@ public class ProfileFragment extends Fragment {
         user.setUserWins(0);
         userDao.insert(user);
 
+    }
+
+    // Starts the animation when fragment is active
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (animationDrawable != null && !animationDrawable.isRunning()) {
+            animationDrawable.start();
+        }
+    }
+
+    // Pauses the animation when the fragment is not active
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (animationDrawable != null && animationDrawable.isRunning()) {
+            animationDrawable.stop();
+        }
     }
 
 }
