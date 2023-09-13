@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.*;
@@ -38,7 +39,26 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     Button settingsButton;
     private NavigationData navModel;
 
+    private UserData userModel;
 
+    private GameData gameModel;
+
+
+    ImageButton player1Icon;
+    ImageButton player1IconDull;
+
+    ImageButton player2Icon;
+    ImageButton player2IconDull;
+
+    TextView player1Moves;
+    TextView player2Moves;
+
+    int gameMode;
+    TextView player1Name;
+    TextView player2Name;
+
+    ImageView player1Symbol;
+    ImageView player2Symbol;
     public BoardFragment() {
         // Required empty public constructor
     }
@@ -68,6 +88,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        userModel = new ViewModelProvider(getActivity()).get(UserData.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         gameData = new ViewModelProvider(getActivity()).get(GameData.class);
     }
@@ -92,6 +113,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
 
@@ -99,6 +121,16 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         boardSize = gameData.getBoardSize();
 
         // Set locI, locJ, otherLocI and otherLocJ values to 0
+        ///this is just an error case just in case we somehow get to teh board and dont have a user selected
+        if ((gameModel.getGameMode() == 1 && userModel.getUserId() == 0) || (gameModel.getGameMode() == 2 && userModel.getUserId() == 0 && userModel.getUserId2() == 0)) {
+            navModel.setClickedValue(0);
+            System.out.println("HI I am exiting");
+            return view;
+        }
+        setGameUserData(view);
+        //This code will only execute if allowed to by the if statement above
+        // Set board size (for now it will be stuck at 3), and set isThereAWinner and isDraw to false
+        boardSize = 3;
         locI = 0;
         locJ = 0;
         otherLocI = 0;
@@ -127,10 +159,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         // Create board filled with '-'
         gameBoard = new char[boardSize][boardSize];
-        for(int i = 0; i < boardSize; i++)
-        {
-            for(int j = 0; j < boardSize; j++)
-            {
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
                 gameBoard[i][j] = '-';
             }
         }
@@ -180,6 +210,76 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         });
 
         return view;
+    }
+
+    public void setGameUserData(View view) {
+        player1Icon = view.findViewById(R.id.player_1_icon);
+        player1IconDull= view.findViewById(R.id.player_1_icon_dull);
+        player1Name = view.findViewById(R.id.player_1_name);
+        player1Moves = view.findViewById(R.id.player_1_moves);
+        player1Symbol = view.findViewById(R.id.player_1_symbol);
+        player2Icon = view.findViewById(R.id.player_2_icon);
+        player2IconDull= view.findViewById(R.id.player_2_icon_dull);
+        player2Name = view.findViewById(R.id.player_2_name);
+        player2Moves = view.findViewById(R.id.player_2_moves);
+        player2Symbol = view.findViewById(R.id.player_2_symbol);
+
+        //setting the symbol for nots or crosses
+        if (userModel.getCross() ==1) {
+            player1Symbol.setImageResource(R.drawable.cross);
+            player2Symbol.setImageResource(R.drawable.circle);
+        }
+        else{
+            player2Symbol.setImageResource(R.drawable.cross);
+            player1Symbol.setImageResource(R.drawable.circle);
+        }
+        player1Icon.setImageResource(userModel.getUserIcon());
+        player1IconDull.setImageResource(userModel.getUserIcon());
+        player1Name.setText(userModel.getUserName());
+        //TODO sort out the moves changing code - PK
+        player1Moves.setText("0 Moves");
+        player2Moves.setText("0 Moves");
+
+
+        if (gameData.getGameMode() == 1) {
+            player2Icon.setImageResource(R.drawable.robot_icon);
+            player2IconDull.setImageResource(R.drawable.robot_icon);
+            player2Name.setText("AI");
+            player2Moves.setText("0 Moves");
+        }
+        else {
+            player2Icon.setImageResource(userModel.getUserIcon2());
+            player2IconDull.setImageResource(userModel.getUserIcon2());
+            player2Name.setText(userModel.getUserName2());
+        }
+    }
+
+    // This functions executes when each board button is pressed
+    public void buttonFunction(int pLocI, int pLocJ) {
+
+        // Sets the win condition in a row (set to 3 for now), TODO: attain from settings
+        winConditionInput = 3;
+
+        // Update the UI, and check if there is a winner
+        updateBoard3x3(gameBoard);
+        isThereAWinner = checkIfThereIsWinner(gameBoard, winConditionInput, pLocI, pLocJ, isPlayersTurn);
+
+        // It is a draw if all spaces on the board are taken and there is no winner
+        isDraw = ((isAllSpacesTaken(gameBoard)) && (!isThereAWinner));
+
+        // If game is not over, AI moves, and check if there is a winner or draw
+        if (!isThereAWinner && !isDraw) {
+            isPlayersTurn = false;
+            aiMove(gameBoard);
+            updateBoard3x3(gameBoard);
+            isThereAWinner = checkIfThereIsWinner(gameBoard, winConditionInput, aiLocI, aiLocJ, isPlayersTurn);
+            isDraw = ((isAllSpacesTaken(gameBoard)) && (!isThereAWinner)); // It is a draw if all spaces on the board are taken and there is no winner
+        }
+
+        // If game is over, end game
+        if (isThereAWinner || isDraw) {
+            endGame(isPlayersTurn, isDraw);
+        }
     }
 
     // Function for AI's marker placement
