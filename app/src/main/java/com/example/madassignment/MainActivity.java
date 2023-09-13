@@ -55,13 +55,13 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadLeaderBoardFragment();
                         break;
-                    case 99:
-                        System.out.println("The value is :" + String.valueOf(integer));
-                        loadMenuAnimationFragment();
-                        break;
                     case 6:
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadUserSelectFragment();
+                        break;
+                    case 99:
+                        System.out.println("The value is :" + String.valueOf(integer));
+                        loadMenuAnimationFragment();
                         break;
                 }
             }

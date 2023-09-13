@@ -8,14 +8,10 @@ import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
-import androidx.recyclerview.widget.GridLayoutManager;
 
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,7 +92,7 @@ public class LeaderBoardFragment extends Fragment {
 
         User PK = new User();
         PK.setUserName("PK");
-        PK.setUserIcon(R.drawable.user_icon2);
+        PK.setUserIcon(R.drawable.user_icon16);
         PK.setUserLosses(4);
         PK.setUserWins(8);
 //        userDao.insert(ryan, PK);
