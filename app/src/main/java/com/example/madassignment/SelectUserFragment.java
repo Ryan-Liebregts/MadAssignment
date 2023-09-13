@@ -125,7 +125,6 @@ public class SelectUserFragment extends Fragment {
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View view) {
-                System.out.println("Hello");
                 navModel.setClickedValue(1);
             }
         });
@@ -133,7 +132,6 @@ public class SelectUserFragment extends Fragment {
         newCharButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View view) {
-                System.out.println("Hello");
                 navModel.setClickedValue(3);
                 navModel.setHistoricalClickedValue(6);
             }

@@ -56,7 +56,6 @@ public class UserSelectAdapter extends RecyclerView.Adapter<LeaderBoardVH> {
         holder.userIconImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View view) {
-                System.out.println("Hello");
                 processClick(holder, imageResId, singleRow);
             }
         });
@@ -64,7 +63,6 @@ public class UserSelectAdapter extends RecyclerView.Adapter<LeaderBoardVH> {
         holder.userNameTextBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View view) {
-                System.out.println("Hello");
                 processClick(holder, imageResId, singleRow);
             }
         });
@@ -72,7 +70,6 @@ public class UserSelectAdapter extends RecyclerView.Adapter<LeaderBoardVH> {
         holder.playerOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View view) {
-                System.out.println("Hello");
                 processClick(holder, imageResId, singleRow);
             }
         });
@@ -80,7 +77,6 @@ public class UserSelectAdapter extends RecyclerView.Adapter<LeaderBoardVH> {
         holder.playerTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View view) {
-                System.out.println("Hello");
                 processClick(holder, imageResId, singleRow);
             }
         });

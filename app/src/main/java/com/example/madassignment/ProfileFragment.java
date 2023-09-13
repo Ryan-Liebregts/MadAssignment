@@ -31,6 +31,7 @@ public class ProfileFragment extends Fragment {
     private Button saveUserButton;
 
     private UserData userModel;
+    CreateUser userModel;
 
     private String userName;
 
@@ -49,7 +50,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         userModel = new ViewModelProvider(getActivity()).get(UserData.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         UserDao userDao = initialiseDB();
@@ -80,7 +80,6 @@ public class ProfileFragment extends Fragment {
         userModel.userIcon.observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                System.out.println("HELLO YOU SELECTED AN ICON");
                 if (integer != 0 && !Objects.equals(String.valueOf(userNameTextBox.getText()), "")){
                     saveUserButton.setEnabled(true);
                 }
