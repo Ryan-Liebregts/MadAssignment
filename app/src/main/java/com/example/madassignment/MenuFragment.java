@@ -88,7 +88,8 @@ public class MenuFragment extends Fragment {
         aiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navModel.setClickedValue(1);
+                navModel.setClickedValue(6);
+                navModel.setHistoricalClickedValue(0);
                 gameData.setGameMode(1);
             }
         });
@@ -96,7 +97,8 @@ public class MenuFragment extends Fragment {
         playerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navModel.setClickedValue(1);
+                navModel.setClickedValue(6);
+                navModel.setHistoricalClickedValue(0);
                 gameData.setGameMode(2);
 
             }

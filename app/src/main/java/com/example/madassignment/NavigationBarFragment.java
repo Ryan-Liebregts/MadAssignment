@@ -90,10 +90,20 @@ public class NavigationBarFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 if (navigationData.getClickedValue() == 4 || navigationData.getClickedValue() == 3) {
-                    navigationData.setClickedValue(2);
+                    if (navigationData.getHistoricalClickedValue() != 6) {
+                        navigationData.setClickedValue(2);
+                    }
+                    else {
+                        navigationData.setClickedValue(6);
+                    }
                 }
                 else if (navigationData.getClickedValue() == 2){
-                    navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                    if (navigationData.getHistoricalClickedValue() != 4 || navigationData.getHistoricalClickedValue() != 3) {
+                        navigationData.setClickedValue(1);
+                    }
+                    else {
+                        navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                    }
                 }
                 else if (navigationData.getClickedValue() == 5) {
                     navigationData.setClickedValue(navigationData.getHistoricalClickedValue());

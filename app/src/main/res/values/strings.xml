@@ -11,4 +11,7 @@
     <string name="sup">Sup</string>
     <string name="user_name">User Name</string>
     <string name="save_user">Save User</string>
+    <string name="create_new_user">Create New User</string>
+    <string name="player_1">Player 1</string>
+    <string name="todo">TODO</string>
 </resources>
