@@ -146,12 +146,8 @@ public class ProfileFragment extends Fragment {
         data.add(R.drawable.user_icon14);
         data.add(R.drawable.user_icon15);
         data.add(R.drawable.user_icon16);
-//        data.add(R.drawable.user_icon17);
-//        data.add(R.drawable.user_icon18);
-//        data.add(R.drawable.user_icon19);
-//        data.add(R.drawable.user_icon20);
-//        data.add(R.drawable.user_icon21);
-//        data.add(R.drawable.user_icon22);
+
+        // TODO: Add more user icons when time
 
         return data;
     }
