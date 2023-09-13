@@ -16,7 +16,9 @@ public class UserData extends ViewModel {
     public MutableLiveData<String> userName2;
     public MutableLiveData<Integer> userIcon2;
 
+    public MutableLiveData<Integer> cross;
 
+    public MutableLiveData<Integer> firstMove;
 
     public UserData(){
         userName = new MediatorLiveData<String>();
@@ -36,6 +38,12 @@ public class UserData extends ViewModel {
 
         userId2 = new MediatorLiveData<Long>();
         userId2.setValue(0L);
+
+        cross = new MediatorLiveData<Integer>();
+        cross.setValue(1);
+
+        firstMove = new MediatorLiveData<Integer>();
+        firstMove.setValue(1);
     }
 
 
@@ -88,5 +96,14 @@ public class UserData extends ViewModel {
     public void setUserId2(long value) {
         userId2.setValue(value);
     }
+
+
+    public void setCross(int value) { cross.setValue(value);}
+
+
+    public int getCross() {return cross.getValue();}
+
+    public void setFirstMove(int value) {firstMove.setValue(value);}
+    public int getFirstMove() {return firstMove.getValue();}
 
 }

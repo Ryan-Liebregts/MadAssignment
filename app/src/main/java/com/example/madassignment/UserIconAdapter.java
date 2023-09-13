@@ -21,12 +21,12 @@ import java.util.List;
 public class UserIconAdapter extends RecyclerView.Adapter<UserIconVH>{
     ArrayList<Integer> data;
 
-    UserData userModel;
+    CreateUser userModel;
 
     LifecycleOwner test;
 
 
-    public UserIconAdapter(ArrayList<Integer> data, UserData userData, LifecycleOwner Test){
+    public UserIconAdapter(ArrayList<Integer> data, CreateUser userData, LifecycleOwner Test){
         this.data = data;
         this.userModel = userData;
         this.test = Test;

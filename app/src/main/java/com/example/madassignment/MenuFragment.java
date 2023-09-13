@@ -100,6 +100,7 @@ public class MenuFragment extends Fragment {
                 navModel.setClickedValue(6);
                 navModel.setHistoricalClickedValue(0);
                 gameData.setGameMode(2);
+                System.out.println("The value of the game mose has been set ot " + gameData.getGameMode());
 
             }
         });

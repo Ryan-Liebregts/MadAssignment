@@ -19,6 +19,7 @@ public class GameData  extends ViewModel {
 
         gameMode = new MediatorLiveData<Integer>();
         gameMode.setValue(1);
+        System.out.println("Hi I got reinitialised");
         //gameType 1 = vs AI
         //gameType 2 = vs player2
     }
