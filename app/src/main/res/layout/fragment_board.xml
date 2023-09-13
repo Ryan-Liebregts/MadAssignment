@@ -22,14 +22,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.25"/>
+        app:layout_constraintGuide_percent="0.15"/>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/vertical3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent="0.75"/>
+        app:layout_constraintGuide_percent="0.85"/>
 
 
     <androidx.constraintlayout.widget.Guideline
@@ -37,11 +37,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.25"/>
+        app:layout_constraintGuide_percent="0.28
+"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/boardFragmentLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="@+id/vertical3"
@@ -56,32 +57,79 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5"/>
 
+
+
         <LinearLayout
             android:id="@+id/player_icon_container"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity= "center"
-            android:layout_marginEnd="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/vertical_center"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/player_1_moves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/_2_moves"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 android:fontFamily="monospace"
                 android:textStyle="bold"/>
 
-            <ImageView
-                android:id="@+id/playerIcon"
-                android:layout_width="65dp"
-                android:layout_height="87dp"
-                android:src="@drawable/player_1_icon" />
+            <ImageButton
+                android:id="@+id/player_1_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:visibility="visible"
+                android:backgroundTint="#00FFFFFF"
+                android:src="@drawable/user_icon1" />
+
+            <ImageButton
+                android:id="@+id/player_1_icon_dull"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/user_icon1"
+                android:background="@drawable/icon_box_design"
+                android:visibility="gone"
+                android:tintMode="multiply"
+                android:backgroundTint="#006A6A6A"
+                app:tint="#6A6A6A"/>
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/player_1_info_container"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/player_icon_container"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/vs_text">
+
+            <TextView
+                android:id="@+id/player_1_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:textSize="13sp"
+                android:text="@string/test" />
+
+            <ImageView
+                android:id="@+id/player_1_symbol"
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="30dp"
+                android:src="@drawable/cross" />
+
+        </LinearLayout>
+
+
 
         <TextView
             android:id="@+id/vs_text"
@@ -92,11 +140,41 @@
             android:textSize="30sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/player_icon_container"
-            app:layout_constraintEnd_toStartOf="@id/opponent_icon_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
+        <LinearLayout
+            android:id="@+id/player_2_info_container"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/opponent_icon_container"
+            app:layout_constraintStart_toEndOf="@id/vs_text"
+            >
 
+            <TextView
+                android:id="@+id/player_2_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:fontFamily="monospace"
+                android:textSize="13sp"
+                android:text="AI" />
+
+            <ImageView
+                android:id="@+id/player_2_symbol"
+                android:layout_width="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_height="30dp"
+                android:src="@drawable/circle" />
+
+
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/opponent_icon_container"
             android:layout_width="wrap_content"
@@ -104,24 +182,38 @@
             android:orientation="vertical"
             android:layout_marginStart="30dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/vertical_center"
             android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:id="@+id/player_2_moves"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/_3_moves"
-                android:textSize="15sp"
+                android:textSize="12sp"
                 android:fontFamily="monospace"
                 android:textStyle="bold"/>
 
-            <ImageView
-                android:id="@+id/OpponentIcon"
-                android:layout_width="65dp"
-                android:layout_height="87dp"
-                android:src="@drawable/opponent_icon" />
+            <ImageButton
+                android:id="@+id/player_2_icon"
+                android:layout_width="wrap_content"
+                android:padding="5dp"
+                android:layout_height="wrap_content"
+                android:src="@drawable/robot_icon"
+                android:backgroundTint="#00FFFFFF"
+                android:visibility="visible"/>
+
+            <ImageButton
+                android:id="@+id/player_2_icon_dull"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/robot_icon"
+                android:background="@drawable/input_box_design"
+                android:visibility="gone"
+                android:tintMode="multiply"
+                android:backgroundTint="#006A6A6A"
+                app:tint="#6A6A6A"/>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -161,7 +253,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.32"/>
+        app:layout_constraintGuide_percent="0.35
+"/>
 
 <!--    We just did the timer container now the container for the dfigure to show win conditions-->
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -175,9 +268,9 @@
 
         <ImageView
             android:id = "@+id/win_condition_icon"
-            android:layout_width="139dp"
+            android:layout_width="wrap_content"
             android:layout_height="29dp"
-            android:src="@drawable/img_1"
+            android:src="@drawable/three_win_condition"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -12,6 +12,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.*;
@@ -35,7 +36,26 @@ public class BoardFragment extends Fragment {
     Button settingsButton;
     private NavigationData navModel;
 
+    private UserData userModel;
 
+    private GameData gameModel;
+
+
+    ImageButton player1Icon;
+    ImageButton player1IconDull;
+
+    ImageButton player2Icon;
+    ImageButton player2IconDull;
+
+    TextView player1Moves;
+    TextView player2Moves;
+
+    int gameMode;
+    TextView player1Name;
+    TextView player2Name;
+
+    ImageView player1Symbol;
+    ImageView player2Symbol;
     public BoardFragment() {
         // Required empty public constructor
     }
@@ -65,7 +85,14 @@ public class BoardFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        userModel = new ViewModelProvider(getActivity()).get(UserData.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
+        gameModel = new ViewModelProvider(getActivity()).get(GameData.class);
+
+
+//        gameMode =  gameModel.getGameMode();
+
+
     }
 
     // Variable declaration
@@ -84,9 +111,26 @@ public class BoardFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
 
+
+        ///this is just an error case just in case we somehow get to teh board and dont have a user selected
+        if ((gameModel.getGameMode() == 1 && userModel.getUserId() == 0) || (gameModel.getGameMode() == 2 && userModel.getUserId() == 0 && userModel.getUserId2() == 0)) {
+            navModel.setClickedValue(0);
+            System.out.println("HI I am exiting");
+            return view;
+        }
+
+
+
+
+        setGameUserData(view);
+
+
+
+        //This code will only execute if allowed to by the if statement above
         // Set board size (for now it will be stuck at 3), and set isThereAWinner and isDraw to false
         boardSize = 3;
         locI = 0;
@@ -104,10 +148,8 @@ public class BoardFragment extends Fragment {
 
         // Create board filled with '-'
         gameBoard = new char[boardSize][boardSize];
-        for(int i = 0; i < boardSize; i++)
-        {
-            for(int j = 0; j < boardSize; j++)
-            {
+        for (int i = 0; i < boardSize; i++) {
+            for (int j = 0; j < boardSize; j++) {
                 gameBoard[i][j] = '-';
             }
         }
@@ -130,7 +172,7 @@ public class BoardFragment extends Fragment {
         gameOverText.setVisibility(View.INVISIBLE);
 
         // AI's move if player doesn't go first (ABILITY FOR AI TO GO FIRST ISN'T ACTUALLY IMPLEMENTED YET)
-        if(!isPlayerGoingFirst){
+        if (!isPlayerGoingFirst) {
             aiMove(gameBoard);
             isPlayersTurn = true;
         }
@@ -139,13 +181,12 @@ public class BoardFragment extends Fragment {
         buttonOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locI=0;
-                locJ=0;
+                locI = 0;
+                locJ = 0;
                 isPlayersTurn = true;
-                if(gameBoard[locI][locJ] == '-'){
+                if (gameBoard[locI][locJ] == '-') {
                     gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
-                }
-                else{
+                } else {
                     return; // If space is not free, don't do anything
                 }
                 buttonFunction(locI, locJ);
@@ -156,13 +197,12 @@ public class BoardFragment extends Fragment {
         buttonTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locI=0;
-                locJ=1;
+                locI = 0;
+                locJ = 1;
                 isPlayersTurn = true;
-                if(gameBoard[locI][locJ] == '-'){
+                if (gameBoard[locI][locJ] == '-') {
                     gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
-                }
-                else{
+                } else {
                     return; // If space is not free, don't do anything
                 }
                 buttonFunction(locI, locJ);
@@ -173,13 +213,12 @@ public class BoardFragment extends Fragment {
         buttonThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locI=0;
-                locJ=2;
+                locI = 0;
+                locJ = 2;
                 isPlayersTurn = true;
-                if(gameBoard[locI][locJ] == '-'){
+                if (gameBoard[locI][locJ] == '-') {
                     gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
-                }
-                else{
+                } else {
                     return; // If space is not free, don't do anything
                 }
                 buttonFunction(locI, locJ);
@@ -190,13 +229,12 @@ public class BoardFragment extends Fragment {
         buttonFour.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locI=1;
-                locJ=0;
+                locI = 1;
+                locJ = 0;
                 isPlayersTurn = true;
-                if(gameBoard[locI][locJ] == '-'){
+                if (gameBoard[locI][locJ] == '-') {
                     gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
-                }
-                else{
+                } else {
                     return; // If space is not free, don't do anything
                 }
                 buttonFunction(locI, locJ);
@@ -207,13 +245,12 @@ public class BoardFragment extends Fragment {
         buttonFive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locI=1;
-                locJ=1;
+                locI = 1;
+                locJ = 1;
                 isPlayersTurn = true;
-                if(gameBoard[locI][locJ] == '-'){
+                if (gameBoard[locI][locJ] == '-') {
                     gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
-                }
-                else{
+                } else {
                     return; // If space is not free, don't do anything
                 }
                 buttonFunction(locI, locJ);
@@ -224,13 +261,12 @@ public class BoardFragment extends Fragment {
         buttonSix.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locI=1;
-                locJ=2;
+                locI = 1;
+                locJ = 2;
                 isPlayersTurn = true;
-                if(gameBoard[locI][locJ] == '-'){
+                if (gameBoard[locI][locJ] == '-') {
                     gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
-                }
-                else{
+                } else {
                     return; // If space is not free, don't do anything
                 }
                 buttonFunction(locI, locJ);
@@ -241,13 +277,12 @@ public class BoardFragment extends Fragment {
         buttonSeven.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locI=2;
-                locJ=0;
+                locI = 2;
+                locJ = 0;
                 isPlayersTurn = true;
-                if(gameBoard[locI][locJ] == '-'){
+                if (gameBoard[locI][locJ] == '-') {
                     gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
-                }
-                else{
+                } else {
                     return; // If space is not free, don't do anything
                 }
                 buttonFunction(locI, locJ);
@@ -258,13 +293,12 @@ public class BoardFragment extends Fragment {
         buttonEight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locI=2;
-                locJ=1;
+                locI = 2;
+                locJ = 1;
                 isPlayersTurn = true;
-                if(gameBoard[locI][locJ] == '-'){
+                if (gameBoard[locI][locJ] == '-') {
                     gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
-                }
-                else{
+                } else {
                     return; // If space is not free, don't do anything
                 }
                 buttonFunction(locI, locJ);
@@ -275,13 +309,12 @@ public class BoardFragment extends Fragment {
         buttonNine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                locI=2;
-                locJ=2;
+                locI = 2;
+                locJ = 2;
                 isPlayersTurn = true;
-                if(gameBoard[locI][locJ] == '-'){
+                if (gameBoard[locI][locJ] == '-') {
                     gameBoard[locI][locJ] = playerMarker; // If the space is free, place player marker
-                }
-                else{
+                } else {
                     return; // If space is not free, don't do anything
                 }
                 buttonFunction(locI, locJ);
@@ -293,7 +326,7 @@ public class BoardFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Starts the reset button animation - updated by Ryan
-                Animation refresh = AnimationUtils.loadAnimation(getActivity(),R.anim.reset_rotation_anim);
+                Animation refresh = AnimationUtils.loadAnimation(getActivity(), R.anim.reset_rotation_anim);
                 resetButton.startAnimation(refresh);
 
                 resetGame(); //Reset the board
@@ -305,7 +338,7 @@ public class BoardFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // Starts the undo button animation - updated by Ryan
-                Animation undo = AnimationUtils.loadAnimation(getActivity(),R.anim.undo_rotation_anim);
+                Animation undo = AnimationUtils.loadAnimation(getActivity(), R.anim.undo_rotation_anim);
                 undoButton.startAnimation(undo);
 
                 resetGame(); //Reset the board
@@ -313,6 +346,52 @@ public class BoardFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void setGameUserData(View view) {
+        player1Icon = view.findViewById(R.id.player_1_icon);
+        player1IconDull= view.findViewById(R.id.player_1_icon_dull);
+        player1Name = view.findViewById(R.id.player_1_name);
+        player1Moves = view.findViewById(R.id.player_1_moves);
+        player1Symbol = view.findViewById(R.id.player_1_symbol);
+        player2Icon = view.findViewById(R.id.player_2_icon);
+        player2IconDull= view.findViewById(R.id.player_2_icon_dull);
+        player2Name = view.findViewById(R.id.player_2_name);
+        player2Moves = view.findViewById(R.id.player_2_moves);
+        player2Symbol = view.findViewById(R.id.player_2_symbol);
+
+        //setting the symbol for nots or crosses
+        if (userModel.getCross() ==1) {
+            player1Symbol.setImageResource(R.drawable.cross);
+            player2Symbol.setImageResource(R.drawable.circle);
+        }
+        else{
+            player2Symbol.setImageResource(R.drawable.cross);
+            player1Symbol.setImageResource(R.drawable.circle);
+        }
+        player1Icon.setImageResource(userModel.getUserIcon());
+        player1IconDull.setImageResource(userModel.getUserIcon());
+        player1Name.setText(userModel.getUserName());
+        //TODO sort out the moves changing code - PK
+        player1Moves.setText("0 Moves");
+        player2Moves.setText("0 Moves");
+
+
+        if (gameModel.getGameMode() == 1) {
+            System.out.println("The game mode is" + gameModel.getGameMode());
+            System.out.println("The game move is" + gameMode);
+
+            player2Icon.setImageResource(R.drawable.robot_icon);
+            player2IconDull.setImageResource(R.drawable.robot_icon);
+            player2Name.setText("AI");
+            player2Moves.setText("0 Moves");
+        }
+        else {
+            System.out.println();
+            player2Icon.setImageResource(userModel.getUserIcon2());
+            player2IconDull.setImageResource(userModel.getUserIcon2());
+            player2Name.setText(userModel.getUserName2());
+        }
     }
 
     // This functions executes when each board button is pressed
