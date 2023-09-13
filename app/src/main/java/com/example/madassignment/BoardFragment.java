@@ -120,17 +120,16 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Set board size and
         boardSize = gameData.getBoardSize();
 
-        // Set locI, locJ, otherLocI and otherLocJ values to 0
         ///this is just an error case just in case we somehow get to teh board and dont have a user selected
-        if ((gameModel.getGameMode() == 1 && userModel.getUserId() == 0) || (gameModel.getGameMode() == 2 && userModel.getUserId() == 0 && userModel.getUserId2() == 0)) {
+        if ((gameData.getGameMode() == 1 && userModel.getUserId() == 0) || (gameData.getGameMode() == 2 && userModel.getUserId() == 0 && userModel.getUserId2() == 0)) {
             navModel.setClickedValue(0);
             System.out.println("HI I am exiting");
             return view;
         }
         setGameUserData(view);
         //This code will only execute if allowed to by the if statement above
-        // Set board size (for now it will be stuck at 3), and set isThereAWinner and isDraw to false
-        boardSize = 3;
+
+        // Set locI, locJ, otherLocI and otherLocJ values to 0
         locI = 0;
         locJ = 0;
         otherLocI = 0;
@@ -251,34 +250,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             player2Icon.setImageResource(userModel.getUserIcon2());
             player2IconDull.setImageResource(userModel.getUserIcon2());
             player2Name.setText(userModel.getUserName2());
-        }
-    }
-
-    // This functions executes when each board button is pressed
-    public void buttonFunction(int pLocI, int pLocJ) {
-
-        // Sets the win condition in a row (set to 3 for now), TODO: attain from settings
-        winConditionInput = 3;
-
-        // Update the UI, and check if there is a winner
-        updateBoard3x3(gameBoard);
-        isThereAWinner = checkIfThereIsWinner(gameBoard, winConditionInput, pLocI, pLocJ, isPlayersTurn);
-
-        // It is a draw if all spaces on the board are taken and there is no winner
-        isDraw = ((isAllSpacesTaken(gameBoard)) && (!isThereAWinner));
-
-        // If game is not over, AI moves, and check if there is a winner or draw
-        if (!isThereAWinner && !isDraw) {
-            isPlayersTurn = false;
-            aiMove(gameBoard);
-            updateBoard3x3(gameBoard);
-            isThereAWinner = checkIfThereIsWinner(gameBoard, winConditionInput, aiLocI, aiLocJ, isPlayersTurn);
-            isDraw = ((isAllSpacesTaken(gameBoard)) && (!isThereAWinner)); // It is a draw if all spaces on the board are taken and there is no winner
-        }
-
-        // If game is over, end game
-        if (isThereAWinner || isDraw) {
-            endGame(isPlayersTurn, isDraw);
         }
     }
 
