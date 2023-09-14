@@ -100,40 +100,47 @@ public class NavigationBarFragment extends Fragment {
                         settingsButton.setVisibility(View.VISIBLE);
                         leaderBoardButton.setVisibility(View.VISIBLE);
                         backButton.setVisibility(View.GONE);
+                        menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 1:
                         // Board Fragment
                         settingsButton.setVisibility(View.VISIBLE);
                         leaderBoardButton.setVisibility(View.VISIBLE);
-                        backButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.VISIBLE);
+                        menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 2:
                         // Settings Fragment
                         settingsButton.setVisibility(View.GONE);
                         leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
+                        menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 3:
                         // Profile Fragment
                         settingsButton.setVisibility(View.GONE);
                         leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
+                        menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 4:
                         // Customize Fragment
                         settingsButton.setVisibility(View.GONE);
                         leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
+                        menuTitle.setVisibility(View.VISIBLE);
                     case 5:
                         // Leaderboard Fragment
                         settingsButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
                         leaderBoardButton.setVisibility(View.GONE);
+                        menuTitle.setVisibility(View.VISIBLE);
                     case 6:
                         // User Select Fragment
                         settingsButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
                         leaderBoardButton.setVisibility(View.GONE);
+                        menuTitle.setVisibility(View.VISIBLE);
                     case 99:
                         // Menu Animation Fragment
                         settingsButton.setVisibility(View.GONE);
