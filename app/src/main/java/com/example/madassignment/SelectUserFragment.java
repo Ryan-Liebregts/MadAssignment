@@ -14,16 +14,27 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ToggleButton;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.RecursiveAction;
 
 public class SelectUserFragment extends Fragment {
 
     private List<User> data;
 
+    public List<Integer> dataSymbol;
+
+    public ToggleButton toggleUser1;
+
+    public ToggleButton toggleUser2;
+
     private GameData gameData;
 
     private RecyclerView recyclerView;
+
+    private RecyclerView symbolRecyclerView;
 
     private UserData userModel;
 
@@ -31,7 +42,6 @@ public class SelectUserFragment extends Fragment {
 
     private Button continueButton;
 
-    private Button newCharButton;
 
     private ConstraintLayout selectUserFragmentBackground;
 
@@ -45,7 +55,6 @@ public class SelectUserFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         gameData = new ViewModelProvider(getActivity()).get(GameData.class);
         userModel = new ViewModelProvider(getActivity()).get(UserData.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
@@ -59,9 +68,19 @@ public class SelectUserFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_select_user, container, false);
         //define components
         recyclerView = view.findViewById(R.id.recycler_user);
+        symbolRecyclerView = view.findViewById(R.id.recycler_symbol);
         continueButton = view.findViewById(R.id.continue_button);
-        newCharButton = view.findViewById(R.id.create_user_button);
+        toggleUser1 = view.findViewById(R.id.togglePlayer1);
 
+        toggleUser1.setText("Select Player");
+        toggleUser1.setTextOn("Player 1");
+        if (gameData.getGameMode() == 1) {
+            toggleUser1.setTextOff("AI");
+        }
+        else {
+            toggleUser1.setTextOff("Player 2");
+
+        }
         // Animates the background gradient
         selectUserFragmentBackground = (ConstraintLayout) view.findViewById(R.id.select_user_fragment);
         animationDrawable = (AnimationDrawable) selectUserFragmentBackground.getBackground();
@@ -69,28 +88,41 @@ public class SelectUserFragment extends Fragment {
         animationDrawable.setExitFadeDuration(2000);
 
 
+        toggleUser1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                userModel.setFirstMove(1);
+            } else {
+                userModel.setFirstMove(2);
+            }
+        });
         //set recycler
         //get data
         data = getLeaderBoardData();
+        dataSymbol = getIconData();
+        //define grid
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4,
+                GridLayoutManager.VERTICAL, false);
+        GridLayoutManager gridLayoutManager2 = new GridLayoutManager(getActivity(), 4,
+                GridLayoutManager.VERTICAL, false);
         if (data.size() == 0) {
             recyclerView.setVisibility(View.GONE);
             continueButton.setVisibility(View.GONE);
         }
         else {
-            //define grid
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1,
-                    GridLayoutManager.VERTICAL, false);
             recyclerView.setLayoutManager(gridLayoutManager);
             //set adapter
-            UserSelectAdapter userSelectAdapter =new UserSelectAdapter(data, userModel, gameData, this);
+            UserSelectAdapter userSelectAdapter =new UserSelectAdapter(data, userModel, gameData, this, navModel);
             recyclerView.setAdapter(userSelectAdapter);
         }
 
+        symbolRecyclerView.setLayoutManager(gridLayoutManager2);
+        SymbolSelectAdapter symbolSelectAdapter = new SymbolSelectAdapter(dataSymbol, userModel, gameData, this);
+        symbolRecyclerView.setAdapter(symbolSelectAdapter);
 
         userModel.userId2.observe(getViewLifecycleOwner(), new Observer<Long>() {
             @Override
             public void onChanged(Long integer) {
-                if (userModel.getUserId2() != 0 && userModel.getUserId() != 0) {
+                if (userModel.getUserId2() != 0 && userModel.getUserId() != 0 && userModel.getFirstMove() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0) {
                     continueButton.setEnabled(true);
                 }
                 else{
@@ -121,32 +153,25 @@ public class SelectUserFragment extends Fragment {
             }
         });
 
-
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View view) {
                 navModel.setClickedValue(1);
             }
         });
-
-        newCharButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick( View view) {
-                navModel.setClickedValue(3);
-                navModel.setHistoricalClickedValue(6);
-            }
-        });
-
+//TODO Continut button logic - pk
         return view;
     }
 
     public List<User> getLeaderBoardData() {
         UserDao userDao = initialiseDB();
-
-
         data = null;
         data = userDao.getAllUsers();
-        System.out.println(data);
+        User button = new User();
+        button.setId(100000l);
+        button.setUserName("button");
+        button.setUserIcon(R.drawable.add_icon);
+        data.add(button);
         return data;
     }
     public UserDao initialiseDB() {
@@ -170,5 +195,16 @@ public class SelectUserFragment extends Fragment {
             animationDrawable.stop();
         }
     }
+
+
+    public List<Integer> getIconData(){
+        List<Integer> data = new ArrayList<Integer>();
+        data.add(R.drawable.cross);
+        data.add(R.drawable.circle);
+        data.add(R.drawable.icon_left);
+        data.add(R.drawable.icon_right);
+        return data;
+    }
+
 
 }

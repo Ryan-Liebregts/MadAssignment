@@ -224,14 +224,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         player2Symbol = view.findViewById(R.id.player_2_symbol);
 
         //setting the symbol for nots or crosses
-        if (userModel.getCross() ==1) {
-            player1Symbol.setImageResource(R.drawable.cross);
-            player2Symbol.setImageResource(R.drawable.circle);
-        }
-        else{
-            player2Symbol.setImageResource(R.drawable.cross);
-            player1Symbol.setImageResource(R.drawable.circle);
-        }
+        player1Symbol.setImageResource(userModel.getUserSymbol1());
+        player2Symbol.setImageResource(userModel.getUserSymbol2());
+
         player1Icon.setImageResource(userModel.getUserIcon());
         player1IconDull.setImageResource(userModel.getUserIcon());
         player1Name.setText(userModel.getUserName());
