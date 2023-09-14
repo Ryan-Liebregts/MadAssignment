@@ -25,12 +25,8 @@ public class SettingsFragment extends Fragment {
 
     // Define Buttons & Spinners
     private Button profileButton;
-    private Spinner boardSizeSpinner;
-    private Spinner winConditionSpinner;
     private Button customizeButton;
-
     private ConstraintLayout settingsFragmentBackground;
-
     private AnimationDrawable animationDrawable;
 
     // Define Navigation Model
@@ -59,8 +55,6 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         // Define Buttons
         profileButton = view.findViewById(R.id.profileButton);
-        boardSizeSpinner = view.findViewById(R.id.boardSizeSpinner);
-        winConditionSpinner = view.findViewById(R.id.winConditionSpinner);
         customizeButton = view.findViewById(R.id.customizeButton);
         // Animates the background gradient
         settingsFragmentBackground = (ConstraintLayout) view.findViewById(R.id.settingsLayout);
@@ -93,55 +87,6 @@ public class SettingsFragment extends Fragment {
                 android.R.layout.simple_spinner_item,
                 boardSizes
         );
-
-        // Set the dropdown layout style
-        boardSizeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Set the adapter for the Spinner
-        boardSizeSpinner.setAdapter(boardSizeAdapter);
-
-//        This code handles the logic of what to do when a particular item is selected in the spinner
-//        boardSizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-//                // Handle the selected item here
-//                String selectedCity = boardSizes[position];
-//                // Do ...
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parentView) {
-//                // Handle case where nothing is selected (optional)
-//            }
-//        });
-
-        // Create an ArrayAdapter to populate the boardSizeSpinner
-        ArrayAdapter<String> winConditionAdapter = new ArrayAdapter<String>(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                winConditions
-        );
-
-        // Set the dropdown layout style
-        winConditionAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        // Set the adapter for the Spinner
-        winConditionSpinner.setAdapter(winConditionAdapter);
-
-//        This code handles the logic of what to do when a particular item is selected in the spinner
-//        winConditionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-//                // Handle the selected item here
-//                String selectedCity = winConditions[position];
-//                // Do ...
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> parentView) {
-//                // Handle case where nothing is selected (optional)
-//            }
-//        });
 
         return view;
     }
