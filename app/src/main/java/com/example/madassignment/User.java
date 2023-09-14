@@ -7,6 +7,10 @@ import androidx.room.PrimaryKey;
 
 @Entity(tableName = "users")
 public class User {
+
+
+
+
     @PrimaryKey(autoGenerate = true)
     private long id;
 
@@ -21,7 +25,6 @@ public class User {
 
     @ColumnInfo(name = "user_losses")
     private int userLosses;
-
 
     public long getId() {
         return id;
