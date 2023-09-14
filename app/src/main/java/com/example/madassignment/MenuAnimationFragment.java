@@ -63,6 +63,7 @@ public class MenuAnimationFragment extends Fragment {
         fadeAnimation(lightSpot3, 0);
         fadeAnimation(lightSpot4, 1);
 
+
         // Listen for when the view is laid out to get its height
         menuTitle.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override

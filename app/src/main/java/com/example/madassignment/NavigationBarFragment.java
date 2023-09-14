@@ -12,54 +12,25 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NavigationBarFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class NavigationBarFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private ImageButton backButton;
+    private ImageButton settingsButton;
+    private ImageButton leaderBoardButton;
+    private ImageView menuTitle;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    NavigationData navigationData;
+    private NavigationData navigationData;
 
     public NavigationBarFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NavigationBarFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NavigationBarFragment newInstance(String param1, String param2) {
-        NavigationBarFragment fragment = new NavigationBarFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
 
 
@@ -71,9 +42,10 @@ public class NavigationBarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_navigation_bar, container, false);
         NavigationData navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
-        ImageButton backButton = view.findViewById(R.id.backButton);
-        ImageButton settingsButton = view.findViewById(R.id.settingsButton);
-        ImageButton leaderBoardButton = view.findViewById(R.id.leaderBoardButton);
+        backButton = view.findViewById(R.id.backButton);
+        settingsButton = view.findViewById(R.id.settingsButton);
+        leaderBoardButton = view.findViewById(R.id.leaderBoardButton);
+        menuTitle = view.findViewById(R.id.menuTitle);
 
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,33 +96,50 @@ public class NavigationBarFragment extends Fragment {
             public void onChanged(Integer integer) {
                 switch(integer) {
                     case 0:
+                        // Menu Fragment
                         settingsButton.setVisibility(View.VISIBLE);
                         leaderBoardButton.setVisibility(View.VISIBLE);
                         backButton.setVisibility(View.GONE);
                         break;
                     case 1:
+                        // Board Fragment
                         settingsButton.setVisibility(View.VISIBLE);
                         leaderBoardButton.setVisibility(View.VISIBLE);
                         backButton.setVisibility(View.GONE);
                         break;
                     case 2:
+                        // Settings Fragment
                         settingsButton.setVisibility(View.GONE);
                         leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
                         break;
                     case 3:
+                        // Profile Fragment
                         settingsButton.setVisibility(View.GONE);
                         leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
                         break;
                     case 4:
+                        // Customize Fragment
                         settingsButton.setVisibility(View.GONE);
                         leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
                     case 5:
+                        // Leaderboard Fragment
                         settingsButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
                         leaderBoardButton.setVisibility(View.GONE);
+                    case 6:
+                        // User Select Fragment
+                        settingsButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.VISIBLE);
+                        leaderBoardButton.setVisibility(View.GONE);
+                    case 99:
+                        // Menu Animation Fragment
+                        settingsButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.GONE);
+                        leaderBoardButton.setVisibility(View.GONE);
+                        menuTitle.setVisibility(View.GONE);
                 }
 
             }
