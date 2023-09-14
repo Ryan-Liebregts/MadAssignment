@@ -18,22 +18,22 @@
         android:textSize="12sp"
         android:fontFamily="monospace"
         android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/squareImageView"
+        app:layout_constraintEnd_toEndOf="@id/player_1_icon"
+        app:layout_constraintStart_toStartOf="@id/player_1_icon"
         app:layout_constraintTop_toBottomOf="@id/player_1_icon"/>
 
     <ImageButton
         android:id="@+id/player_1_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:visibility="visible"
         android:backgroundTint="#00FFFFFF"
+        android:padding="5dp"
         android:src="@drawable/user_icon1"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/win_condition_icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/squareImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/player_1_icon_dull"
@@ -45,23 +45,23 @@
         android:tintMode="multiply"
         android:backgroundTint="#006A6A6A"
         app:tint="#6A6A6A"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/win_condition_icon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/squareImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/player_1_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textStyle="bold"
         android:fontFamily="monospace"
-        android:textSize="13sp"
+        android:gravity="center"
         android:text="@string/test"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/squareImageView"
-        app:layout_constraintBottom_toTopOf="@id/player_1_icon" />
+        android:textSize="13sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/player_1_icon"
+        app:layout_constraintEnd_toEndOf="@id/player_1_icon"
+        app:layout_constraintStart_toStartOf="@id/player_1_icon" />
 
     <ImageView
         android:id="@+id/player_1_symbol"
@@ -69,8 +69,8 @@
         android:layout_height="48dp"
         android:paddingBottom="10dp"
         android:src="@drawable/cross"
-        app:layout_constraintStart_toStartOf="@id/player_1_name"
-        app:layout_constraintEnd_toEndOf="@id/player_1_name"
+        app:layout_constraintStart_toStartOf="@id/player_1_icon"
+        app:layout_constraintEnd_toEndOf="@id/player_1_icon"
         app:layout_constraintBottom_toTopOf="@id/player_1_name"/>
 
     <TextView
@@ -96,8 +96,8 @@
         android:fontFamily="monospace"
         android:textSize="13sp"
         android:text="AI"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/squareImageView"
+        app:layout_constraintEnd_toEndOf="@id/player_2_icon"
+        app:layout_constraintStart_toStartOf="@id/player_2_icon"
         app:layout_constraintBottom_toTopOf="@id/player_2_icon"/>
 
     <ImageView
@@ -106,8 +106,8 @@
         android:layout_height="48dp"
         android:paddingBottom="10dp"
         android:src="@drawable/circle"
-        app:layout_constraintStart_toStartOf="@id/player_2_name"
-        app:layout_constraintEnd_toEndOf="@id/player_2_name"
+        app:layout_constraintStart_toStartOf="@id/player_2_icon"
+        app:layout_constraintEnd_toEndOf="@id/player_2_icon"
         app:layout_constraintBottom_toTopOf="@id/player_2_name"/>
 
 
@@ -119,21 +119,21 @@
         android:textSize="12sp"
         android:fontFamily="monospace"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/squareImageView"
+        app:layout_constraintEnd_toEndOf="@id/player_2_icon"
+        app:layout_constraintStart_toStartOf="@id/player_2_icon"
         app:layout_constraintTop_toBottomOf="@id/player_2_icon"/>
 
     <ImageButton
         android:id="@+id/player_2_icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/robot_icon"
         android:backgroundTint="#00FFFFFF"
+        android:src="@drawable/robot_icon"
         android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/squareImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toEndOf="@+id/reset_button"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/player_2_icon_dull"
@@ -145,81 +145,95 @@
         android:tintMode="multiply"
         android:backgroundTint="#006A6A6A"
         app:tint="#6A6A6A"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/squareImageView"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintStart_toEndOf="@+id/reset_button"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
         android:id="@+id/timerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:text="00:00:00"
         android:fontFamily="monospace"
         android:textColor="#FF0000"
         android:textStyle="bold"
-        android:textSize="30sp"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="25sp"
+        app:layout_constraintTop_toBottomOf="@id/win_condition_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/boardLayout" />
 
     <ImageView
         android:id = "@+id/win_condition_icon"
         android:layout_width="wrap_content"
-        android:layout_height="29dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/three_win_condition"
-        app:layout_constraintBottom_toTopOf="@id/squareImageView"
+        app:layout_constraintBottom_toTopOf="@id/timerTextView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/recyclerView"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        app:layout_constraintStart_toStartOf="@id/squareImageView"
-        app:layout_constraintEnd_toEndOf="@id/squareImageView"
-        app:layout_constraintTop_toTopOf="@id/squareImageView"
-        app:layout_constraintBottom_toBottomOf="@id/squareImageView" />
-
-    <ImageView
-        android:id="@+id/squareImageView"
-        android:layout_width="250dp"
-        android:layout_height="250dp"
-        android:src="@drawable/img_2"
-        android:visibility="visible"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@id/boardLayout"
+        android:layout_margin="40dp"
         app:layout_constraintDimensionRatio="1:1"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@id/player_2_icon"
+        app:layout_constraintStart_toEndOf="@id/player_1_icon"
+        app:layout_constraintTop_toBottomOf="@+id/timerTextView">
+
+        <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/recyclerView"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/squareImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/img_2"
+            android:visibility="invisible"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Updated by Ryan to implement animated undo button -->
     <ImageButton
         android:id="@+id/undo_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_weight="1"
         android:backgroundTint="#00FFFFFF"
         android:src="@drawable/undo_vector"
-        app:layout_constraintTop_toBottomOf="@id/squareImageView"
-        app:layout_constraintStart_toStartOf="@id/squareImageView"
-        app:layout_constraintEnd_toStartOf="@id/reset_button"/>
+        app:layout_constraintBottom_toBottomOf="@+id/timerTextView"
+        app:layout_constraintEnd_toStartOf="@+id/win_condition_icon"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Updated by Ryan to implement animated refresh button -->
     <ImageButton
         android:id="@+id/reset_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_weight="1"
         android:backgroundTint="#00FFFFFF"
         android:src="@drawable/refresh_vector"
-        app:layout_constraintTop_toBottomOf="@id/squareImageView"
-        app:layout_constraintEnd_toEndOf="@id/squareImageView"
-        app:layout_constraintStart_toEndOf="@id/undo_button"
-        tools:layout_editor_absoluteX="100dp" />
+        app:layout_constraintBottom_toBottomOf="@id/timerTextView"
+        app:layout_constraintStart_toEndOf="@+id/win_condition_icon"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Implemented by Jules -->
     <TextView
@@ -231,10 +245,10 @@
         android:textStyle="bold"
         android:textSize="30sp"
         android:visibility="invisible"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/boardLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/boardLayout" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
