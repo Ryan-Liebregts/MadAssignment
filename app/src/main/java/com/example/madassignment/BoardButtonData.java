@@ -34,4 +34,5 @@ public class BoardButtonData {
     public void setEnabledState(boolean pEnabledState){
         enabledState = pEnabledState;
     }
+
 }
