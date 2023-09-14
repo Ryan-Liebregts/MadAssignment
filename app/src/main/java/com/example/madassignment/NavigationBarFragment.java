@@ -12,21 +12,15 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link NavigationBarFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class NavigationBarFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
+    private ImageButton settingsButton;
+    private ImageButton leaderBoardButton;
+    private ImageButton backButton;
+    private ImageView menuTitle;
     private String mParam2;
 
     NavigationData navigationData;
@@ -35,31 +29,11 @@ public class NavigationBarFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment NavigationBarFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static NavigationBarFragment newInstance(String param1, String param2) {
-        NavigationBarFragment fragment = new NavigationBarFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
 
 
@@ -71,9 +45,27 @@ public class NavigationBarFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_navigation_bar, container, false);
         NavigationData navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
-        ImageButton backButton = view.findViewById(R.id.backButton);
-        ImageButton settingsButton = view.findViewById(R.id.settingsButton);
-        ImageButton leaderBoardButton = view.findViewById(R.id.leaderBoardButton);
+
+        backButton = view.findViewById(R.id.backButton);
+        settingsButton = view.findViewById(R.id.settingsButton);
+        leaderBoardButton = view.findViewById(R.id.leaderBoardButton);
+
+        /* The navigation integers describe the following fragments:
+            navigationData == 0 -> Menu Fragment
+            navigationData == 1 -> Board Fragment
+            navigationData == 2 -> Settings Fragment
+            navigationData == 3 -> Profile Fragment
+            navigationData == 4 -> Customize Fragment
+            navigationData == 5 -> Leaderboard Fragment
+            navigationData == 6 -> User Select Fragment
+            navigationData == 99 -> Menu Animation Fragment
+
+         */
+
+        backButton = view.findViewById(R.id.backButton);
+        settingsButton = view.findViewById(R.id.settingsButton);
+        leaderBoardButton = view.findViewById(R.id.leaderBoardButton);
+        menuTitle = view.findViewById(R.id.menuTitle);
 
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,15 +81,11 @@ public class NavigationBarFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (navigationData.getClickedValue() == 4 || navigationData.getClickedValue() == 3) {
-                    if (navigationData.getHistoricalClickedValue() != 6) {
-                        navigationData.setClickedValue(2);
-                    }
-                    else {
-                        navigationData.setClickedValue(6);
-                    }
+                if(navigationData.getClickedValue() == 1) {
+                    // If we are on the Board Fragment, take us back to the Menu Fragment
+                    navigationData.setClickedValue(0);
                 }
-                else if (navigationData.getClickedValue() == 2){
+                if (navigationData.getClickedValue() == 2){
                     if (navigationData.getHistoricalClickedValue() != 4 || navigationData.getHistoricalClickedValue() != 3) {
                         navigationData.setClickedValue(1);
                     }
@@ -105,8 +93,23 @@ public class NavigationBarFragment extends Fragment {
                         navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
                     }
                 }
+                else if (navigationData.getClickedValue() == 4 || navigationData.getClickedValue() == 3) {
+                    if (navigationData.getHistoricalClickedValue() != 6) {
+                        navigationData.setClickedValue(2);
+                    }
+                    else {
+                        navigationData.setClickedValue(6);
+                    }
+                }
                 else if (navigationData.getClickedValue() == 5) {
                     navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                    // TODO: Determine if the user is already in a game and if so go to BOARD fragment otherwise MENU fragment
+
+                }
+                else if (navigationData.getClickedValue() == 6) {
+                    // If we are on the User Select Fragment, take us back to the Menu Fragment
+                    navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                    navigationData.setClickedValue(1);
                 }
             }
         });
@@ -127,30 +130,46 @@ public class NavigationBarFragment extends Fragment {
                         settingsButton.setVisibility(View.VISIBLE);
                         leaderBoardButton.setVisibility(View.VISIBLE);
                         backButton.setVisibility(View.GONE);
+                        menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 1:
                         settingsButton.setVisibility(View.VISIBLE);
                         leaderBoardButton.setVisibility(View.VISIBLE);
-                        backButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.VISIBLE);
+                        menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 2:
                         settingsButton.setVisibility(View.GONE);
                         leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
+                        menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 3:
                         settingsButton.setVisibility(View.GONE);
                         leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
+                        menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 4:
                         settingsButton.setVisibility(View.GONE);
                         leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
+                        menuTitle.setVisibility(View.VISIBLE);
                     case 5:
                         settingsButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
                         leaderBoardButton.setVisibility(View.GONE);
+                        menuTitle.setVisibility(View.VISIBLE);
+                    case 6:
+                        settingsButton.setVisibility(View.VISIBLE);
+                        backButton.setVisibility(View.VISIBLE);
+                        leaderBoardButton.setVisibility(View.VISIBLE);
+                        menuTitle.setVisibility(View.VISIBLE);
+                    case 99:
+                        settingsButton.setVisibility(View.GONE);
+                        backButton.setVisibility(View.GONE);
+                        leaderBoardButton.setVisibility(View.GONE);
+                        menuTitle.setVisibility(View.GONE);
                 }
 
             }

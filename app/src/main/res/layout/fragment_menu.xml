@@ -5,7 +5,6 @@
     android:id="@+id/menuLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/wooden_background"
     tools:context=".MenuFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -16,24 +15,17 @@
         tools:layout_editor_absoluteY="0dp">
 
 
-        <ImageView
-            android:id="@+id/menuTitle"
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            android:src="@drawable/tictactoe_name_drawable"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <LinearLayout
             android:id="@+id/win_condition_selector"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:gravity="center"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/menuTitle">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/board_size_selector">
 
             <ImageButton
                 android:id="@+id/left_win_button"
@@ -72,7 +64,8 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/win_condition_selector">
+            app:layout_constraintTop_toBottomOf="@+id/win_condition_selector"
+            app:layout_constraintBottom_toTopOf="@id/aiButton">
 
             <ImageButton
                 android:id="@+id/left_board_button"
