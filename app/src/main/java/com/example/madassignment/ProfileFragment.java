@@ -30,8 +30,8 @@ public class ProfileFragment extends Fragment {
 
     private Button saveUserButton;
 
-    private UserData userModel;
-    CreateUser userModel;
+    private CreateUser userModel;
+//    CreateUser userModel;
 
     private String userName;
 
@@ -50,7 +50,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        userModel = new ViewModelProvider(getActivity()).get(UserData.class);
+        userModel = new ViewModelProvider(getActivity()).get(CreateUser.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         UserDao userDao = initialiseDB();
 
