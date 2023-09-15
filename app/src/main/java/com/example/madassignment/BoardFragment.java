@@ -2,6 +2,7 @@ package com.example.madassignment;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -23,11 +24,6 @@ import android.widget.TextView;
 
 import java.util.*;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BoardFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BoardFragment extends Fragment implements BoardButtonAdapter.AdapterCallback {
 
     private Button settingsButton;
@@ -37,6 +33,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     private UserData userModel;
 
     private GameData gameModel;
+
+    private MediaPlayer mediaPlayer;
 
 
     ImageButton player1Icon;
@@ -95,6 +93,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         resetButton = view.findViewById(R.id.reset_button);
         gameOverText = view.findViewById(R.id.gameoverText);
         undoButton = view.findViewById(R.id.undo_button);
+        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.piece_mp3);
 
         // Set game over text as invisible
         gameOverText.setVisibility(View.INVISIBLE);
@@ -489,6 +488,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Sync adapter data with game board
         updateGameBoard(adapter.data);
 
+        playSoundEffect();
+
         //TODO: Printing game board for testing purposes, can be deleted
         for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard.length; j++) {
@@ -548,6 +549,23 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 gameBoard[i][j] = adapter.data.get(index).getMarkerSymbol();
                 index++;
             }
+        }
+    }
+
+    private void playSoundEffect() {
+        if (mediaPlayer != null) {
+            mediaPlayer.seekTo(0); // Reset the playback position to the beginning
+            mediaPlayer.start(); // Start playing the sound effect
+        }
+    }
+
+    // Manages lifecycle of sound effect
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer = null;
         }
     }
 }
