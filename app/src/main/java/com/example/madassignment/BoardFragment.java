@@ -1,6 +1,7 @@
 package com.example.madassignment;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -180,6 +181,28 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             public void onClick(View view) {
 
                 Animation reset = AnimationUtils.loadAnimation(getActivity(),R.anim.reset_rotation_anim);
+
+                // Animation listener for pressing reset button
+                reset.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // Animation started - Changes colour of the button to show it has been pressed
+                        int cyan = Color.CYAN;
+                        resetButton.setColorFilter(cyan);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // Animation ended - removes colour filter at the end of the animation
+                        resetButton.setColorFilter(null);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // Can be left empty as no repeats are occurring
+                    }
+                });
+
                 resetButton.startAnimation(reset);
                 resetGame(); //Reset the board
 
@@ -191,6 +214,28 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             @Override
             public void onClick(View view) {
                 Animation undo = AnimationUtils.loadAnimation(getActivity(),R.anim.undo_rotation_anim);
+
+                // Animation listener for pressing reset button
+                undo.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // Animation started - Changes colour of the button to show it has been pressed
+                        int cyan = Color.CYAN;
+                        undoButton.setColorFilter(cyan);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // Animation ended - removes colour filter at the end of the animation
+                        undoButton.setColorFilter(null);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // Can be left empty as no repeats are occurring
+                    }
+                });
+
                 undoButton.startAnimation(undo);
             }
         });

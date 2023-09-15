@@ -1,5 +1,6 @@
 package com.example.madassignment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -67,6 +68,7 @@ public class NavigationBarFragment extends Fragment {
                 // Starts the undo button animation - updated by Ryan
                 Animation settings = AnimationUtils.loadAnimation(getActivity(),R.anim.settings_rotation_anim);
                 settingsButton.startAnimation(settings);
+
                 navigationData.setHistoricalClickedValue(navigationData.getClickedValue());
                 navigationData.setClickedValue(2);
 
@@ -75,6 +77,32 @@ public class NavigationBarFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Animation back = AnimationUtils.loadAnimation(getActivity(),R.anim.back_anim);
+
+                // Animation listener for pressing back button
+                back.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // Animation started - Changes colour of the button to show it has been pressed
+                        int cyan = Color.CYAN;
+                        backButton.setColorFilter(cyan);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // Animation ended - removes colour filter at the end of the animation
+                        backButton.setColorFilter(null);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // Can be left empty as no repeats are occurring
+                    }
+                });
+
+                backButton.startAnimation(back);
+
                 if(navigationData.getClickedValue() == 1) {
                     // If we are on the Board Fragment, take us back to the Menu Fragment
                     navigationData.setClickedValue(0);
@@ -106,6 +134,7 @@ public class NavigationBarFragment extends Fragment {
                     navigationData.setClickedValue(1);
                 }
             }
+
         });
 
         navigationData.clickedValue.observe(getActivity(), new Observer<Integer>() {
