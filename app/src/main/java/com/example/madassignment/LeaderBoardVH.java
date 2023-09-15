@@ -16,9 +16,9 @@ public class LeaderBoardVH extends RecyclerView.ViewHolder{
     TextView userNameTextBox;
     ImageView userIconImage;
 
-    ImageView playerOne;
+    TextView userPercentage;
 
-    ImageView playerTwo;
+    TextView userGamesPlayed;
 
     TextView userScoreTextBox;
 
@@ -30,9 +30,9 @@ public class LeaderBoardVH extends RecyclerView.ViewHolder{
         //this will be to dynamically set height according to screen size
         //TODO
 //        lp.height = hSize;
-        playerOne = itemView.findViewById(R.id.player_one);
-        playerTwo= itemView.findViewById(R.id.player_two);
         userLayout = itemView.findViewById(R.id.user_layout);
+        userPercentage = itemView.findViewById(R.id.user_percentage);
+        userGamesPlayed  = itemView.findViewById(R.id.user_played);
         userRankTextBox = itemView.findViewById(R.id.user_rank);
         userNameTextBox = itemView.findViewById(R.id.user_name);
         userIconImage = itemView.findViewById(R.id.user_icon);

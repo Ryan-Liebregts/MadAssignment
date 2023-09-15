@@ -9,8 +9,6 @@ import androidx.room.PrimaryKey;
 public class User {
 
 
-
-
     @PrimaryKey(autoGenerate = true)
     private long id;
 
@@ -25,6 +23,9 @@ public class User {
 
     @ColumnInfo(name = "user_losses")
     private int userLosses;
+
+    @ColumnInfo(name = "user_games")
+    private int userGames;
 
     public long getId() {
         return id;
@@ -53,6 +54,14 @@ public class User {
     public void setUserLosses(int losses) {
         this.userLosses = losses;
     }
+
+    public int getUserGames() {
+        return userGames;
+    }
+    public void setUserGames(int games) {
+        this.userGames = games;
+    }
+
     public int getUserIcon() { return  userIcon;}
 
     public void setUserIcon(int userIcon) {
