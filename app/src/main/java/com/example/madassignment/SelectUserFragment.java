@@ -3,6 +3,8 @@ package com.example.madassignment;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
@@ -178,24 +180,6 @@ public class SelectUserFragment extends Fragment {
         return UserDbInstance.getDatabase(getContext()).userDao();
     }
 
-    // Starts the animation when fragment is active
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (animationDrawable != null && !animationDrawable.isRunning()) {
-            animationDrawable.start();
-        }
-    }
-
-    // Pauses the animation when the fragment is not active
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (animationDrawable != null && animationDrawable.isRunning()) {
-            animationDrawable.stop();
-        }
-    }
-
 
     public List<Integer> getIconData(){
         List<Integer> data = new ArrayList<Integer>();
@@ -206,5 +190,24 @@ public class SelectUserFragment extends Fragment {
         return data;
     }
 
+    // The following two methods handle the lifecycle of the animation to prevent errors
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        animationDrawable = (AnimationDrawable) selectUserFragmentBackground.getBackground();
+        animationDrawable.setEnterFadeDuration(3000);
+        animationDrawable.setExitFadeDuration(2000);
 
+        if (!animationDrawable.isRunning()) {
+            animationDrawable.start();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (animationDrawable != null && animationDrawable.isRunning()) {
+            animationDrawable.stop();
+        }
+    }
 }

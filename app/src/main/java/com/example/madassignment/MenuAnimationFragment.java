@@ -169,4 +169,12 @@ public class MenuAnimationFragment extends Fragment {
 
         light_spot.startAnimation(fadeIn);
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (translateAnimationSet != null && translateAnimationSet.isRunning()) {
+            translateAnimationSet.cancel();
+        }
+    }
 }
