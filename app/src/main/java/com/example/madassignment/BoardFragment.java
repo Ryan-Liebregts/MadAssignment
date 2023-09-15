@@ -74,6 +74,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     int locJ;
     int otherLocI;
     int otherLocJ;
+    float volume = 1.0f;
     boolean isPlayer1GoingFirst, isThereAWinner, validInput = true, isPlayer1sTurn, isDraw;
     char playerMarker, otherMarker;
     TextView gameOverText;
@@ -94,6 +95,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         gameOverText = view.findViewById(R.id.gameoverText);
         undoButton = view.findViewById(R.id.undo_button);
         mediaPlayer = MediaPlayer.create(getActivity(), R.raw.piece_mp3);
+        mediaPlayer.setVolume(volume, volume);
 
         // Set game over text as invisible
         gameOverText.setVisibility(View.INVISIBLE);
@@ -178,6 +180,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                playSoundEffect();
 
                 Animation reset = AnimationUtils.loadAnimation(getActivity(),R.anim.reset_rotation_anim);
 
@@ -488,8 +492,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Sync adapter data with game board
         updateGameBoard(adapter.data);
 
-        playSoundEffect();
-
         //TODO: Printing game board for testing purposes, can be deleted
         for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard.length; j++) {
@@ -565,6 +567,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         super.onDestroy();
         if (mediaPlayer != null) {
             mediaPlayer.release();
+            mediaPlayer.stop();
             mediaPlayer = null;
         }
     }
