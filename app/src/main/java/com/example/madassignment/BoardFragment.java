@@ -118,18 +118,17 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
 
-        // Set board size and
-        boardSize = gameData.getBoardSize();
-
         ///this is just an error case just in case we somehow get to teh board and dont have a user selected
         if ((gameData.getGameMode() == 1 && userModel.getUserId() == 0) || (gameData.getGameMode() == 2 && userModel.getUserId() == 0 && userModel.getUserId2() == 0)) {
             navModel.setClickedValue(0);
             System.out.println("HI I am exiting");
             return view;
         }
+        //All code below will only execute if allowed to by the if statement above use multiple returns as an if/else
+        //This function handles settings hte game user data such as icons and symbols and username on the board
         setGameUserData(view);
-        //This code will only execute if allowed to by the if statement above
-
+        // Set board size
+        boardSize = gameData.getBoardSize();
         // Set locI, locJ, otherLocI and otherLocJ values to 0
         locI = 0;
         locJ = 0;
@@ -140,11 +139,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         isThereAWinner = false;
         isDraw = false;
 
+
+        //TODO - change all this over to use userData and not Game Data - PK (sorry Jules)
         // Is the player going first?
         isPlayer1GoingFirst = gameData.getIsPlayer1GoingFirst();
         if(isPlayer1GoingFirst) isPlayer1sTurn = true;
         else isPlayer1sTurn = false;
-
         // Set player and ai marker
         playerMarker = gameData.getPlayer1MarkerSymbol();
         if(gameData.getGameMode() == 1){
@@ -369,16 +369,16 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     public boolean checkIfThereIsWinner(char[][] pGameBoard, int pWinConditionInput, int pLocI, int pLocJ, boolean pIsPlayer1sTurn){
         // Checks if there are enough markers in a row to meet the win condition
         // Horizontal [0,+1]
-        if((checkConsecutiveMarkers(pGameBoard,pWinConditionInput,pLocI,pLocJ,pIsPlayer1sTurn,0,1))==true){
+        if((checkConsecutiveMarkers(pGameBoard, pWinConditionInput, pLocI, pLocJ, pIsPlayer1sTurn, 0, 1))){
             return true;
             // Vertical [+1,0]
-        } else if ((checkConsecutiveMarkers(pGameBoard,pWinConditionInput,pLocI,pLocJ,pIsPlayer1sTurn,1,0))==true) {
+        } else if ((checkConsecutiveMarkers(pGameBoard, pWinConditionInput, pLocI, pLocJ, pIsPlayer1sTurn, 1, 0))) {
             return true;
             // Diagonal Top Left Bottom Right [+1,+1]
-        } else if ((checkConsecutiveMarkers(pGameBoard,pWinConditionInput,pLocI,pLocJ,pIsPlayer1sTurn,1,1))==true) {
+        } else if ((checkConsecutiveMarkers(pGameBoard, pWinConditionInput, pLocI, pLocJ, pIsPlayer1sTurn, 1, 1))) {
             return true;
             // Diagonal Top Right Bottom Left [+1,-1]
-        }  else if ((checkConsecutiveMarkers(pGameBoard,pWinConditionInput,pLocI,pLocJ,pIsPlayer1sTurn,1,-1))==true) {
+        }  else if ((checkConsecutiveMarkers(pGameBoard, pWinConditionInput, pLocI, pLocJ, pIsPlayer1sTurn, 1, -1))) {
             return true;
         } else {
 
@@ -389,13 +389,43 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     // Ends the game
     // Disables all board buttons, and displays game over text
     public void endGame(boolean pIsPlayer1sTurn, boolean pIsDraw){
-
-        // Sets game over text
-        if(pIsDraw) gameOverText.setText("GAMEOVER: DRAW!");
-        else if(pIsPlayer1sTurn && gameData.getGameMode() == 1)  gameOverText.setText("GAMEOVER: PLAYER WINS!");
-        else if (!pIsPlayer1sTurn && gameData.getGameMode() == 1)gameOverText.setText("GAMEOVER: AI WINS!");
-        else if (pIsPlayer1sTurn && gameData.getGameMode() == 2) gameOverText.setText("GAMEOVER: PLAYER 1 WINS!");
-        else if (!pIsPlayer1sTurn && gameData.getGameMode() == 2) gameOverText.setText("GAMEOVER: PLAYER 2 WINS!");
+        //initialise DB
+        UserDao userDao = initialiseDB();
+        //update the amount of games played
+        if (gameData.getGameMode() == 1) {
+            userDao.updateUserGamesPlayed(userModel.getUserId());
+        }
+        else{
+            userDao.updateUserGamesPlayed(userModel.getUserId());
+            userDao.updateUserGamesPlayed(userModel.getUserId2());
+        }
+        // Sets game over text and player stats
+        if(pIsDraw)  {
+            System.out.println("Its a draw");
+            gameOverText.setText(R.string.gameover_draw);
+        }
+        else if(pIsPlayer1sTurn && gameData.getGameMode() == 1 )  {
+            System.out.println("Its game mdoe 1 and user 1 has won");
+            gameOverText.setText(String.format("GAMEOVER: %s WINS!", userModel.getUserName()));
+            userDao.updateUserWins(userModel.getUserId());
+        }
+        else if (!pIsPlayer1sTurn && gameData.getGameMode() == 1) {
+            System.out.println("Its game mode 1 and user AI has won");
+            gameOverText.setText(R.string.gameover_ai_wins);
+            userDao.updateUserLosses(userModel.getUserId());
+        }
+        else if(pIsPlayer1sTurn && gameData.getGameMode() == 2)  {
+            System.out.println("Its game mode 2 and user 1 has won");
+            gameOverText.setText(String.format("GAMEOVER: %s WINS!", userModel.getUserName()));
+            userDao.updateUserWins(userModel.getUserId());
+            userDao.updateUserLosses(userModel.getUserId2());
+        }
+        else if (!pIsPlayer1sTurn && gameData.getGameMode() == 2) {
+            System.out.println("Its game mode 2 and user 2 has won");
+            gameOverText.setText(String.format("GAMEOVER: %s WINS!", userModel.getUserName2()));
+            userDao.updateUserWins(userModel.getUserId2());
+            userDao.updateUserLosses(userModel.getUserId());
+        }
 
         // Disable all board buttons
         for(int i = 0; i < boardSize*boardSize; i++){
@@ -460,7 +490,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         System.out.println("invalid clicked");
         System.out.println(Boolean.toString(gameData.getIsInvalidMove()));
 
-        if(gameData.getIsInvalidMove() == true) {
+        if(gameData.getIsInvalidMove()) {
             System.out.println("goes in");
             System.out.println(Boolean.toString(gameData.getIsInvalidMove()));
 
@@ -535,5 +565,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 index++;
             }
         }
+    }
+
+    public UserDao initialiseDB() {
+        return UserDbInstance.getDatabase(getContext()).userDao();
     }
 }

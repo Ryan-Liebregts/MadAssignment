@@ -142,7 +142,6 @@ public class ProfileFragment extends Fragment {
         user.setUserLosses(0);
         user.setUserWins(0);
         userDao.insert(user);
-
     }
 
     // Starts the animation when fragment is active

@@ -29,13 +29,16 @@ public interface UserDao
     User getUsersByName(String userName);
 
     @Query("SELECT * FROM users WHERE id = :userId")
-    User getStudentByID(int userId);
+    User getUserByID(long userId);
 
 
     @Query("UPDATE users SET user_wins = user_wins + 1 WHERE id = :userId")
-    void updateUserWins(int userId);
+    void updateUserWins(long userId);
 
 
-    @Query("UPDATE users SET user_wins = user_losses + 1 WHERE id = :userId")
-    void updateUserLosses(int userId);
+    @Query("UPDATE users SET user_losses = user_losses + 1 WHERE id = :userId")
+    void updateUserLosses(long userId);
+
+    @Query("UPDATE users SET user_games = user_games + 1 WHERE id = :userId")
+    void updateUserGamesPlayed(long userId);
 }
