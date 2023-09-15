@@ -161,7 +161,7 @@ public class SelectUserFragment extends Fragment {
                 navModel.setClickedValue(1);
             }
         });
-//TODO Continut button logic - pk
+//TODO Continue button logic - pk
         return view;
     }
 
@@ -185,8 +185,13 @@ public class SelectUserFragment extends Fragment {
         List<Integer> data = new ArrayList<Integer>();
         data.add(R.drawable.cross);
         data.add(R.drawable.circle);
-        data.add(R.drawable.icon_left);
-        data.add(R.drawable.icon_right);
+        data.add(R.drawable.tree_icon);
+        data.add(R.drawable.axe_icon);
+        data.add(R.drawable.panda_icon);
+        data.add(R.drawable.ladybug_icon);
+        data.add(R.drawable.penguin_icon);
+        data.add(R.drawable.kangaroo_icon);
+        data.add(R.drawable.butterfly_icon);
         return data;
     }
 

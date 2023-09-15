@@ -49,7 +49,7 @@ public class UserSelectAdapter extends RecyclerView.Adapter<SelectUserVH> {
                 @Override
                 public void onClick( View view) {
                     navModel.setClickedValue(3);
-                    navModel.setHistoricalClickedValue(6);
+                    navModel.setHistoricalClickedValue(5); // Updated by Ryan to reflect navigation modifications
                 }
             });
         }

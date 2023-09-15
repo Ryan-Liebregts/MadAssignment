@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         navigationData = new ViewModelProvider(this).get(NavigationData.class);
         gameData = new ViewModelProvider(this).get(GameData.class);
         loadNavBar();
+
+
         navigationData.clickedValue.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
                     case 0:
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadMenuFragment(); // setClickValue == 0
+
                         break;
                     case 1:
                         System.out.println("The value is :" + String.valueOf(integer));
