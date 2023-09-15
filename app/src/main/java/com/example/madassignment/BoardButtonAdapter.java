@@ -19,6 +19,7 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
     // Interface to call back to the fragment
     public interface AdapterCallback{
         void onItemClicked(int position);
+        void invalidMoveClicked();
     }
     public BoardButtonAdapter(ArrayList<BoardButtonData> data, AdapterCallback callback){
         this.data = data;
@@ -45,6 +46,7 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
             public void onClick(View view) {
                 // If position is empty place a marker
                 if(singleData.getMarkerSymbol() == '-'){
+                    System.out.println("space -");
                     if(gameData.getWhoseTurn() == 1){ //If player1s turn place their marker
                         holder.boardButton.setImageResource(gameData.getPlayer1Marker());
                         singleData.setImageResource(gameData.getPlayer1Marker());
@@ -57,7 +59,11 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
                     }
                 }
                 else{
-                    return; // Do nothing if position is already filled
+                    System.out.println("space filled");
+                    gameData.setIsInvalidMove(true);
+                    System.out.println(Boolean.toString(gameData.getIsInvalidMove()));
+                    callback.invalidMoveClicked();
+                    return;// Do nothing if position is already filled
                 }
 
                 //Call back to Fragment through the interface

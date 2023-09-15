@@ -205,12 +205,16 @@ public class MenuFragment extends Fragment {
         int winCondition = gameData.getWinCondition();
         if(direction == -1) {
             System.out.println("The left button is clicked");
+            winCondition += direction;
+            gameData.setWinCondition(winCondition);
         }
         else {
             System.out.println("The right button is clicked");
+            if(winCondition < gameData.getBoardSize()){
+                winCondition += direction;
+                gameData.setWinCondition(winCondition);
+            }
         }
-        winCondition += direction;
-        gameData.setWinCondition(winCondition);
 
         switch (winCondition) {
             case 3:
@@ -257,5 +261,11 @@ public class MenuFragment extends Fragment {
                 boardImageContainer.setImageResource(R.drawable.five_size_grid);
                 break;
         }
+
+        if(boardSize<gameData.getWinCondition()){
+            handleWinConditionClick(-1);
+
+        }
+
     }
 }

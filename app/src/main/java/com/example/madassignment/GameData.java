@@ -17,6 +17,7 @@ public class GameData  extends ViewModel {
     public MutableLiveData<Character> aiMarkerSymbol;
     public MutableLiveData<Integer> whoseTurn;
     public MutableLiveData<Boolean> isPlayer1GoingFirst;
+    public MutableLiveData<Boolean> isInvalidMove;
 
     public GameData(){
         boardSize = new MediatorLiveData<Integer>();
@@ -57,6 +58,9 @@ public class GameData  extends ViewModel {
 
         isPlayer1GoingFirst = new MediatorLiveData<Boolean>();
         isPlayer1GoingFirst.setValue(true);
+
+        isInvalidMove = new MediatorLiveData<Boolean>();
+        isInvalidMove.setValue(false);
 
     }
 
@@ -147,5 +151,12 @@ public class GameData  extends ViewModel {
         isPlayer1GoingFirst.setValue(pIsPlayer1GoingFirst);
     }
 
+    public boolean getIsInvalidMove(){
+        return isInvalidMove.getValue();
+    }
+
+    public void setIsInvalidMove(boolean pIsInvalidMove){
+        isInvalidMove.setValue(pIsInvalidMove);
+    }
 
 }

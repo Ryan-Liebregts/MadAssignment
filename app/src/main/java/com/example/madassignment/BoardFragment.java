@@ -105,6 +105,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     char playerMarker, otherMarker;
     ImageButton resetButton;
     TextView gameOverText;
+    TextView invalidMoveText;
     ArrayList<BoardButtonData> data;
     private GameData gameData;
     BoardButtonAdapter adapter;
@@ -167,6 +168,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Initialise button and text variables
         resetButton = view.findViewById(R.id.reset_button);
         gameOverText = view.findViewById(R.id.gameoverText);
+        invalidMoveText = view.findViewById(R.id.invalidmoveText);
 
         // Set game over text as invisible
         gameOverText.setVisibility(View.INVISIBLE);
@@ -412,6 +414,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     public void resetGame() {
         // Sets game over text to invisible
         gameOverText.setVisibility(View.INVISIBLE);
+        invalidMoveText.setVisibility(View.INVISIBLE);
 
         // Clears board array
         for(int i = 0; i < boardSize; i++) {
@@ -452,10 +455,25 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         return true;
     }
 
+    public void invalidMoveClicked() {
+        invalidMoveText.setText("INVALID MOVE!");
+        System.out.println("invalid clicked");
+        System.out.println(Boolean.toString(gameData.getIsInvalidMove()));
+
+        if(gameData.getIsInvalidMove() == true) {
+            System.out.println("goes in");
+            System.out.println(Boolean.toString(gameData.getIsInvalidMove()));
+
+            invalidMoveText.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onItemClicked(int pPosition) {
         // Sync adapter data with game board
         updateGameBoard(adapter.data);
+
+        invalidMoveText.setVisibility(View.INVISIBLE);
 
         //TODO: Printing game board for testing purposes, can be deleted
         for (int i = 0; i < gameBoard.length; i++) {
