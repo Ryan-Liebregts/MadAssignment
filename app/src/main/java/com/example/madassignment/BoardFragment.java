@@ -73,7 +73,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     float volume = 1.0f;
     boolean isPlayer1GoingFirst, isThereAWinner, validInput = true, isPlayer1sTurn, isDraw;
     char playerMarker, otherMarker;
-    ImageButton resetButton, undoButton;
     TextView gameOverText;
     TextView invalidMoveText;
     ArrayList<BoardButtonData> data;
@@ -755,10 +754,10 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     // Manages lifecycle of sound effect
     public void onDestroy() {
         super.onDestroy();
-        if (mediaPlayer != null) {
-            mediaPlayer.release();
-            mediaPlayer.stop();
-            mediaPlayer = null;
-        }
+//        if (mediaPlayer != null) {
+//            mediaPlayer.release();
+//            mediaPlayer.stop();
+//            mediaPlayer = null;
+//        }
     }
 }
