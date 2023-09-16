@@ -8,7 +8,7 @@
     android:background="@drawable/wooden_background"
     tools:context=".MainActivity">
 
-    <!-- Container for the main tic-tac-toe application -->
+    <!-- Container for the navigation bar -->
     <FrameLayout
         android:id="@+id/navBar_container"
         android:layout_width="match_parent"

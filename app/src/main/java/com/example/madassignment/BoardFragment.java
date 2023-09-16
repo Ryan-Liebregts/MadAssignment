@@ -1,6 +1,8 @@
 package com.example.madassignment;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -20,28 +24,17 @@ import android.widget.TextView;
 
 import java.util.*;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link BoardFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class BoardFragment extends Fragment implements BoardButtonAdapter.AdapterCallback {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    Button settingsButton;
+    private Button settingsButton;
+    private ImageButton undoButton, resetButton;
     private NavigationData navModel;
 
     private UserData userModel;
 
     private GameData gameModel;
+
+    private MediaPlayer mediaPlayer;
 
 
     ImageButton player1Icon;
@@ -63,31 +56,11 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BoardFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BoardFragment newInstance(String param1, String param2) {
-        BoardFragment fragment = new BoardFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
         userModel = new ViewModelProvider(getActivity()).get(UserData.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         gameData = new ViewModelProvider(getActivity()).get(GameData.class);
@@ -101,9 +74,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     int locJ;
     int otherLocI;
     int otherLocJ;
+    float volume = 1.0f;
     boolean isPlayer1GoingFirst, isThereAWinner, validInput = true, isPlayer1sTurn, isDraw;
     char playerMarker, otherMarker;
-    ImageButton resetButton;
     TextView gameOverText;
     TextView invalidMoveText;
     ArrayList<BoardButtonData> data;
@@ -117,6 +90,21 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
+
+
+        // Initialise button and text variables
+        resetButton = view.findViewById(R.id.reset_button);
+        gameOverText = view.findViewById(R.id.gameoverText);
+        undoButton = view.findViewById(R.id.undo_button);
+        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.piece_mp3);
+        mediaPlayer.setVolume(volume, volume);
+
+        // Set game over text as invisible
+        gameOverText.setVisibility(View.INVISIBLE);
+
+        // Set board size and
+        boardSize = gameData.getBoardSize();
+
 
         ///this is just an error case just in case we somehow get to teh board and dont have a user selected
         if ((gameData.getGameMode() == 1 && userModel.getUserId() == 0) || (gameData.getGameMode() == 2 && userModel.getUserId() == 0 && userModel.getUserId2() == 0)) {
@@ -202,11 +190,70 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             gameData.setWhoseTurn(1); //Set whose turn to player 1
         }
 
-        // Reset button listener
+        // Reset button listener - Modified by Ryan
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                playSoundEffect();
+
+                Animation reset = AnimationUtils.loadAnimation(getActivity(),R.anim.reset_rotation_anim);
+
+                // Animation listener for pressing reset button
+                reset.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // Animation started - Changes colour of the button to show it has been pressed
+                        int cyan = Color.CYAN;
+                        resetButton.setColorFilter(cyan);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // Animation ended - removes colour filter at the end of the animation
+                        resetButton.setColorFilter(null);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // Can be left empty as no repeats are occurring
+                    }
+                });
+
+                resetButton.startAnimation(reset);
                 resetGame(); //Reset the board
+
+            }
+        });
+
+        // Reset button listener - Added by Ryan
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Animation undo = AnimationUtils.loadAnimation(getActivity(),R.anim.undo_rotation_anim);
+
+                // Animation listener for pressing reset button
+                undo.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // Animation started - Changes colour of the button to show it has been pressed
+                        int cyan = Color.CYAN;
+                        undoButton.setColorFilter(cyan);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // Animation ended - removes colour filter at the end of the animation
+                        undoButton.setColorFilter(null);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // Can be left empty as no repeats are occurring
+                    }
+                });
+
+                undoButton.startAnimation(undo);
             }
         });
 
@@ -569,5 +616,21 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
     public UserDao initialiseDB() {
         return UserDbInstance.getDatabase(getContext()).userDao();
+    }
+    private void playSoundEffect() {
+        if (mediaPlayer != null) {
+            mediaPlayer.seekTo(0); // Reset the playback position to the beginning
+            mediaPlayer.start(); // Start playing the sound effect
+        }
+    }
+
+    // Manages lifecycle of sound effect
+    public void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            mediaPlayer.release();
+            mediaPlayer.stop();
+            mediaPlayer = null;
+        }
     }
 }
