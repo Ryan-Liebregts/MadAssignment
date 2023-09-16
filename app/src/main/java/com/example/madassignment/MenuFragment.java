@@ -31,6 +31,8 @@ public class MenuFragment extends Fragment {
     private ImageView winImageContainer;
 
     private ImageView boardImageContainer;
+    private int winCondition;
+    private int boardSize;
 
     // Define ViewModels
     private NavigationData navModel;
@@ -78,6 +80,55 @@ public class MenuFragment extends Fragment {
 
         if(navModel.getAnimationClickedValue() == 0) {
             navModel.setClickedValue(99);
+        }
+
+        winCondition = gameData.getWinCondition();
+        boardSize = gameData.getBoardSize();
+
+        // Initializations, maintains correctness if orientation change has occurred
+        if (boardSize == 3) {
+            boardSizeLeft.setVisibility(View.INVISIBLE);
+            boardImageContainer.setImageResource(R.drawable.three_size_grid);
+        }
+        if (boardSize == 4) {
+            boardSizeLeft.setVisibility(View.VISIBLE);
+            boardSizeRight.setVisibility(View.VISIBLE);
+            boardImageContainer.setImageResource(R.drawable.four_size_grid);
+        }
+        if (boardSize == 5) {
+            boardSizeRight.setVisibility(View.INVISIBLE);
+            boardImageContainer.setImageResource(R.drawable.five_size_grid);
+        }
+
+        // Initializations, maintains correctness if orientation change has occurred
+        if (winCondition == 3) {
+            if (boardSize == 3) {
+                winConditionLeft.setVisibility(View.INVISIBLE);
+                winConditionRight.setVisibility(View.INVISIBLE);
+            }
+            else {
+                winConditionLeft.setVisibility(View.INVISIBLE);
+                winConditionRight.setVisibility(View.VISIBLE);
+            }
+            winImageContainer.setImageResource(R.drawable.three_win_condition);
+        }
+        if (winCondition == 4) {
+            if (boardSize == 4){
+                winConditionLeft.setVisibility(View.INVISIBLE);
+                winConditionRight.setVisibility(View.VISIBLE);
+            }
+            else if (boardSize == 5){
+                winConditionLeft.setVisibility(View.VISIBLE);
+                winConditionRight.setVisibility(View.VISIBLE);
+            }
+            winImageContainer.setImageResource(R.drawable.four_win_condition);
+        }
+        if (winCondition == 5) {
+            if (boardSize == 5){
+                winConditionLeft.setVisibility(View.VISIBLE);
+                winConditionRight.setVisibility(View.INVISIBLE);
+            }
+            winImageContainer.setImageResource(R.drawable.five_win_condition);
         }
 
         /* Both AI_Button and Player_Button currently only direct to the board fragment
@@ -200,7 +251,7 @@ public class MenuFragment extends Fragment {
     }
 
     public void handleWinConditionClick(int direction ){
-        int winCondition = gameData.getWinCondition();
+        winCondition = gameData.getWinCondition();
         if(direction == -1) {
             System.out.println("The left button is clicked");
             winCondition += direction;
@@ -214,25 +265,48 @@ public class MenuFragment extends Fragment {
             }
         }
 
+        // Updated by Ryan to hide the win condition arrows if they are not applicable eg 5 win for 3x3 board
+
         switch (winCondition) {
             case 3:
                 winConditionLeft.setEnabled(false);
+                if (gameData.getBoardSize() == 3) {
+                    winConditionLeft.setVisibility(View.INVISIBLE);
+                    winConditionRight.setVisibility(View.INVISIBLE);
+                }
+                else {
+                    winConditionLeft.setVisibility(View.INVISIBLE);
+                    winConditionRight.setVisibility(View.VISIBLE);
+                }
                 winImageContainer.setImageResource(R.drawable.three_win_condition);
                 break;
             case 4:
                 winConditionLeft.setEnabled(true);
                 winConditionRight.setEnabled(true);
+                if (gameData.getBoardSize()== 4){
+                    winConditionLeft.setVisibility(View.VISIBLE);
+                    winConditionRight.setVisibility(View.INVISIBLE);
+                }
+                else if (gameData.getBoardSize() == 5){
+                    winConditionLeft.setVisibility(View.VISIBLE);
+                    winConditionRight.setVisibility(View.VISIBLE);
+                }
                 winImageContainer.setImageResource(R.drawable.four_win_condition);
                 break;
             case 5:
                 winConditionRight.setEnabled(false);
                 winImageContainer.setImageResource(R.drawable.five_win_condition);
+
+                if (gameData.getBoardSize() == 5){
+                    winConditionLeft.setVisibility(View.VISIBLE);
+                    winConditionRight.setVisibility(View.INVISIBLE);
+                }
                 break;
         }
     }
 
     public void handleBoardSizeClick(int direction){
-        int boardSize = gameData.getBoardSize();
+        boardSize = gameData.getBoardSize();
         if(direction == -1) {
             System.out.println("The left button is clicked");
         }
@@ -243,20 +317,46 @@ public class MenuFragment extends Fragment {
         boardSize += direction;
         gameData.setBoardSize(boardSize);
 
+        // Updated by Ryan to hide the win condition arrows if they are not applicable eg 5 win for 3x3 board
+
         switch (boardSize) {
             case 3:
                 boardSizeLeft.setEnabled(false);
                 boardImageContainer.setImageResource(R.drawable.three_size_grid);
+                boardSizeLeft.setVisibility(View.INVISIBLE);
+                boardSizeRight.setVisibility(View.VISIBLE);
                 break;
             case 4:
                 boardSizeLeft.setEnabled(true);
                 boardSizeRight.setEnabled(true);
-                boardImageContainer.setImageResource(R.drawable.four_size_grid
-                );
+                boardImageContainer.setImageResource(R.drawable.four_size_grid);
+                boardSizeLeft.setVisibility(View.VISIBLE);
+                boardSizeRight.setVisibility(View.VISIBLE);
+                if (gameData.getWinCondition() == 3) {
+                    winConditionRight.setVisibility(View.VISIBLE);
+                }
+                else if (gameData.getWinCondition() == 4) {
+                    winConditionRight.setVisibility(View.INVISIBLE);
+                    winConditionLeft.setVisibility(View.VISIBLE);
+                }
                 break;
             case 5:
                 boardSizeRight.setEnabled(false);
                 boardImageContainer.setImageResource(R.drawable.five_size_grid);
+                boardSizeLeft.setVisibility(View.VISIBLE);
+                boardSizeRight.setVisibility(View.INVISIBLE);
+
+                if (gameData.getWinCondition() == 3) {
+                    winConditionRight.setVisibility(View.VISIBLE);
+                }
+                else if (gameData.getWinCondition() == 4) {
+                    winConditionRight.setVisibility(View.VISIBLE);
+                    winConditionLeft.setVisibility(View.VISIBLE);
+                }
+                else if (gameData.getWinCondition() == 5) {
+                    winConditionRight.setVisibility(View.INVISIBLE);
+                    winConditionLeft.setVisibility(View.VISIBLE);
+                }
                 break;
         }
 
