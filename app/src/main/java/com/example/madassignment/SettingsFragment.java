@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,7 +26,7 @@ public class SettingsFragment extends Fragment {
 
     // Define Buttons & Spinners
     private Button profileButton;
-    private Button customizeButton;
+    private ImageButton leaderBoardButton;
     private ConstraintLayout settingsFragmentBackground;
     private AnimationDrawable animationDrawable;
 
@@ -55,7 +56,7 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         // Define Buttons
         profileButton = view.findViewById(R.id.profileButton);
-        customizeButton = view.findViewById(R.id.customizeButton);
+        leaderBoardButton = view.findViewById(R.id.leaderBoardButton);
         // Animates the background gradient
         settingsFragmentBackground = (ConstraintLayout) view.findViewById(R.id.settingsLayout);
         animationDrawable = (AnimationDrawable) settingsFragmentBackground.getBackground();
@@ -72,12 +73,11 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        customizeButton.setOnClickListener(new View.OnClickListener() {
+        leaderBoardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                navModel.setHistoricalClickedValue(navModel.getClickedValue());
                 navModel.setClickedValue(4);
-                navModel.setHistoricalClickedValue(2);
-
             }
         });
 

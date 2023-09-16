@@ -35,17 +35,21 @@
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:text="PROFILE TEMP"
-            app:layout_constraintEnd_toStartOf="@id/customizeButton"
+            app:layout_constraintEnd_toStartOf="@id/leaderBoardButton"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/settingsTitle" />
 
         <!--TODO: Replace button with drawable -->
-        <Button
-            android:id="@+id/customizeButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+
+        <ImageButton
+            android:id="@+id/leaderBoardButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_margin="20dp"
-            android:text="CUSTOMIZE TEMP"
+            android:backgroundTint="#00FFFFFF"
+            android:src="@drawable/leader_board_button_custom"
+            android:tag="leaderboard_button"
+            app:iconTint="#FC9B4C"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/profileButton"
             app:layout_constraintTop_toBottomOf="@id/settingsTitle" />

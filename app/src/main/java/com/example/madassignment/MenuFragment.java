@@ -18,7 +18,6 @@ public class MenuFragment extends Fragment {
     // Define UI Components
     private ImageButton aiButton;
     private ImageButton playerButton;
-    private ImageView menuTitle;
     private ImageView lightSpot1;
     private ImageView lightSpot2;
     private ImageView lightSpot3;
@@ -63,7 +62,6 @@ public class MenuFragment extends Fragment {
         boardSizeLeft = view.findViewById(R.id.left_board_button);
         aiButton = view.findViewById(R.id.aiButton);
         playerButton = view.findViewById(R.id.playerButton);
-        menuTitle = view.findViewById(R.id.menuTitle);
         lightSpot1 = view.findViewById(R.id.lightSpot1);
         lightSpot2 = view.findViewById(R.id.lightSpot2);
         lightSpot3 = view.findViewById(R.id.lightSpot3);
@@ -88,7 +86,7 @@ public class MenuFragment extends Fragment {
         aiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navModel.setClickedValue(6);
+                navModel.setClickedValue(5);
                 navModel.setHistoricalClickedValue(0);
                 gameData.setGameMode(1);
             }
@@ -97,7 +95,7 @@ public class MenuFragment extends Fragment {
         playerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navModel.setClickedValue(6);
+                navModel.setClickedValue(5);
                 navModel.setHistoricalClickedValue(0);
                 gameData.setGameMode(2);
                 System.out.println("The value of the game mose has been set ot " + gameData.getGameMode());
