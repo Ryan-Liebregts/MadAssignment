@@ -13,7 +13,6 @@ public class SelectUserVH extends RecyclerView.ViewHolder {
     ImageButton checkboxButton;
     ImageButton userIconButton;
     TextView userNameText;
-
     public SelectUserVH(@NonNull View itemView, ViewGroup parent) {
         super(itemView);
 

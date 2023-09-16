@@ -31,7 +31,8 @@ public class ProfileFragment extends Fragment {
     private Button saveUserButton;
 
     private CreateUser userModel;
-//    CreateUser userModel;
+
+    private EditUser editUser;
 
     private String userName;
 
@@ -52,6 +53,8 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         userModel = new ViewModelProvider(getActivity()).get(CreateUser.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
+        editUser = new ViewModelProvider(getActivity()).get(EditUser.class);
+
         UserDao userDao = initialiseDB();
 
     }
@@ -63,14 +66,18 @@ public class ProfileFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
         recyclerView = view.findViewById(R.id.recycler_icon);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4,
-            GridLayoutManager.VERTICAL, false);
+                GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         data = getIconData();
-        UserIconAdapter userIconAdapter =new UserIconAdapter(data, userModel, this);
+        UserIconAdapter userIconAdapter =new UserIconAdapter(data, userModel, this, editUser);
         recyclerView.setAdapter(userIconAdapter);
-
         saveUserButton = view.findViewById(R.id.save_user_button);
         userNameTextBox = view.findViewById(R.id.user_text);
+
+        if (editUser.getUserId() != 0) {
+            userNameTextBox.setText(editUser.getUserName());
+        }
+
 
         // Animates the background gradient
         profileFragmentBackground = (ConstraintLayout) view.findViewById(R.id.profile_fragment);
