@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         navigationData = new ViewModelProvider(this).get(NavigationData.class);
         gameData = new ViewModelProvider(this).get(GameData.class);
         loadNavBar();
+
+
         navigationData.clickedValue.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("The value is :" + String.valueOf(integer));
                         BoardFragment.stopTimer(); // Stop timer before loading new fragment (will cause error otherwise)
                         loadMenuFragment(); // setClickValue == 0
+
                         break;
                     case 1:
                         System.out.println("The value is :" + String.valueOf(integer));
@@ -51,13 +54,9 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 4:
                         System.out.println("The value is :" + String.valueOf(integer));
-                        loadCustomizeFragment();
-                        break;
-                    case 5:
-                        System.out.println("The value is :" + String.valueOf(integer));
                         loadLeaderBoardFragment();
                         break;
-                    case 6:
+                    case 5:
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadUserSelectFragment();
                         break;
@@ -145,20 +144,6 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             fm.beginTransaction().add(R.id.body_container, profileFragment, "profileFragment").commit();
-        }
-    }
-
-    private void loadCustomizeFragment() {
-        // Defines  fragments
-        CustomizeFragment customizeFragment = new CustomizeFragment();
-        Fragment bodyContainer = fm.findFragmentById(R.id.body_container);
-
-        //replaces or adds fragment according to if there is already a fragment
-        if (bodyContainer != null) {
-            fm.beginTransaction().replace(R.id.body_container, customizeFragment, "customizeFragment").commit();
-        }
-        else {
-            fm.beginTransaction().add(R.id.body_container, customizeFragment, "customizeFragment").commit();
         }
     }
 

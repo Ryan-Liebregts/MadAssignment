@@ -1,5 +1,6 @@
 package com.example.madassignment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,11 +18,8 @@ import android.widget.ImageView;
 
 public class NavigationBarFragment extends Fragment {
 
-    private ImageButton settingsButton;
-    private ImageButton leaderBoardButton;
-    private ImageButton backButton;
+    private ImageButton settingsButton, backButton;
     private ImageView menuTitle;
-    private String mParam2;
 
     NavigationData navigationData;
 
@@ -48,23 +46,20 @@ public class NavigationBarFragment extends Fragment {
 
         backButton = view.findViewById(R.id.backButton);
         settingsButton = view.findViewById(R.id.settingsButton);
-        leaderBoardButton = view.findViewById(R.id.leaderBoardButton);
 
         /* The navigation integers describe the following fragments:
             navigationData == 0 -> Menu Fragment
             navigationData == 1 -> Board Fragment
             navigationData == 2 -> Settings Fragment
             navigationData == 3 -> Profile Fragment
-            navigationData == 4 -> Customize Fragment
-            navigationData == 5 -> Leaderboard Fragment
-            navigationData == 6 -> User Select Fragment
+            navigationData == 4 -> Leaderboard Fragment
+            navigationData == 5 -> User Select Fragment
             navigationData == 99 -> Menu Animation Fragment
 
          */
 
         backButton = view.findViewById(R.id.backButton);
         settingsButton = view.findViewById(R.id.settingsButton);
-        leaderBoardButton = view.findViewById(R.id.leaderBoardButton);
         menuTitle = view.findViewById(R.id.menuTitle);
 
         settingsButton.setOnClickListener(new View.OnClickListener() {
@@ -73,6 +68,7 @@ public class NavigationBarFragment extends Fragment {
                 // Starts the undo button animation - updated by Ryan
                 Animation settings = AnimationUtils.loadAnimation(getActivity(),R.anim.settings_rotation_anim);
                 settingsButton.startAnimation(settings);
+
                 navigationData.setHistoricalClickedValue(navigationData.getClickedValue());
                 navigationData.setClickedValue(2);
 
@@ -81,45 +77,64 @@ public class NavigationBarFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                Animation back = AnimationUtils.loadAnimation(getActivity(),R.anim.back_anim);
+
+                // Animation listener for pressing back button
+                back.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        // Animation started - Changes colour of the button to show it has been pressed
+                        int cyan = Color.CYAN;
+                        backButton.setColorFilter(cyan);
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        // Animation ended - removes colour filter at the end of the animation
+                        backButton.setColorFilter(null);
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                        // Can be left empty as no repeats are occurring
+                    }
+                });
+
+                backButton.startAnimation(back);
+
                 if(navigationData.getClickedValue() == 1) {
                     // If we are on the Board Fragment, take us back to the Menu Fragment
                     navigationData.setClickedValue(0);
                 }
                 if (navigationData.getClickedValue() == 2){
-                    if (navigationData.getHistoricalClickedValue() != 4 || navigationData.getHistoricalClickedValue() != 3) {
+                    if (navigationData.getHistoricalClickedValue() != 3) {
                         navigationData.setClickedValue(1);
                     }
                     else {
                         navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
                     }
                 }
-                else if (navigationData.getClickedValue() == 4 || navigationData.getClickedValue() == 3) {
-                    if (navigationData.getHistoricalClickedValue() != 6) {
+                else if (navigationData.getClickedValue() == 3) {
+                    if (navigationData.getHistoricalClickedValue() != 5) {
                         navigationData.setClickedValue(2);
                     }
                     else {
-                        navigationData.setClickedValue(6);
+                        navigationData.setClickedValue(5);
                     }
                 }
-                else if (navigationData.getClickedValue() == 5) {
+                else if (navigationData.getClickedValue() == 4) {
                     navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
                     // TODO: Determine if the user is already in a game and if so go to BOARD fragment otherwise MENU fragment
 
                 }
-                else if (navigationData.getClickedValue() == 6) {
+                else if (navigationData.getClickedValue() == 5) {
                     // If we are on the User Select Fragment, take us back to the Menu Fragment
                     navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
                     navigationData.setClickedValue(1);
                 }
             }
-        });
 
-        leaderBoardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                navigationData.setHistoricalClickedValue(navigationData.getClickedValue());
-                navigationData.setClickedValue(5);
-            }
         });
 
         navigationData.clickedValue.observe(getActivity(), new Observer<Integer>() {
@@ -128,48 +143,39 @@ public class NavigationBarFragment extends Fragment {
                 switch(integer) {
                     case 0:
                         settingsButton.setVisibility(View.VISIBLE);
-                        leaderBoardButton.setVisibility(View.VISIBLE);
                         backButton.setVisibility(View.GONE);
                         menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 1:
                         settingsButton.setVisibility(View.VISIBLE);
-                        leaderBoardButton.setVisibility(View.VISIBLE);
                         backButton.setVisibility(View.VISIBLE);
                         menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 2:
                         settingsButton.setVisibility(View.GONE);
-                        leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
                         menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 3:
                         settingsButton.setVisibility(View.GONE);
-                        leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
                         menuTitle.setVisibility(View.VISIBLE);
                         break;
                     case 4:
                         settingsButton.setVisibility(View.GONE);
-                        leaderBoardButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.VISIBLE);
                         menuTitle.setVisibility(View.VISIBLE);
+                        break;
                     case 5:
-                        settingsButton.setVisibility(View.GONE);
-                        backButton.setVisibility(View.VISIBLE);
-                        leaderBoardButton.setVisibility(View.GONE);
-                        menuTitle.setVisibility(View.VISIBLE);
-                    case 6:
                         settingsButton.setVisibility(View.VISIBLE);
                         backButton.setVisibility(View.VISIBLE);
-                        leaderBoardButton.setVisibility(View.VISIBLE);
                         menuTitle.setVisibility(View.VISIBLE);
+                        break;
                     case 99:
                         settingsButton.setVisibility(View.GONE);
                         backButton.setVisibility(View.GONE);
-                        leaderBoardButton.setVisibility(View.GONE);
                         menuTitle.setVisibility(View.GONE);
+                        break;
                 }
 
             }

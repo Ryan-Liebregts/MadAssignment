@@ -9,7 +9,7 @@
 
     <ImageView
         android:id="@+id/menuTitle"
-        android:layout_width="200dp"
+        android:layout_width="250dp"
         android:layout_height="50dp"
         android:src="@drawable/tictactoe_name_drawable"
         android:visibility="visible"
@@ -22,7 +22,7 @@
         android:id="@+id/backButton"
         android:layout_width="48dp"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="20dp"
         android:backgroundTint="#00FFFFFF"
         android:src="@drawable/back_icon"
         android:tag="back_button"
@@ -30,20 +30,6 @@
         app:iconTint="#3e3131"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageButton
-        android:id="@+id/leaderBoardButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:backgroundTint="#00FFFFFF"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/leader_board_button_custom"
-        android:tag="leaderboard_button"
-        android:visibility="visible"
-        app:iconTint="#FC9B4C"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/settingsButton"
         app:layout_constraintTop_toTopOf="parent" />
 
 
