@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity {
                 switch(integer) {
                     case 0:
                         System.out.println("The value is :" + String.valueOf(integer));
+                        BoardFragment.stopTimer(); // Stop timer before loading new fragment (will cause error otherwise)
                         loadMenuFragment(); // setClickValue == 0
                         break;
                     case 1:
@@ -41,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 2:
                         System.out.println("The value is :" + String.valueOf(integer));
+                        BoardFragment.stopTimer(); // Stop timer before loading new fragment (will cause error otherwise)
                         loadSettingsFragment();
                         break;
                     case 3:

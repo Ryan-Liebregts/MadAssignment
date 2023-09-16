@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,28 +36,19 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     Button settingsButton;
     private NavigationData navModel;
-
     private UserData userModel;
-
     private GameData gameModel;
-
-
     ImageButton player1Icon;
     ImageButton player1IconDull;
-
     ImageButton player2Icon;
     ImageButton player2IconDull;
-
     TextView player1Moves;
     TextView player2Moves;
-
     int gameMode;
     TextView player1Name;
     TextView player2Name;
-
     ImageView player1Symbol;
     ImageView player2Symbol;
     public BoardFragment() {
@@ -103,13 +95,18 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     int otherLocJ;
     boolean isPlayer1GoingFirst, isThereAWinner, validInput = true, isPlayer1sTurn, isDraw;
     char playerMarker, otherMarker;
-    ImageButton resetButton;
+    ImageButton resetButton, undoButton;
     TextView gameOverText;
     TextView invalidMoveText;
     ArrayList<BoardButtonData> data;
     private GameData gameData;
     BoardButtonAdapter adapter;
     RecyclerView rv;
+    static Timer boardTimer;
+    long startTime;
+    static boolean timerRunning = false;
+    TextView timerText;
+    ArrayList<int[]> moveList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -127,24 +124,31 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         //All code below will only execute if allowed to by the if statement above use multiple returns as an if/else
         //This function handles settings hte game user data such as icons and symbols and username on the board
         setGameUserData(view);
+
         // Set board size
         boardSize = gameData.getBoardSize();
+
         // Set locI, locJ, otherLocI and otherLocJ values to 0
         locI = 0;
         locJ = 0;
         otherLocI = 0;
         otherLocJ = 0;
 
+        // Initialise move list
+        moveList = new ArrayList<int[]>();
+
         // Set isThereAWinner and isDraw to false
         isThereAWinner = false;
         isDraw = false;
 
-
-        //TODO - change all this over to use userData and not Game Data - PK (sorry Jules)
         // Is the player going first?
+        if(userModel.getFirstMove() == 1) gameData.setIsPlayer1GoingFirst(true);
+        else if(userModel.getFirstMove() == 2) gameData.setIsPlayer1GoingFirst(false);
+
         isPlayer1GoingFirst = gameData.getIsPlayer1GoingFirst();
         if(isPlayer1GoingFirst) isPlayer1sTurn = true;
         else isPlayer1sTurn = false;
+
         // Set player and ai marker
         playerMarker = gameData.getPlayer1MarkerSymbol();
         if(gameData.getGameMode() == 1){
@@ -169,17 +173,19 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         resetButton = view.findViewById(R.id.reset_button);
         gameOverText = view.findViewById(R.id.gameoverText);
         invalidMoveText = view.findViewById(R.id.invalidmoveText);
+        undoButton = view.findViewById(R.id.undo_button);
+        timerText = view.findViewById(R.id.timerTextView);
 
         // Set game over text as invisible
         gameOverText.setVisibility(View.INVISIBLE);
 
-        // Grid Stuff
+        // Create new data array for grid buttons, and filled with empty button data
         data = new ArrayList<BoardButtonData>();
-
         for(int i = 0; i < gameData.getBoardSize() * gameData.getBoardSize(); i++) {
             data.add(new BoardButtonData(0, i));
         }
 
+        // Create recyclerview grid
         rv = view.findViewById(R.id.recyclerView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), boardSize, GridLayoutManager.VERTICAL,false);
         rv.setLayoutManager(gridLayoutManager);
@@ -202,11 +208,22 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             gameData.setWhoseTurn(1); //Set whose turn to player 1
         }
 
+        // Start timer
+        startTimer();
+
         // Reset button listener
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 resetGame(); //Reset the board
+            }
+        });
+
+        // Undo button listener
+        undoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                undoMove(); //Reset the board
             }
         });
 
@@ -269,9 +286,13 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         int adapterDataIndex = (otherLocI * pGameBoard.length) + otherLocJ; // Determine where AI placed marker in terms of adapter data arraylist index
         adapter.data.get(adapterDataIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
-        adapter.data.get(adapterDataIndex).setImageResource(gameData.getAIMarker()); // Set board button data to appropriate drawable
+        adapter.data.get(adapterDataIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
         adapter.notifyDataSetChanged(); //Notify adapter to update UI
         gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
+
+        // Add move to move list
+        int[] move = {otherLocI, otherLocJ};
+        moveList.add(move);
     }
 
     // Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]
@@ -399,6 +420,13 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             userDao.updateUserGamesPlayed(userModel.getUserId());
             userDao.updateUserGamesPlayed(userModel.getUserId2());
         }
+
+        // Stop Timer
+        stopTimer();
+
+        //Clear move list
+        moveList.clear();
+
         // Sets game over text and player stats
         if(pIsDraw)  {
             System.out.println("Its a draw");
@@ -432,6 +460,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             adapter.data.get(i).setEnabledState(false);
         }
 
+        // Disable undo button
+        undoButton.setEnabled(false);
+
         // Notify adapter to update UI
         adapter.notifyDataSetChanged();
 
@@ -460,6 +491,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             adapter.data.get(i).setEnabledState(true);
         }
 
+        // Enable undo button
+        undoButton.setEnabled(true);
+
         // Notify adapter to update UI
         adapter.notifyDataSetChanged();
 
@@ -472,6 +506,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // If game mode is pvp, set to appropriate players turn
         if(!isPlayer1GoingFirst && gameData.getGameMode() == 2) gameData.setWhoseTurn(2); //Set whose turn to player 2
         else if(isPlayer1GoingFirst && gameData.getGameMode() == 2) gameData.setWhoseTurn(1); //Set whose turn to player 1
+
+        //Start timer
+        startTimer();
 
     }
 
@@ -518,11 +555,15 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             locI = pPosition / gameData.getBoardSize();
             locJ = pPosition % gameData.getBoardSize();
             isPlayer1sTurn = true;
+            int[] move = {locI, locJ};
+            moveList.add(move);
         }
         else if(gameData.whoseTurn.getValue() == 2){
             otherLocI = pPosition / gameData.getBoardSize();
             otherLocJ = pPosition % gameData.getBoardSize();
             isPlayer1sTurn = false;
+            int[] move = {otherLocI, otherLocJ};
+            moveList.add(move);
         }
 
         // Check if there is a winner or a draw
@@ -554,6 +595,11 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         if(isThereAWinner || isDraw) {
             endGame(isPlayer1sTurn, isDraw);
         }
+        else{
+            // Reset timer
+            stopTimer();
+            startTimer();
+        }
     }
 
     // Gets data from adapter and updates game board
@@ -570,4 +616,81 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     public UserDao initialiseDB() {
         return UserDbInstance.getDatabase(getContext()).userDao();
     }
+
+    // Undo the user's previous move
+    public void undoMove(){
+        if(moveList.size() > 0){
+            if(gameData.getGameMode() == 1 && gameData.getWhoseTurn() == 1){
+                int adapterDataIndex = (moveList.get(moveList.size() - 1)[0] * gameBoard.length) + moveList.get(moveList.size() - 1)[1]; // Get most recent marker placement
+                adapter.data.get(adapterDataIndex).setMarkerSymbol('-'); // Change adapter data to remove marker
+                adapter.data.get(adapterDataIndex).setImageResource(0); // Change adapter data to remove marker
+                adapter.notifyDataSetChanged(); //Notify adapter to update UI
+                moveList.remove(moveList.size() - 1); // Remove most recent move from move list
+
+                adapterDataIndex = (moveList.get(moveList.size() - 1)[0] * gameBoard.length) + moveList.get(moveList.size() - 1)[1]; // Get most recent marker placement
+                adapter.data.get(adapterDataIndex).setMarkerSymbol('-'); // Change adapter data to remove marker
+                adapter.data.get(adapterDataIndex).setImageResource(0); // Change adapter data to remove marker
+                adapter.notifyDataSetChanged(); //Notify adapter to update UI
+                moveList.remove(moveList.size() - 1); // Remove most recent move from move list
+            }
+            else if(gameData.getGameMode() == 2 && gameData.getWhoseTurn() == 1){
+                int adapterDataIndex = (moveList.get(moveList.size() - 1)[0] * gameBoard.length) + moveList.get(moveList.size() - 1)[1]; // Get most recent marker placement
+                adapter.data.get(adapterDataIndex).setMarkerSymbol('-'); // Change adapter data to remove marker
+                adapter.data.get(adapterDataIndex).setImageResource(0); // Change adapter data to remove marker
+                adapter.notifyDataSetChanged(); //Notify adapter to update UI
+                moveList.remove(moveList.size() - 1); // Remove most recent move from move list
+                gameData.setWhoseTurn(2); //Set player 2's turn
+            }
+            else if(gameData.getGameMode() == 2 && gameData.getWhoseTurn() == 2){
+                int adapterDataIndex = (moveList.get(moveList.size() - 1)[0] * gameBoard.length) + moveList.get(moveList.size() - 1)[1]; // Get most recent marker placement
+                adapter.data.get(adapterDataIndex).setMarkerSymbol('-'); // Change adapter data to remove marker
+                adapter.data.get(adapterDataIndex).setImageResource(0); // Change adapter data to remove marker
+                adapter.notifyDataSetChanged(); //Notify adapter to update UI
+                moveList.remove(moveList.size() - 1); // Remove most recent move from move list
+                gameData.setWhoseTurn(1); //Set player 2's turn
+            }
+        }
+    }
+
+    // Start the timer
+    // Code below is a modified version of the code from:
+    // https://stackoverflow.com/questions/4597690/how-to-set-timer-in-android
+    // https://stackoverflow.com/questions/14393423/how-to-make-a-countdown-timer-in-java/14393573#14393573
+    // https://stackoverflow.com/questions/11707066/timer-in-java-thread/11707987#11707987
+    // https://stackoverflow.com/questions/5161951/android-only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-vi
+    public void startTimer(){
+        System.out.println("Starting Timer"); // Prints starting timer for testing purposes/
+        startTime = SystemClock.elapsedRealtime(); // Obtain current time from system clock
+        boardTimer = new Timer(); // Create new timer object
+
+        // Repeatedly run code 1000 times a second
+        boardTimer.scheduleAtFixedRate(new TimerTask() {
+            public void run() {
+                long currentTime = SystemClock.elapsedRealtime();  // Obtain current time again from system clock
+                long passedTime = currentTime - startTime; // Obtain the difference between times
+
+                // Run the following code on the UI thread
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        int sec = (int) (passedTime / 1000); // Convert milliseconds to seconds
+                        int min = sec / 60; // Convert seconds to minutes
+                        int hours = min / 60; // Convert minutes to hours
+                        timerText.setText(String.format("%02d:%02d:%02d", hours, min % 60, sec % 60)); // Update timer text
+                    }
+                });
+            }
+        }, 0, 1000);
+        timerRunning = true;  // Set timer running to true;
+    }
+
+    // Stop the timer
+    public static void stopTimer(){
+        if (boardTimer != null) {
+            boardTimer.cancel(); // If timer exists, cancel timer
+        }
+        timerRunning = false; // Set timer running to false;
+        System.out.println("Stopping Timer"); // Prints stopping timer for testing purposes/
+    }
+
+
 }

@@ -14,6 +14,7 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
 
     ArrayList<BoardButtonData> data;
     GameData gameData;
+    UserData userData;
     AdapterCallback callback;
 
     // Interface to call back to the fragment
@@ -30,6 +31,7 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
     @Override
     public BoardButtonDataViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
         gameData = new ViewModelProvider((ViewModelStoreOwner) parent.getContext()).get(GameData.class);
+        userData = new ViewModelProvider((ViewModelStoreOwner) parent.getContext()).get(UserData.class);
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.board_button_layout, parent, false);
         BoardButtonDataViewHolder boardButtonDataViewHolder = new BoardButtonDataViewHolder(view, parent);
@@ -48,13 +50,13 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
                 if(singleData.getMarkerSymbol() == '-'){
                     System.out.println("space -");
                     if(gameData.getWhoseTurn() == 1){ //If player1s turn place their marker
-                        holder.boardButton.setImageResource(gameData.getPlayer1Marker());
-                        singleData.setImageResource(gameData.getPlayer1Marker());
+                        holder.boardButton.setImageResource(userData.getUserSymbol1());
+                        singleData.setImageResource(userData.getUserSymbol1());
                         singleData.setMarkerSymbol(gameData.getPlayer1MarkerSymbol());
                     }
                     else if(gameData.getWhoseTurn() == 2){ //If player2s turn place their marker
-                        holder.boardButton.setImageResource(gameData.getPlayer2Marker());
-                        singleData.setImageResource(gameData.getPlayer2Marker());
+                        holder.boardButton.setImageResource(userData.getUserSymbol2());
+                        singleData.setImageResource(userData.getUserSymbol2());
                         singleData.setMarkerSymbol(gameData.getPlayer2MarkerSymbol());
                     }
                 }
