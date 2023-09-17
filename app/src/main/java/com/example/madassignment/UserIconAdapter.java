@@ -23,13 +23,16 @@ public class UserIconAdapter extends RecyclerView.Adapter<UserIconVH>{
 
     CreateUser userModel;
 
+    EditUser editUserModel;
+
     LifecycleOwner test;
 
 
-    public UserIconAdapter(ArrayList<Integer> data, CreateUser userData, LifecycleOwner Test){
+    public UserIconAdapter(ArrayList<Integer> data, CreateUser userData, LifecycleOwner Test, EditUser editUserModel){
         this.data = data;
         this.userModel = userData;
         this.test = Test;
+        this.editUserModel = editUserModel;
     }
     @NonNull
     @Override
@@ -41,16 +44,21 @@ public class UserIconAdapter extends RecyclerView.Adapter<UserIconVH>{
 
     @Override
     public void onBindViewHolder(@NonNull UserIconVH holder, int position) {
+        boolean isEdit = editUserModel.getUserId() != 0;
         int singleRow = data.get(position);
         holder.userIcon.setImageResource(singleRow);
         holder.userIconSelected.setImageResource(singleRow);
 
+
         holder.userIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userModel.setUserIcon(singleRow);
-                holder.userIcon.setVisibility(View.GONE);
-                holder.userIconSelected.setVisibility(View.VISIBLE);
+                if (isEdit){
+                    editUserModel.setUserIcon(singleRow);
+                }
+                else {
+                    userModel.setUserIcon(singleRow);
+                }
             }
         });
 
@@ -60,6 +68,24 @@ public class UserIconAdapter extends RecyclerView.Adapter<UserIconVH>{
                 if (integer !=singleRow){
                     holder.userIcon.setVisibility(View.VISIBLE);
                     holder.userIconSelected.setVisibility(View.GONE);
+                }
+                else {
+                    holder.userIcon.setVisibility(View.GONE);
+                    holder.userIconSelected.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        editUserModel.userIcon.observe(test, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (integer !=singleRow){
+                    holder.userIcon.setVisibility(View.VISIBLE);
+                    holder.userIconSelected.setVisibility(View.GONE);
+                }
+                else {
+                    holder.userIcon.setVisibility(View.GONE);
+                    holder.userIconSelected.setVisibility(View.VISIBLE);
                 }
             }
         });

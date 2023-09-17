@@ -19,4 +19,5 @@
     <string name="first_move">First Move</string>
     <string name="gameover_draw">GAMEOVER: DRAW!</string>
     <string name="gameover_ai_wins">GAMEOVER: AI WINS!</string>
+    <string name="users">Users</string>
 </resources>

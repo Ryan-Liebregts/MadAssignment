@@ -68,7 +68,7 @@ public class SettingsFragment extends Fragment {
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navModel.setClickedValue(3);
+                navModel.setClickedValue(6);
                 navModel.setHistoricalClickedValue(2);
             }
         });
