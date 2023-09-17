@@ -94,7 +94,7 @@ public class ProfileFragment extends Fragment {
                userName = String.valueOf(userNameTextBox.getText());
                userIcon = userModel.getUserIcon();
                saveUser(userName, userIcon);
-               navModel.setClickedValue(2);
+               navModel.setClickedValue(5);
                userModel.setUserIcon(0);
                userModel.setUserName("");
             }

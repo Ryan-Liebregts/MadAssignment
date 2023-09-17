@@ -107,6 +107,7 @@ public class UserSelectAdapter extends RecyclerView.Adapter<SelectUserVH> {
                         }
                     } else {
                         holder.checkboxButton.setVisibility(View.VISIBLE);
+                        holder.checkboxButton.setImageResource(R.drawable.number_two_icon);
                         holder.userNameText.setText("Player 2");
                     }
                 }
