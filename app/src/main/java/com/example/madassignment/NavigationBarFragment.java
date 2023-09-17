@@ -21,6 +21,9 @@ public class NavigationBarFragment extends Fragment {
     private ImageButton settingsButton, backButton;
     private ImageView menuTitle;
 
+    private  CreateUser userModel;
+    private EditUser editUserModel;
+
     NavigationData navigationData;
 
     public NavigationBarFragment() {
@@ -33,6 +36,8 @@ public class NavigationBarFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
+        editUserModel = new ViewModelProvider(getActivity()).get(EditUser.class);
+        userModel = new ViewModelProvider(getActivity()).get(CreateUser.class);
 
 
     }
@@ -116,8 +121,16 @@ public class NavigationBarFragment extends Fragment {
                     }
                 }
                 else if (navigationData.getClickedValue() == 3) {
+                    //restore state
+                    userModel.setUserIcon(0);
+                    userModel.setUserName("");
+                    editUserModel.setDeleteUserId(0L);
+                    editUserModel.setDeleteUserPosition(0);
+                    editUserModel.setUserIcon(0);
+                    editUserModel.setUserName("");
+                    editUserModel.setUserId(0L);
                     if (navigationData.getHistoricalClickedValue() != 5) {
-                        navigationData.setClickedValue(2);
+                        navigationData.setClickedValue(6);
                     }
                     else {
                         navigationData.setClickedValue(5);
@@ -132,6 +145,11 @@ public class NavigationBarFragment extends Fragment {
                     // If we are on the User Select Fragment, take us back to the Menu Fragment
                     navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
                     navigationData.setClickedValue(1);
+                }
+
+                else if (navigationData.getClickedValue() == 6) {
+                    navigationData.setClickedValue(2);
+
                 }
             }
 

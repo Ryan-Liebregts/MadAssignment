@@ -56,7 +56,6 @@ public class ProfileFragment extends Fragment {
         userModel = new ViewModelProvider(getActivity()).get(CreateUser.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         editUser = new ViewModelProvider(getActivity()).get(EditUser.class);
-
         UserDao userDao = initialiseDB();
 
     }
@@ -64,9 +63,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         //set isEdit boolean
         boolean isEdit = editUser.getUserId() != 0;
+
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -90,6 +89,8 @@ public class ProfileFragment extends Fragment {
         UserIconAdapter userIconAdapter =new UserIconAdapter(data, userModel, this, editUser);
         recyclerView.setAdapter(userIconAdapter);
 
+        //set default value
+        userNameTextBox.setText("");
         // set userName in the text box if its an edit
         if (isEdit) {
             userNameTextBox.setText(editUser.getUserName());
@@ -170,7 +171,7 @@ public class ProfileFragment extends Fragment {
                 else{
                     saveUser();
                 }
-               navModel.setClickedValue(6);
+               navModel.setClickedValue(navModel.getHistoricalClickedValue());
 
             }
         });
@@ -245,5 +246,6 @@ public class ProfileFragment extends Fragment {
             animationDrawable.stop();
         }
     }
+
 
 }

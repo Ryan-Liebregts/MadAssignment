@@ -28,9 +28,8 @@ public class SelectUserFragment extends Fragment {
 
     public List<Integer> dataSymbol;
 
-    public ToggleButton toggleUser1;
+    public ToggleButton toggleUser;
 
-    public ToggleButton toggleUser2;
 
     private GameData gameData;
 
@@ -72,15 +71,17 @@ public class SelectUserFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recycler_user);
         symbolRecyclerView = view.findViewById(R.id.recycler_symbol);
         continueButton = view.findViewById(R.id.continue_button);
-        toggleUser1 = view.findViewById(R.id.togglePlayer1);
+        toggleUser = view.findViewById(R.id.togglePlayer1);
 
-        toggleUser1.setText("Select Player");
-        toggleUser1.setTextOn("Player 1");
+        continueButton.setEnabled(false);
+
+        toggleUser.setText("Select Player");
+        toggleUser.setTextOn("Player 1");
         if (gameData.getGameMode() == 1) {
-            toggleUser1.setTextOff("AI");
+            toggleUser.setTextOff("AI");
         }
         else {
-            toggleUser1.setTextOff("Player 2");
+            toggleUser.setTextOff("Player 2");
 
         }
         // Animates the background gradient
@@ -90,7 +91,7 @@ public class SelectUserFragment extends Fragment {
         animationDrawable.setExitFadeDuration(2000);
 
 
-        toggleUser1.setOnCheckedChangeListener((buttonView, isChecked) -> {
+        toggleUser.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 userModel.setFirstMove(1);
             } else {
@@ -121,39 +122,99 @@ public class SelectUserFragment extends Fragment {
         SymbolSelectAdapter symbolSelectAdapter = new SymbolSelectAdapter(dataSymbol, userModel, gameData, this);
         symbolRecyclerView.setAdapter(symbolSelectAdapter);
 
-        userModel.userId2.observe(getViewLifecycleOwner(), new Observer<Long>() {
+        userModel.userId2.observe(getActivity(), new Observer<Long>() {
             @Override
             public void onChanged(Long integer) {
-                if (userModel.getUserId2() != 0 && userModel.getUserId() != 0 && userModel.getFirstMove() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0) {
-                    continueButton.setEnabled(true);
-                }
-                else{
-                    continueButton.setEnabled(false);
-                }
-            }
-        });
-
-        userModel.userId.observe(getViewLifecycleOwner(), new Observer<Long>() {
-            @Override
-            public void onChanged(Long integer) {
-                if(gameData.getGameMode() == 1) {
-                    if (userModel.getUserId() != 0) {
+                if (gameData.getGameMode() == 1) {
+                    if (userModel.getUserId() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0 && userModel.getFirstMove() != 0) {
                         continueButton.setEnabled(true);
-                    }
-                    else{
+                    } else {
                         continueButton.setEnabled(false);
                     }
                 }
                 else {
-                    if (userModel.getUserId2() != 0 && userModel.getUserId() != 0) {
+                    if (userModel.getUserId2() != 0 && userModel.getUserId() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0 && userModel.getFirstMove() != 0) {
                         continueButton.setEnabled(true);
-                    }
-                    else{
+                    } else {
                         continueButton.setEnabled(false);
                     }
                 }
-            }
-        });
+            }});
+        userModel.userId.observe(getActivity(), new Observer<Long>() {
+            @Override
+            public void onChanged(Long integer) {
+                if (gameData.getGameMode() == 1) {
+                    if (userModel.getUserId() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0 && userModel.getFirstMove() != 0) {
+                        continueButton.setEnabled(true);
+                    } else {
+                        continueButton.setEnabled(false);
+                    }
+                }
+                else {
+                    if (userModel.getUserId2() != 0 && userModel.getUserId() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0 && userModel.getFirstMove() != 0) {
+                        continueButton.setEnabled(true);
+                    } else {
+                        continueButton.setEnabled(false);
+                    }
+                }
+            }});
+
+        userModel.userSymbol1.observe(getActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (gameData.getGameMode() == 1) {
+                    if (userModel.getUserId() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0 && userModel.getFirstMove() != 0) {
+                        continueButton.setEnabled(true);
+                    } else {
+                        continueButton.setEnabled(false);
+                    }
+                }
+                else {
+                    if (userModel.getUserId2() != 0 && userModel.getUserId() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0 && userModel.getFirstMove() != 0) {
+                        continueButton.setEnabled(true);
+                    } else {
+                        continueButton.setEnabled(false);
+                    }
+                }
+            }});
+
+        userModel.userSymbol2.observe(getActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (gameData.getGameMode() == 1) {
+                    if (userModel.getUserId() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0 && userModel.getFirstMove() != 0) {
+                        continueButton.setEnabled(true);
+                    } else {
+                        continueButton.setEnabled(false);
+                    }
+                }
+                else {
+                    if (userModel.getUserId2() != 0 && userModel.getUserId() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0 && userModel.getFirstMove() != 0) {
+                        continueButton.setEnabled(true);
+                    } else {
+                        continueButton.setEnabled(false);
+                    }
+                }
+            }});
+
+        userModel.firstMove.observe(getActivity(), new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (gameData.getGameMode() == 1) {
+                    if (userModel.getUserId() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0 && userModel.getFirstMove() != 0) {
+                        continueButton.setEnabled(true);
+                    } else {
+                        continueButton.setEnabled(false);
+                    }
+                }
+                else {
+                    if (userModel.getUserId2() != 0 && userModel.getUserId() != 0 && userModel.getUserSymbol1() != 0 && userModel.getUserSymbol2() != 0 && userModel.getFirstMove() != 0) {
+                        continueButton.setEnabled(true);
+                    } else {
+                        continueButton.setEnabled(false);
+                    }
+                }
+            }});
 
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,7 +222,6 @@ public class SelectUserFragment extends Fragment {
                 navModel.setClickedValue(1);
             }
         });
-//TODO Continue button logic - pk
         return view;
     }
 
