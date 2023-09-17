@@ -171,6 +171,7 @@ public class ProfileFragment extends Fragment {
                     saveUser();
                 }
                navModel.setClickedValue(6);
+
             }
         });
         return view;

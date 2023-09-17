@@ -92,6 +92,7 @@ public class SymbolSelectAdapter extends RecyclerView.Adapter<SelectUserVH> {
                 }
                 else {
                     holder.checkboxButton.setVisibility(View.VISIBLE);
+                    holder.checkboxButton.setImageResource(R.drawable.number_two_icon);
                     holder.userNameText.setText(player2Name);
                     holder.userNameText.setVisibility(View.VISIBLE);
                 }
