@@ -243,6 +243,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(moveList.size() == 1 && gameData.gameMode.getValue() == 1 && !isPlayer1GoingFirst) return; //If player vs ai, ai goes first, ignore undo button for first move
+
                 Animation undo = AnimationUtils.loadAnimation(getActivity(),R.anim.undo_rotation_anim);
 
                 // Animation listener for pressing reset button
@@ -738,7 +740,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         timerRunning = false; // Set timer running to false;
         System.out.println("Stopping Timer"); // Prints stopping timer for testing purposes/
     }
-
 
     private void playSoundEffect() {
         if (mediaPlayer != null) {
