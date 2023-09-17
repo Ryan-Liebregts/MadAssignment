@@ -129,12 +129,7 @@ public class NavigationBarFragment extends Fragment {
                     editUserModel.setUserIcon(0);
                     editUserModel.setUserName("");
                     editUserModel.setUserId(0L);
-                    if (navigationData.getHistoricalClickedValue() != 5) {
-                        navigationData.setClickedValue(6);
-                    }
-                    else {
-                        navigationData.setClickedValue(5);
-                    }
+                    navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
                 }
                 else if (navigationData.getClickedValue() == 4) {
                     navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
