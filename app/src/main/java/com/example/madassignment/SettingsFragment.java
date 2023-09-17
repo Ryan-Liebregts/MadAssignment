@@ -25,7 +25,7 @@ public class SettingsFragment extends Fragment {
 
 
     // Define Buttons & Spinners
-    private Button profileButton;
+    private ImageButton profileButton;
     private ImageButton leaderBoardButton;
     private ConstraintLayout settingsFragmentBackground;
     private AnimationDrawable animationDrawable;

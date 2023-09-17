@@ -1,5 +1,6 @@
 package com.example.madassignment;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -33,6 +34,7 @@ public class MenuFragment extends Fragment {
     private ImageView boardImageContainer;
     private int winCondition;
     private int boardSize;
+    private int cyan = Color.CYAN;
 
     // Define ViewModels
     private NavigationData navModel;
@@ -72,6 +74,10 @@ public class MenuFragment extends Fragment {
         //define images
         winImageContainer = view.findViewById(R.id.win_condition);
         boardImageContainer = view.findViewById(R.id.board_size);
+
+        // Initialize by removing colour filters on buttons
+        aiButton.setColorFilter(null);
+        playerButton.setColorFilter(null);
 
         fadeAnimation(lightSpot1, 1);
         fadeAnimation(lightSpot2, 0);
@@ -137,6 +143,8 @@ public class MenuFragment extends Fragment {
         aiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                aiButton.setColorFilter(cyan);
+
                 navModel.setClickedValue(5);
                 navModel.setHistoricalClickedValue(0);
                 gameData.setGameMode(1);
@@ -146,6 +154,8 @@ public class MenuFragment extends Fragment {
         playerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                playerButton.setColorFilter(cyan);
+
                 navModel.setClickedValue(5);
                 navModel.setHistoricalClickedValue(0);
                 gameData.setGameMode(2);
