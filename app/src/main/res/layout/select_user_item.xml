@@ -23,10 +23,10 @@
 
     <ImageButton
         android:id ="@+id/checkbox"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="#50ABABAB"
-        android:src="@drawable/check_icon"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:background="#00ABABAB"
+        android:src="@drawable/number_one_icon"
         android:scaleType="fitCenter"
         android:visibility="gone"
         android:layout_marginBottom="25dp"

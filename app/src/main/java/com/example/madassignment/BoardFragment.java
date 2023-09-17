@@ -591,7 +591,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Sync adapter data with game board
         updateGameBoard(adapter.data);
 
-        invalidMoveText.setVisibility(View.INVISIBLE);
+        if (invalidMoveText != null) {
+            invalidMoveText.setVisibility(View.INVISIBLE);
+        }
 
         //TODO: Printing game board for testing purposes, can be deleted
         for (int i = 0; i < gameBoard.length; i++) {
