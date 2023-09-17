@@ -89,6 +89,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     ArrayList<int[]> moveList;
 
     EditUser editUserModel;
+    Handler handler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -384,9 +385,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     // Function for AI's marker placement
     public void aiMove(char[][] pGameBoard){
 
-        Handler handler = new Handler();
-
-        long delayMillis = 800;
+        long delayMillis = 500;
 
         // Use the postDelayed() method to execute code after the specified delay.
         handler.postDelayed(new Runnable() {
@@ -410,15 +409,22 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 adapter.data.get(adapterDataIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
                 adapter.data.get(adapterDataIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
                 adapter.notifyDataSetChanged(); //Notify adapter to update UI
-                gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
 
                 // Add move to move list
                 int[] move = {otherLocI, otherLocJ};
                 moveList.add(move);
+
+                //TODO: Printing game board for testing purposes, can be deleted
+                for (int i = 0; i < gameBoard.length; i++) {
+                    for (int j = 0; j < gameBoard.length; j++) {
+                        System.out.print(gameBoard[i][j]);
+                    }
+                    System.out.println("");
+                }
+
+                gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
             }
         }, delayMillis);
-
-
     }
 
     // Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]
