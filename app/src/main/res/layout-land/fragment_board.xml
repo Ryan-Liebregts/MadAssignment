@@ -242,7 +242,7 @@
         android:text="GAME OVER!"
         android:textColor="#FF0000"
         android:textStyle="bold"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:visibility="invisible"
         app:layout_constraintTop_toTopOf="@id/boardLayout"
         app:layout_constraintEnd_toEndOf="parent"

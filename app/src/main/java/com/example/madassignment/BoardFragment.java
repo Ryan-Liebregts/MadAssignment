@@ -1,10 +1,13 @@
 package com.example.madassignment;
 
+import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -15,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,9 +40,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     private UserData userModel;
     private GameData gameModel;
 
-    private MediaPlayer mediaPlayer;
+    private ValueAnimator notification_anim;
 
-
+    ImageView winCondition;
     ImageButton player1Icon;
     ImageButton player1IconDull;
     ImageButton player2Icon;
@@ -75,10 +79,11 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     int locJ;
     int otherLocI;
     int otherLocJ;
-    float volume = 1.0f;
+
+    int cyan = Color.CYAN;
     boolean isPlayer1GoingFirst, isThereAWinner, validInput = true, isPlayer1sTurn, isDraw;
     char playerMarker, otherMarker;
-    TextView gameOverText;
+    private TextView gameOverText;
     TextView invalidMoveText;
     ArrayList<BoardButtonData> data;
     private GameData gameData;
@@ -107,6 +112,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         resetButton = view.findViewById(R.id.reset_button);
         gameOverText = view.findViewById(R.id.gameoverText);
         undoButton = view.findViewById(R.id.undo_button);
+        winCondition = view.findViewById(R.id.win_condition_icon);
         mediaPlayer = MediaPlayer.create(getActivity(), R.raw.piece_mp3);
         mediaPlayer.setVolume(volume, volume);
         winConditionIcon = view.findViewById(R.id.win_condition_icon);
@@ -114,8 +120,20 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Set game over text as invisible
         gameOverText.setVisibility(View.INVISIBLE);
 
-        // Set board size and
+        // Set board size
         boardSize = gameData.getBoardSize();
+
+        // Set win condition ImageView
+        if(gameData.getWinCondition() == 3) {
+            winCondition.setImageResource(R.drawable.three_win_condition);
+        }
+        if(gameData.getWinCondition() == 4) {
+            winCondition.setImageResource(R.drawable.four_win_condition);
+        }
+        if(gameData.getWinCondition() == 5) {
+            winCondition.setImageResource(R.drawable.five_win_condition);
+        }
+
 
         ///this is just an error case just in case we somehow get to teh board and dont have a user selected
         if ((gameData.getGameMode() == 1 && userModel.getUserId() == 0) || (gameData.getGameMode() == 2 && userModel.getUserId() == 0 && userModel.getUserId2() == 0)) {
@@ -229,7 +247,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             @Override
             public void onClick(View view) {
 
-                playSoundEffect();
+                if(notification_anim != null && notification_anim.isRunning()) {
+                    notification_anim.cancel();
+                }
 
                 Animation reset = AnimationUtils.loadAnimation(getActivity(),R.anim.reset_rotation_anim);
 
@@ -238,7 +258,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                     @Override
                     public void onAnimationStart(Animation animation) {
                         // Animation started - Changes colour of the button to show it has been pressed
-                        int cyan = Color.CYAN;
                         resetButton.setColorFilter(cyan);
                     }
 
@@ -271,7 +290,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                     @Override
                     public void onAnimationStart(Animation animation) {
                         // Animation started - Changes colour of the button to show it has been pressed
-                        int cyan = Color.CYAN;
                         undoButton.setColorFilter(cyan);
                     }
 
@@ -609,27 +627,37 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Sets game over text and player stats
         if(pIsDraw)  {
             System.out.println("Its a draw");
-            gameOverText.setText(R.string.gameover_draw);
+            String message = "GAME OVER: DRAW!";
+            gameOverAnim(message);
         }
         else if(pIsPlayer1sTurn && gameData.getGameMode() == 1 )  {
-            System.out.println("Its game mdoe 1 and user 1 has won");
-            gameOverText.setText(String.format("GAMEOVER: %s WINS!", userModel.getUserName()));
+            System.out.println("Its game mode 1 and user 1 has won");
+            String winMessage = String.format("GAME OVER: %s WINS!", userModel.getUserName());
+            gameOverAnim(winMessage);
+
             userDao.updateUserWins(userModel.getUserId());
         }
         else if (!pIsPlayer1sTurn && gameData.getGameMode() == 1) {
             System.out.println("Its game mode 1 and user AI has won");
-            gameOverText.setText(R.string.gameover_ai_wins);
+            String winMessage = "GAME OVER: AI WINS!";
+            gameOverAnim(winMessage);
             userDao.updateUserLosses(userModel.getUserId());
         }
         else if(pIsPlayer1sTurn && gameData.getGameMode() == 2)  {
             System.out.println("Its game mode 2 and user 1 has won");
-            gameOverText.setText(String.format("GAMEOVER: %s WINS!", userModel.getUserName()));
+            System.out.println(String.format("GAME OVER: %s WINS!", userModel.getUserName()));
+            String winMessage = String.format("GAME OVER: %s WINS!", userModel.getUserName());
+            gameOverAnim(winMessage);
+
             userDao.updateUserWins(userModel.getUserId());
             userDao.updateUserLosses(userModel.getUserId2());
         }
         else if (!pIsPlayer1sTurn && gameData.getGameMode() == 2) {
             System.out.println("Its game mode 2 and user 2 has won");
-            gameOverText.setText(String.format("GAMEOVER: %s WINS!", userModel.getUserName2()));
+            System.out.println(String.format("GAME OVER: %s WINS!", userModel.getUserName2()));
+            String winMessage = String.format("GAME OVER: %s WINS!", userModel.getUserName2());
+            gameOverAnim(winMessage);
+
             userDao.updateUserWins(userModel.getUserId2());
             userDao.updateUserLosses(userModel.getUserId());
         }
@@ -883,21 +911,42 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         System.out.println("Stopping Timer"); // Prints stopping timer for testing purposes/
     }
 
+    public void gameOverAnim(String winMessage) {
+        notification_anim = ValueAnimator.ofFloat(20, 30);
+        notification_anim.setRepeatCount(ValueAnimator.INFINITE); // Play once, then reverse
+        notification_anim.setRepeatMode(ValueAnimator.REVERSE);
+        notification_anim.setDuration(300);
 
-    private void playSoundEffect() {
-        if (mediaPlayer != null) {
-            mediaPlayer.seekTo(0); // Reset the playback position to the beginning
-            mediaPlayer.start(); // Start playing the sound effect
-        }
+        // Animation listener for gameOverText
+        notification_anim.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(@NonNull Animator animator) {
+                gameOverText.setText(winMessage);
+            }
+
+            @Override
+            public void onAnimationEnd(@NonNull Animator animator) {
+            }
+
+            @Override
+            public void onAnimationCancel(@NonNull Animator animator) {
+                // Left blank on purpose
+            }
+
+            @Override
+            public void onAnimationRepeat(@NonNull Animator animator) {
+            }
+        });
+
+        notification_anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float animatedValue = (float) animation.getAnimatedValue();
+                gameOverText.setTextSize(TypedValue.COMPLEX_UNIT_SP, animatedValue);
+            }
+        });
+
+        notification_anim.start();
     }
 
-    // Manages lifecycle of sound effect
-    public void onDestroy() {
-        super.onDestroy();
-//        if (mediaPlayer != null) {
-//            mediaPlayer.release();
-//            mediaPlayer.stop();
-//            mediaPlayer = null;
-//        }
-    }
 }
