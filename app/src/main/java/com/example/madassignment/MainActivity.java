@@ -8,8 +8,11 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ImageView background;
 
     // Declare viewModel parameters
     NavigationBarFragment navBarFragment = new NavigationBarFragment();
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         gameData = new ViewModelProvider(this).get(GameData.class);
         loadNavBar();
 
+        background = findViewById(R.id.backgroundView);
 
         navigationData.clickedValue.observe(this, new Observer<Integer>() {
             @Override
@@ -37,36 +41,43 @@ public class MainActivity extends AppCompatActivity {
                         System.out.println("The value is :" + String.valueOf(integer));
                         BoardFragment.stopTimer(); // Stop timer before loading new fragment (will cause error otherwise)
                         loadMenuFragment(); // setClickValue == 0
-
+                        background.setBackgroundResource(R.drawable.wooden_background);
                         break;
                     case 1:
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadBoardFragment();
+                        background.setBackgroundResource(R.drawable.wooden_background);
                         break;
                     case 2:
                         System.out.println("The value is :" + String.valueOf(integer));
                         BoardFragment.stopTimer(); // Stop timer before loading new fragment (will cause error otherwise)
                         loadSettingsFragment();
+                        background.setBackgroundResource(R.drawable.gradient_animation);
                         break;
                     case 3:
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadProfileFragment();
+                        background.setBackgroundResource(R.drawable.gradient_animation);
                         break;
                     case 4:
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadLeaderBoardFragment();
+                        background.setBackgroundResource(R.drawable.gradient_animation);
                         break;
                     case 5:
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadUserSelectFragment();
+                        background.setBackgroundResource(R.drawable.gradient_animation);
                         break;
                     case 6:
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadUsersFragment();
+                        background.setBackgroundResource(R.drawable.gradient_animation);
                         break;
                     case 99:
                         System.out.println("The value is :" + String.valueOf(integer));
                         loadMenuAnimationFragment();
+                        background.setBackgroundResource(R.drawable.wooden_background);
                         break;
                 }
             }
