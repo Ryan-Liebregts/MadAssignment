@@ -267,14 +267,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 });
 
                 undoButton.startAnimation(undo);
-            }
-        });
-
-        // Undo button listener
-        undoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                undoMove(); //Reset the board
+                undoMove(); //Undo last player move
             }
         });
 
