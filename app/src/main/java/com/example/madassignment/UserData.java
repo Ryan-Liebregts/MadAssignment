@@ -50,8 +50,17 @@ public class UserData extends ViewModel {
         firstMove = new MediatorLiveData<Integer>();
         firstMove.setValue(0);
     }
-
-
+    public void resetUserData() {
+        userName.setValue("");
+        userIcon.setValue(0);
+        userName2.setValue("");
+        userIcon2.setValue(0);
+        userId.setValue(0L);
+        userId2.setValue(0L);
+        userSymbol1.setValue(R.drawable.cross);
+        userSymbol2.setValue(R.drawable.circle);
+        firstMove.setValue(0);
+    }
     public String getUserName() {
         return userName.getValue();
     }
