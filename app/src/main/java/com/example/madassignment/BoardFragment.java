@@ -41,7 +41,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
     private ValueAnimator notification_anim;
 
-
+    ImageView winCondition;
     ImageButton player1Icon;
     ImageButton player1IconDull;
     ImageButton player2Icon;
@@ -77,7 +77,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     int otherLocJ;
 
     int cyan = Color.CYAN;
-    float volume = 1.0f;
     boolean isPlayer1GoingFirst, isThereAWinner, validInput = true, isPlayer1sTurn, isDraw;
     char playerMarker, otherMarker;
     private TextView gameOverText;
@@ -104,13 +103,24 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         resetButton = view.findViewById(R.id.reset_button);
         gameOverText = view.findViewById(R.id.gameoverText);
         undoButton = view.findViewById(R.id.undo_button);
+        winCondition = view.findViewById(R.id.win_condition_icon);
 
         // Set game over text as invisible
         gameOverText.setVisibility(View.INVISIBLE);
 
-        // Set board size and
+        // Set board size
         boardSize = gameData.getBoardSize();
 
+        // Set win condition ImageView
+        if(gameData.getWinCondition() == 3) {
+            winCondition.setImageResource(R.drawable.three_win_condition);
+        }
+        if(gameData.getWinCondition() == 4) {
+            winCondition.setImageResource(R.drawable.four_win_condition);
+        }
+        if(gameData.getWinCondition() == 5) {
+            winCondition.setImageResource(R.drawable.five_win_condition);
+        }
 
         ///this is just an error case just in case we somehow get to teh board and dont have a user selected
         if ((gameData.getGameMode() == 1 && userModel.getUserId() == 0) || (gameData.getGameMode() == 2 && userModel.getUserId() == 0 && userModel.getUserId2() == 0)) {

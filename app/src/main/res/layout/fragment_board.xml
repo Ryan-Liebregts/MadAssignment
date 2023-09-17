@@ -255,7 +255,7 @@
         app:layout_constraintGuide_percent="0.35
 "/>
 
-<!--    We just did the timer container now the container for the dfigure to show win conditions-->
+<!--    We just did the timer container now the container for the figure to show win conditions-->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/win_condition_icon_container"
         android:layout_width="wrap_content"
