@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -60,6 +61,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         userModel = new ViewModelProvider(getActivity()).get(UserData.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         gameData = new ViewModelProvider(getActivity()).get(GameData.class);
+        editUserModel = new ViewModelProvider(getActivity()).get(EditUser.class);
+
     }
 
     // Variable declaration
@@ -85,13 +88,16 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     TextView timerText;
     ArrayList<int[]> moveList;
 
+    EditUser editUserModel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        System.out.println(userModel.getFirstMove());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
-
+        //load users from DB by id
+        loadUsers();
 
         // Initialise button and text variables
         resetButton = view.findViewById(R.id.reset_button);
@@ -275,6 +281,17 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         return view;
     }
+    public void loadUsers() {
+        UserDao userDao = initialiseDB();
+        User player1 = userDao.getUserByID(userModel.getUserId());
+        User player2 = userDao.getUserByID(userModel.getUserId2());
+        userModel.setUserIcon(player1.getUserIcon());
+        userModel.setUserName(player1.getUserName());
+        if (gameData.getGameMode() != 1) {
+            userModel.setUserIcon2(player2.getUserIcon());
+            userModel.setUserName2(player2.getUserName());
+        }
+    }
 
     public void setGameUserData(View view) {
         player1Icon = view.findViewById(R.id.player_1_icon);
@@ -311,34 +328,97 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             player2IconDull.setImageResource(userModel.getUserIcon2());
             player2Name.setText(userModel.getUserName2());
         }
+
+        player1Icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editUserModel.setUserName(userModel.getUserName());
+                editUserModel.setUserId(userModel.getUserId());
+                editUserModel.setUserIcon(userModel.getUserIcon());
+                stopTimer();
+                navModel.setClickedValue(3);
+                navModel.setHistoricalClickedValue(1);
+            }
+        });
+
+        player1IconDull.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editUserModel.setUserName(userModel.getUserName());
+                editUserModel.setUserId(userModel.getUserId());
+                editUserModel.setUserIcon(userModel.getUserIcon());
+                stopTimer();
+                navModel.setClickedValue(3);
+                navModel.setHistoricalClickedValue(1);
+            }
+        });
+
+        if (gameData.getGameMode() != 1) {
+            player2Icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editUserModel.setUserName(userModel.getUserName2());
+                    editUserModel.setUserId(userModel.getUserId2());
+                    editUserModel.setUserIcon(userModel.getUserIcon2());
+                    stopTimer();
+                    navModel.setClickedValue(3);
+                    navModel.setHistoricalClickedValue(1);
+                }
+            });
+
+            player2IconDull.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editUserModel.setUserName(userModel.getUserName2());
+                    editUserModel.setUserId(userModel.getUserId2());
+                    editUserModel.setUserIcon(userModel.getUserIcon2());
+                    stopTimer();
+                    navModel.setClickedValue(3);
+                    navModel.setHistoricalClickedValue(1);
+                }
+            });
+        }
+
     }
 
     // Function for AI's marker placement
     public void aiMove(char[][] pGameBoard){
-        // Set random seed
-        Random rand = new Random();
 
-        // Select a position on the board until an empty space is found then place ai marker
-        do {
-            int aiMarkerCordsRow = rand.nextInt(pGameBoard.length), aiMarkerCordsCol = rand.nextInt(pGameBoard.length); // Randomly select board position
-            if(pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] != '-') validInput = false;
-            else {
-                pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] = otherMarker;
-                otherLocI = aiMarkerCordsRow;
-                otherLocJ = aiMarkerCordsCol;
-                validInput = true;
+        Handler handler = new Handler();
+
+        long delayMillis = 800;
+
+        // Use the postDelayed() method to execute code after the specified delay.
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Select a position on the board until an empty space is found then place ai marker
+                do {
+                    Random rand = new Random();
+
+                    int aiMarkerCordsRow = rand.nextInt(pGameBoard.length), aiMarkerCordsCol = rand.nextInt(pGameBoard.length); // Randomly select board position
+                    if(pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] != '-') validInput = false;
+                    else {
+                        pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] = otherMarker;
+                        otherLocI = aiMarkerCordsRow;
+                        otherLocJ = aiMarkerCordsCol;
+                        validInput = true;
+                    }
+                } while(!validInput);
+
+                int adapterDataIndex = (otherLocI * pGameBoard.length) + otherLocJ; // Determine where AI placed marker in terms of adapter data arraylist index
+                adapter.data.get(adapterDataIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
+                adapter.data.get(adapterDataIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
+                adapter.notifyDataSetChanged(); //Notify adapter to update UI
+                gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
+
+                // Add move to move list
+                int[] move = {otherLocI, otherLocJ};
+                moveList.add(move);
             }
-        } while(!validInput);
+        }, delayMillis);
 
-        int adapterDataIndex = (otherLocI * pGameBoard.length) + otherLocJ; // Determine where AI placed marker in terms of adapter data arraylist index
-        adapter.data.get(adapterDataIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
-        adapter.data.get(adapterDataIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
-        adapter.notifyDataSetChanged(); //Notify adapter to update UI
-        gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
 
-        // Add move to move list
-        int[] move = {otherLocI, otherLocJ};
-        moveList.add(move);
     }
 
     // Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]

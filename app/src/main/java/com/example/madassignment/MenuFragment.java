@@ -31,6 +31,7 @@ public class MenuFragment extends Fragment {
     private ImageButton boardSizeRight;
     private ImageView winImageContainer;
 
+    private UserData userModel;
     private ImageView boardImageContainer;
     private int winCondition;
     private int boardSize;
@@ -51,6 +52,8 @@ public class MenuFragment extends Fragment {
 
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         gameData = new ViewModelProvider(getActivity()).get(GameData.class);
+        userModel = new ViewModelProvider(getActivity()).get(UserData.class);
+
     }
 
     @Override
@@ -58,6 +61,9 @@ public class MenuFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
+
+        //clear all stored user data from previous games
+        userModel.resetUserData();
 
         // Define Buttons
         winConditionLeft = view.findViewById(R.id.left_win_button);

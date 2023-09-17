@@ -12,6 +12,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +33,8 @@ public class ProfileFragment extends Fragment {
     private Button saveUserButton;
 
     private CreateUser userModel;
-//    CreateUser userModel;
+
+    private EditUser editUser;
 
     private String userName;
 
@@ -52,6 +55,7 @@ public class ProfileFragment extends Fragment {
         super.onCreate(savedInstanceState);
         userModel = new ViewModelProvider(getActivity()).get(CreateUser.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
+        editUser = new ViewModelProvider(getActivity()).get(EditUser.class);
         UserDao userDao = initialiseDB();
 
     }
@@ -59,48 +63,118 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //set isEdit boolean
+        boolean isEdit = editUser.getUserId() != 0;
+
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
-        recyclerView = view.findViewById(R.id.recycler_icon);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4,
-            GridLayoutManager.VERTICAL, false);
-        recyclerView.setLayoutManager(gridLayoutManager);
-        data = getIconData();
-        UserIconAdapter userIconAdapter =new UserIconAdapter(data, userModel, this);
-        recyclerView.setAdapter(userIconAdapter);
-
-        saveUserButton = view.findViewById(R.id.save_user_button);
-        userNameTextBox = view.findViewById(R.id.user_text);
 
         // Animates the background gradient
         profileFragmentBackground = (ConstraintLayout) view.findViewById(R.id.profile_fragment);
         animationDrawable = (AnimationDrawable) profileFragmentBackground.getBackground();
         animationDrawable.setEnterFadeDuration(3000);
         animationDrawable.setExitFadeDuration(2000);
-        userModel.userIcon.observe(getViewLifecycleOwner(), new Observer<Integer>() {
+
+        //get view elements
+        saveUserButton = view.findViewById(R.id.save_user_button);
+        userNameTextBox = view.findViewById(R.id.user_text);
+        recyclerView = view.findViewById(R.id.recycler_icon);
+        //set recycler grid
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4,
+                GridLayoutManager.VERTICAL, false);
+        recyclerView.setLayoutManager(gridLayoutManager);
+        //get data for recycler
+        data = getIconData();
+        //set adapter and view adapter
+        UserIconAdapter userIconAdapter =new UserIconAdapter(data, userModel, this, editUser);
+        recyclerView.setAdapter(userIconAdapter);
+
+        //set default value
+        userNameTextBox.setText("");
+        // set userName in the text box if its an edit
+        if (isEdit) {
+            userNameTextBox.setText(editUser.getUserName());
+        }
+
+        userNameTextBox.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+                System.out.println(s);
+                //set ther username for existing user for edit or new user for not edit
+                if (isEdit) {
+                    editUser.setUserName(String.valueOf(s));
+                }
+                else {
+                    userModel.setUserName(String.valueOf(s));
+                }
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        });
+
+        if(isEdit){
+            editUser.userIcon.observe(getViewLifecycleOwner(), new Observer<Integer>() {
+                @Override
+                public void onChanged(Integer integer) {
+                    if (integer != 0 && !Objects.equals(editUser.getUserName(), "")){
+                        saveUserButton.setEnabled(true);
+                    }
+                    else{
+                        saveUserButton.setEnabled(false);
+                    }
+                }
+            });
+            editUser.userName.observe(getViewLifecycleOwner(), new Observer<String>() {
+                @Override
+                public void onChanged(String string) {
+                    if (editUser.getUserIcon() != 0 && !Objects.equals(string, "")){
+                        saveUserButton.setEnabled(true);
+                    }
+                    else{
+                        saveUserButton.setEnabled(false);
+                    }
+                }
+            });
+        }
+        else{
+            userModel.userIcon.observe(getViewLifecycleOwner(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                if (integer != 0 && !Objects.equals(String.valueOf(userNameTextBox.getText()), "")){
+                if (integer != 0 && !Objects.equals(userModel.getUserName(), "")){
                     saveUserButton.setEnabled(true);
+                }
+                else{
+                    saveUserButton.setEnabled(false);
                 }
             }
         });
+            userModel.userName.observe(getViewLifecycleOwner(), new Observer<String>() {
+                @Override
+                public void onChanged(String string) {
+                    if (userModel.getUserIcon() != 0 && !Objects.equals(string, "")){
+                        saveUserButton.setEnabled(true);
+                    }
+                    else{
+                        saveUserButton.setEnabled(false);
+                    }
+                }
+            });
 
-        //TODO add query to check for duplicated usernames
+        }
 
         saveUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               userName = String.valueOf(userNameTextBox.getText());
-               userIcon = userModel.getUserIcon();
-               saveUser(userName, userIcon);
-               navModel.setClickedValue(5);
-               userModel.setUserIcon(0);
-               userModel.setUserName("");
+                if(isEdit){
+                    updateUser();
+                }
+                else{
+                    saveUser();
+                }
+               navModel.setClickedValue(navModel.getHistoricalClickedValue());
+
             }
         });
-
-
         return view;
     }
 
@@ -134,14 +208,25 @@ public class ProfileFragment extends Fragment {
     }
 
 
-    public void saveUser(String name, int value) {
+    public void saveUser() {
         UserDao userDao = initialiseDB();
         User user = new User();
-        user.setUserName(name);
-        user.setUserIcon(value);
+        user.setUserName(userModel.getUserName());
+        user.setUserIcon(userModel.getUserIcon());
         user.setUserLosses(0);
         user.setUserWins(0);
         userDao.insert(user);
+        userModel.setUserIcon(0);
+        userModel.setUserName("");
+    }
+
+    public void updateUser() {
+        UserDao userDao = initialiseDB();
+        userDao.updateUserIcon(editUser.getUserId(), editUser.getUserIcon());
+        userDao.updateUserName(editUser.getUserId(), editUser.getUserName());
+        editUser.setUserId(0);
+        editUser.setUserName("");
+        editUser.setUserIcon(0);
     }
 
     // Starts the animation when fragment is active
@@ -161,5 +246,6 @@ public class ProfileFragment extends Fragment {
             animationDrawable.stop();
         }
     }
+
 
 }

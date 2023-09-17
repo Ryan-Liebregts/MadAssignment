@@ -41,4 +41,13 @@ public interface UserDao
 
     @Query("UPDATE users SET user_games = user_games + 1 WHERE id = :userId")
     void updateUserGamesPlayed(long userId);
+
+    @Query("UPDATE users SET user_name = :userName WHERE id = :userId")
+    void updateUserName(long userId, String userName);
+
+    @Query("UPDATE users SET user_icon = :userIcon WHERE id = :userId")
+    void updateUserIcon(long userId, int userIcon);
+
+    @Query("DELETE FROM users WHERE id = :userId")
+    void deleteUser(long userId);
 }
