@@ -558,7 +558,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         if(!isPlayer1GoingFirst && gameData.getGameMode() == 2) gameData.setWhoseTurn(2); //Set whose turn to player 2
         else if(isPlayer1GoingFirst && gameData.getGameMode() == 2) gameData.setWhoseTurn(1); //Set whose turn to player 1
 
-        //Start timer
+        // Reset timer
+        stopTimer();
         startTimer();
 
     }
