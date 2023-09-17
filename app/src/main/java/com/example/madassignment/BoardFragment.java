@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -320,30 +321,42 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
     // Function for AI's marker placement
     public void aiMove(char[][] pGameBoard){
-        // Set random seed
-        Random rand = new Random();
 
-        // Select a position on the board until an empty space is found then place ai marker
-        do {
-            int aiMarkerCordsRow = rand.nextInt(pGameBoard.length), aiMarkerCordsCol = rand.nextInt(pGameBoard.length); // Randomly select board position
-            if(pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] != '-') validInput = false;
-            else {
-                pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] = otherMarker;
-                otherLocI = aiMarkerCordsRow;
-                otherLocJ = aiMarkerCordsCol;
-                validInput = true;
+        Handler handler = new Handler();
+
+        long delayMillis = 800;
+
+        // Use the postDelayed() method to execute code after the specified delay.
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Select a position on the board until an empty space is found then place ai marker
+                do {
+                    Random rand = new Random();
+
+                    int aiMarkerCordsRow = rand.nextInt(pGameBoard.length), aiMarkerCordsCol = rand.nextInt(pGameBoard.length); // Randomly select board position
+                    if(pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] != '-') validInput = false;
+                    else {
+                        pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] = otherMarker;
+                        otherLocI = aiMarkerCordsRow;
+                        otherLocJ = aiMarkerCordsCol;
+                        validInput = true;
+                    }
+                } while(!validInput);
+
+                int adapterDataIndex = (otherLocI * pGameBoard.length) + otherLocJ; // Determine where AI placed marker in terms of adapter data arraylist index
+                adapter.data.get(adapterDataIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
+                adapter.data.get(adapterDataIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
+                adapter.notifyDataSetChanged(); //Notify adapter to update UI
+                gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
+
+                // Add move to move list
+                int[] move = {otherLocI, otherLocJ};
+                moveList.add(move);
             }
-        } while(!validInput);
+        }, delayMillis);
 
-        int adapterDataIndex = (otherLocI * pGameBoard.length) + otherLocJ; // Determine where AI placed marker in terms of adapter data arraylist index
-        adapter.data.get(adapterDataIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
-        adapter.data.get(adapterDataIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
-        adapter.notifyDataSetChanged(); //Notify adapter to update UI
-        gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
 
-        // Add move to move list
-        int[] move = {otherLocI, otherLocJ};
-        moveList.add(move);
     }
 
     // Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]

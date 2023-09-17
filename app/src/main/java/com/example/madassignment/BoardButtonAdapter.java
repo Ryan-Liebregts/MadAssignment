@@ -42,6 +42,11 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
     public void onBindViewHolder(@NonNull BoardButtonDataViewHolder holder, int position){
         BoardButtonData singleData = data.get(position);
         holder.boardButton.setImageResource(singleData.getImageResource());
+
+        if (position % 2 == 1) {
+            holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
+        }
+
         holder.boardButton.setEnabled(singleData.getEnabledState());
         holder.boardButton.setOnClickListener(new View.OnClickListener() {
             @Override
