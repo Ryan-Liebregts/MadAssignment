@@ -1,5 +1,7 @@
 package com.example.madassignment;
 
+import static java.security.AccessController.getContext;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import android.view.ViewGroup;
 import java.util.*;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH>  {
@@ -41,7 +44,7 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
         holder.userDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("You want to delete this huh?");
+                deleteUser(position, singleRow.getId(), holder);
             }
         });
 
@@ -58,6 +61,11 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
         });
     }
 
+
+    public void deleteUser(int index, long id, EditDeleteUserVH holder) {
+        editUserModel.setDeleteUserId(id);
+        editUserModel.setDeleteUserPosition(index);
+    }
     @Override
     public int getItemCount() {
         return data.size();

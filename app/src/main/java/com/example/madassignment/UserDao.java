@@ -47,4 +47,7 @@ public interface UserDao
 
     @Query("UPDATE users SET user_icon = :userIcon WHERE id = :userId")
     void updateUserIcon(long userId, int userIcon);
+
+    @Query("DELETE FROM users WHERE id = :userId")
+    void deleteUser(long userId);
 }

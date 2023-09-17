@@ -30,7 +30,7 @@ tools:context=".UsersFragment">
 <androidx.recyclerview.widget.RecyclerView
     android:id="@+id/users_recycler"
     android:layout_margin="20dp"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="0dp"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintTop_toBottomOf="@+id/users_title"
@@ -39,7 +39,7 @@ tools:context=".UsersFragment">
 
 <androidx.constraintlayout.widget.Guideline
     android:id="@+id/guide_button"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     app:layout_constraintGuide_percent="0.75"

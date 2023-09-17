@@ -3,6 +3,7 @@ package com.example.madassignment;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +30,8 @@ public class UsersFragment extends Fragment {
     List<User> data;
 
     EditUser editUserModel;
+
+    Button createNewUser;
 
     NavigationData navModel;
 
@@ -70,35 +75,48 @@ public class UsersFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=  inflater.inflate(R.layout.fragment_users, container, false);
+        //get view elements
         recyclerView = view.findViewById(R.id.users_recycler);
+        createNewUser = view.findViewById(R.id.create_new_user_button);
+
+        //set grid for recycler
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1,
                 GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
-        data = getLeaderBoardData();
+        data = getUsers();
+        //set adapter
         EditDeleteUserAdapter editDeleteUserAdapter =new EditDeleteUserAdapter(data, navModel, editUserModel);
         recyclerView.setAdapter(editDeleteUserAdapter);
+
+        createNewUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navModel.setClickedValue(3);
+                navModel.setHistoricalClickedValue(6);
+            }
+        });
+
+        editUserModel.deleteUserId.observe(getViewLifecycleOwner(), new Observer<Long>() {
+            @Override
+            public void onChanged(Long integer) {
+                if (integer != 0) {
+                    System.out.println("Hello I am deleting");
+                    //do remove logic
+                    UserDao userDao = initialiseDB();
+                    userDao.deleteUser(integer);
+                    data.remove(editUserModel.getDeleteUserPosition());
+                    editDeleteUserAdapter.notifyItemRemoved(editUserModel.getDeleteUserPosition());
+                    //restore state
+                    editUserModel.setDeleteUserPosition(0);
+                    editUserModel.setDeleteUserId(0L);
+                }
+            }
+        });
         return view;
     }
 
-
-    public List<User> getLeaderBoardData() {
+    public List<User> getUsers() {
         UserDao userDao = initialiseDB();
-
-        //Test data will remove when we have functionality to add users
-        User ryan = new User();
-        ryan.setUserName("Ryan");
-        ryan.setUserIcon(R.drawable.user_icon1);
-        ryan.setUserLosses(0);
-        ryan.setUserWins(10);
-
-        User PK = new User();
-        PK.setUserName("PK");
-        PK.setUserIcon(R.drawable.user_icon16);
-        PK.setUserLosses(4);
-        PK.setUserWins(8);
-//        userDao.insert(ryan, PK);
-        //end of test data
-
         data = null;
         data = userDao.getAllUsers();
         return data;

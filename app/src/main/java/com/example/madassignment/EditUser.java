@@ -10,6 +10,10 @@ public class EditUser extends ViewModel {
     public MutableLiveData<Integer> userIcon;
     public MutableLiveData<Long> userId;
 
+    public MutableLiveData<Long> deleteUserId;
+
+    public MutableLiveData<Integer> deleteUserPosition;
+
 
     public EditUser(){
         userName = new MediatorLiveData<String>();
@@ -21,7 +25,11 @@ public class EditUser extends ViewModel {
         userId = new MediatorLiveData<Long>();
         userId.setValue(0L);
 
+        deleteUserId = new MediatorLiveData<Long>();
+        deleteUserId.setValue(0L);
 
+        deleteUserPosition = new MediatorLiveData<Integer>();
+        deleteUserPosition.setValue(0);
     }
 
     public String getUserName() {
@@ -47,6 +55,22 @@ public class EditUser extends ViewModel {
 
     public void setUserId(long value) {
         userId.setValue(value);
+    }
+
+    public long getDeleteUserId() {
+        return deleteUserId.getValue();
+    }
+
+    public void setDeleteUserId(long value) {
+        deleteUserId.setValue(value);
+    }
+
+    public int getDeleteUserPosition() {
+        return deleteUserPosition.getValue();
+    }
+
+    public void setDeleteUserPosition(int value) {
+        deleteUserPosition.setValue(value);
     }
 
 }

@@ -44,23 +44,24 @@ public class UserIconAdapter extends RecyclerView.Adapter<UserIconVH>{
 
     @Override
     public void onBindViewHolder(@NonNull UserIconVH holder, int position) {
-        boolean isEdit = false;
+        boolean isEdit = editUserModel.getUserId() != 0;
         int singleRow = data.get(position);
         holder.userIcon.setImageResource(singleRow);
         holder.userIconSelected.setImageResource(singleRow);
-        if (editUserModel.getUserId() != 0L) {
-            userModel.setUserIcon(editUserModel.getUserIcon());
-            isEdit = true;
-        }
+
 
         holder.userIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userModel.setUserIcon(singleRow);
+                if (isEdit){
+                    editUserModel.setUserIcon(singleRow);
+                }
+                else {
+                    userModel.setUserIcon(singleRow);
+                }
             }
         });
 
-        boolean finalIsEdit = isEdit;
         userModel.userIcon.observe(test, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -71,9 +72,20 @@ public class UserIconAdapter extends RecyclerView.Adapter<UserIconVH>{
                 else {
                     holder.userIcon.setVisibility(View.GONE);
                     holder.userIconSelected.setVisibility(View.VISIBLE);
-                    if(finalIsEdit) {
-                        editUserModel.setUserIcon(integer);
-                    }
+                }
+            }
+        });
+
+        editUserModel.userIcon.observe(test, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer integer) {
+                if (integer !=singleRow){
+                    holder.userIcon.setVisibility(View.VISIBLE);
+                    holder.userIconSelected.setVisibility(View.GONE);
+                }
+                else {
+                    holder.userIcon.setVisibility(View.GONE);
+                    holder.userIconSelected.setVisibility(View.VISIBLE);
                 }
             }
         });
