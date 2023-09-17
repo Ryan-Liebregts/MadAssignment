@@ -100,6 +100,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     int player2moves;
 
     EditUser editUserModel;
+    Handler handler = new Handler();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -283,6 +284,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(moveList.size() == 1 && gameData.gameMode.getValue() == 1 && !isPlayer1GoingFirst) return; //If player vs ai, ai goes first, ignore undo button for first move
+
                 Animation undo = AnimationUtils.loadAnimation(getActivity(),R.anim.undo_rotation_anim);
 
                 // Animation listener for pressing reset button
@@ -306,14 +309,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 });
 
                 undoButton.startAnimation(undo);
-            }
-        });
-
-        // Undo button listener
-        undoButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                undoMove(); //Reset the board
+                undoMove(); //Undo last player move
             }
         });
 
@@ -454,9 +450,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     // Function for AI's marker placement
     public void aiMove(char[][] pGameBoard){
 
-        Handler handler = new Handler();
-
-        long delayMillis = 800;
+        long delayMillis = 500;
 
         // Use the postDelayed() method to execute code after the specified delay.
         handler.postDelayed(new Runnable() {
@@ -480,16 +474,23 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 adapter.data.get(adapterDataIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
                 adapter.data.get(adapterDataIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
                 adapter.notifyDataSetChanged(); //Notify adapter to update UI
-                gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
 
                 // Add move to move list
                 int[] move = {otherLocI, otherLocJ};
                 gameData.setPlayer2Moves(gameData.getPlayer2Moves() + 1);
                 moveList.add(move);
+
+                //TODO: Printing game board for testing purposes, can be deleted
+                for (int i = 0; i < gameBoard.length; i++) {
+                    for (int j = 0; j < gameBoard.length; j++) {
+                        System.out.print(gameBoard[i][j]);
+                    }
+                    System.out.println("");
+                }
+
+                gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
             }
         }, delayMillis);
-
-
     }
 
     // Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]
@@ -716,7 +717,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         if(!isPlayer1GoingFirst && gameData.getGameMode() == 2) gameData.setWhoseTurn(2); //Set whose turn to player 2
         else if(isPlayer1GoingFirst && gameData.getGameMode() == 2) gameData.setWhoseTurn(1); //Set whose turn to player 1
 
-        //Start timer
+        // Reset timer
+        stopTimer();
         startTimer();
 
     }
@@ -911,6 +913,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         System.out.println("Stopping Timer"); // Prints stopping timer for testing purposes/
     }
 
+    private void playSoundEffect() {
+        if (mediaPlayer != null) {
+            mediaPlayer.seekTo(0); // Reset the playback position to the beginning
+            mediaPlayer.start(); // Start playing the sound effect
+        }
+    }
     public void gameOverAnim(String winMessage) {
         notification_anim = ValueAnimator.ofFloat(20, 30);
         notification_anim.setRepeatCount(ValueAnimator.INFINITE); // Play once, then reverse
