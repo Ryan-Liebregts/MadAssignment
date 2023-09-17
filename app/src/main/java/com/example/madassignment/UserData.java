@@ -1,5 +1,7 @@
 package com.example.madassignment;
 
+import static java.security.AccessController.getContext;
+
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -61,6 +63,9 @@ public class UserData extends ViewModel {
         userSymbol2.setValue(R.drawable.circle);
         firstMove.setValue(0);
     }
+
+
+
     public String getUserName() {
         return userName.getValue();
     }
@@ -122,5 +127,7 @@ public class UserData extends ViewModel {
     public void setFirstMove(int value) {firstMove.setValue(value);}
 
     public int getFirstMove() {return firstMove.getValue();}
+
+
 
 }

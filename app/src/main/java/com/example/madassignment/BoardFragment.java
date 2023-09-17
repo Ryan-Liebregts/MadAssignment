@@ -61,6 +61,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         userModel = new ViewModelProvider(getActivity()).get(UserData.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         gameData = new ViewModelProvider(getActivity()).get(GameData.class);
+        editUserModel = new ViewModelProvider(getActivity()).get(EditUser.class);
+
     }
 
     // Variable declaration
@@ -86,13 +88,16 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     TextView timerText;
     ArrayList<int[]> moveList;
 
+    EditUser editUserModel;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         System.out.println(userModel.getFirstMove());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
-
+        //load users from DB by id
+        loadUsers();
 
         // Initialise button and text variables
         resetButton = view.findViewById(R.id.reset_button);
@@ -281,6 +286,17 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         return view;
     }
+    public void loadUsers() {
+        UserDao userDao = initialiseDB();
+        User player1 = userDao.getUserByID(userModel.getUserId());
+        User player2 = userDao.getUserByID(userModel.getUserId2());
+        userModel.setUserIcon(player1.getUserIcon());
+        userModel.setUserName(player1.getUserName());
+        if (gameData.getGameMode() != 1) {
+            userModel.setUserIcon2(player2.getUserIcon());
+            userModel.setUserName2(player2.getUserName());
+        }
+    }
 
     public void setGameUserData(View view) {
         player1Icon = view.findViewById(R.id.player_1_icon);
@@ -317,6 +333,57 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             player2IconDull.setImageResource(userModel.getUserIcon2());
             player2Name.setText(userModel.getUserName2());
         }
+
+        player1Icon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editUserModel.setUserName(userModel.getUserName());
+                editUserModel.setUserId(userModel.getUserId());
+                editUserModel.setUserIcon(userModel.getUserIcon());
+                stopTimer();
+                navModel.setClickedValue(3);
+                navModel.setHistoricalClickedValue(1);
+            }
+        });
+
+        player1IconDull.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editUserModel.setUserName(userModel.getUserName());
+                editUserModel.setUserId(userModel.getUserId());
+                editUserModel.setUserIcon(userModel.getUserIcon());
+                stopTimer();
+                navModel.setClickedValue(3);
+                navModel.setHistoricalClickedValue(1);
+            }
+        });
+
+        if (gameData.getGameMode() != 1) {
+            player2Icon.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editUserModel.setUserName(userModel.getUserName2());
+                    editUserModel.setUserId(userModel.getUserId2());
+                    editUserModel.setUserIcon(userModel.getUserIcon2());
+                    stopTimer();
+                    navModel.setClickedValue(3);
+                    navModel.setHistoricalClickedValue(1);
+                }
+            });
+
+            player2IconDull.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    editUserModel.setUserName(userModel.getUserName2());
+                    editUserModel.setUserId(userModel.getUserId2());
+                    editUserModel.setUserIcon(userModel.getUserIcon2());
+                    stopTimer();
+                    navModel.setClickedValue(3);
+                    navModel.setHistoricalClickedValue(1);
+                }
+            });
+        }
+
     }
 
     // Function for AI's marker placement
