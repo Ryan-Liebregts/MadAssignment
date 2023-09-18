@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/select_user_fragment"
+    android:background="@drawable/gradient_animation"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/select_users_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="SELECT USERS"
+        android:textSize="20sp"
+        android:fontFamily="monospace"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/recycler_user"
+        app:layout_constraintEnd_toEndOf="@id/recycler_user"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_user"
+        android:layout_margin="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toStartOf="@id/recycler_symbol"
+        app:layout_constraintTop_toBottomOf="@id/select_users_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/continue_button"/>
+
+    <TextView
+        android:id="@+id/select_symbol_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="SELECT MARKER"
+        android:textSize="20sp"
+        android:fontFamily="monospace"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/recycler_symbol"
+        app:layout_constraintEnd_toEndOf="@id/recycler_symbol"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_symbol"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_margin="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/continue_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/recycler_user"
+        app:layout_constraintTop_toBottomOf="@id/select_symbol_title" />
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/continue_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recycler_user">
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:textSize="18sp"
+            android:gravity="center_vertical"
+            android:text="@string/first_move"
+            android:fontFamily="monospace"/>
+<!--        //TODO: Make it better PK -->
+        <androidx.appcompat.widget.AppCompatToggleButton
+            android:id="@+id/togglePlayer1"
+            android:layout_width="10dp"
+            android:backgroundTint="#00FFFFFF"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
+
+
+        <Button
+            android:id="@+id/continue_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="continue"
+            android:textSize="18sp"
+            android:paddingHorizontal="20dp"
+            android:enabled="false"
+            android:background="@drawable/input_box_design"
+
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

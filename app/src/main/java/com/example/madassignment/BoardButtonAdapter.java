@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataViewHolder> {
@@ -46,7 +48,15 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
         BoardButtonData singleData = data.get(position);
         holder.boardButton.setImageResource(singleData.getImageResource());
         holder.boardButton.setEnabled(singleData.getEnabledState());
-        if (position % 2 == 1) holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
+        if (position % 2 == 1 && gameData.getBoardSize() != 4) {
+            holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
+        }
+
+        List<Integer> positionsToCheck = Arrays.asList(0, 2, 5, 7, 8, 10, 13, 15);
+
+        if (gameData.getBoardSize() == 4 && positionsToCheck.contains(position)) {
+            holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
+        }
 
         holder.boardButton.setOnClickListener(new View.OnClickListener() {
             @Override
