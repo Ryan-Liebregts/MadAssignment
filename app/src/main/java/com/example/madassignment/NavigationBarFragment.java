@@ -20,6 +20,7 @@ public class NavigationBarFragment extends Fragment {
 
     private ImageButton settingsButton, backButton;
     private ImageView menuTitle;
+    private GameData gameData;
 
     private  CreateUser userModel;
     private EditUser editUserModel;
@@ -38,8 +39,7 @@ public class NavigationBarFragment extends Fragment {
         navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
         editUserModel = new ViewModelProvider(getActivity()).get(EditUser.class);
         userModel = new ViewModelProvider(getActivity()).get(CreateUser.class);
-
-
+        gameData = new ViewModelProvider(getActivity()).get(GameData.class);
     }
 
     @Override
@@ -114,6 +114,8 @@ public class NavigationBarFragment extends Fragment {
                 }
                 if (navigationData.getClickedValue() == 2){
                     if (navigationData.getHistoricalClickedValue() != 3) {
+                        gameData.setNeedSaveGameState(true);
+                        System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
                         navigationData.setClickedValue(1);
                     }
                     else {

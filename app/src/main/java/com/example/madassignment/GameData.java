@@ -3,6 +3,7 @@ package com.example.madassignment;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
+import java.util.*;
 
 public class GameData  extends ViewModel {
 
@@ -23,6 +24,10 @@ public class GameData  extends ViewModel {
 
     public MutableLiveData<Boolean> isPlayer1GoingFirst;
     public MutableLiveData<Boolean> isInvalidMove;
+    public MutableLiveData<Boolean> needSaveGameState;
+    public MutableLiveData<Character[][]> gameBoard;
+    public MutableLiveData<ArrayList<Integer[]>> moveList;
+    public MutableLiveData<Boolean> isGameOver;
 
 
     public GameData(){
@@ -73,6 +78,24 @@ public class GameData  extends ViewModel {
 
         player2Moves = new MediatorLiveData<Integer>();
         player2Moves.setValue(0);
+
+        needSaveGameState = new MediatorLiveData<Boolean>();
+        needSaveGameState.setValue(false);
+
+        Character[][] placeholdGameBoard = new Character[3][3];
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                placeholdGameBoard[i][j] = '-';
+            }
+        }
+
+        gameBoard = new MediatorLiveData<Character[][]>();
+        gameBoard.setValue(placeholdGameBoard);
+
+        moveList = new MediatorLiveData<ArrayList<Integer[]>>();
+
+        isGameOver = new MediatorLiveData<Boolean>();
+        isGameOver.setValue(false);
 
     }
 
@@ -187,4 +210,83 @@ public class GameData  extends ViewModel {
         return player2Moves.getValue();
     }
 
+    public boolean getNeedSaveGameState(){
+        return needSaveGameState.getValue();
+    }
+
+    public void setNeedSaveGameState(boolean pNeedSaveGameState){
+        needSaveGameState.setValue(pNeedSaveGameState);
+    }
+
+    public char[][] getGameBoard(){
+        char[][] primitiveGameBoard = new char[gameBoard.getValue().length][gameBoard.getValue()[0].length];
+        for (int i = 0; i < gameBoard.getValue().length; i++) {
+            for (int j = 0; j < gameBoard.getValue()[0].length; j++) {
+                primitiveGameBoard[i][j] = (char) gameBoard.getValue()[i][j];
+            }
+        }
+        return primitiveGameBoard;
+    }
+
+    public void setGameBoard(char[][] pGameBoard){
+        Character[][] arrayGameBoard = new Character[pGameBoard.length][pGameBoard[0].length];
+        for (int i = 0; i < pGameBoard.length; i++) {
+            for (int j = 0; j < pGameBoard[0].length; j++) {
+                arrayGameBoard[i][j] = (Character) pGameBoard[i][j];
+            }
+        }
+        gameBoard.setValue(arrayGameBoard);
+    }
+
+    public ArrayList<int[]> getMoveList() {
+        ArrayList<int[]> primitiveMoveList = new ArrayList<int[]>();
+        int[] move;
+
+        System.out.println("getting move");
+        if (moveList.getValue().size() > 0) {
+            for (int i = 0; i < moveList.getValue().size(); i++) {
+                move = new int[moveList.getValue().get(0).length];
+                for (int j = 0; j < moveList.getValue().get(0).length; j++) {
+                    move[j] = (int) moveList.getValue().get(i)[j];
+                }
+                primitiveMoveList.add(move);
+            }
+        }
+        for (int i = 0; i < primitiveMoveList.size(); i++) {
+            for (int j = 0; j < primitiveMoveList.get(0).length; j++) {
+                System.out.println(primitiveMoveList.get(i)[j]);
+            }
+        }
+        return primitiveMoveList;
+    }
+
+    public void setMoveList(ArrayList<int[]> pMoveList){
+        ArrayList<Integer[]> wrapperMoveList = new ArrayList<Integer[]>();
+        Integer[] move;
+
+        System.out.println("setting move");
+        if (pMoveList.size() > 0) {
+            for (int i = 0; i < pMoveList.size(); i++) {
+                move = new Integer[pMoveList.get(0).length];
+                for (int j = 0; j < pMoveList.get(0).length; j++) {
+                    move[j] = (Integer) pMoveList.get(i)[j];
+                }
+                wrapperMoveList.add(move);
+            }
+        }
+        for (int i = 0; i < wrapperMoveList.size(); i++) {
+            for (int j = 0; j < wrapperMoveList.get(0).length; j++) {
+                System.out.println(wrapperMoveList.get(i)[j]);
+            }
+        }
+        moveList.setValue(wrapperMoveList);
+    }
+
+    public boolean getIsGameOver(){
+        return isGameOver.getValue();
+    }
+
+    public void setIsGameOver(boolean pIsGameOver){
+        isGameOver.setValue(pIsGameOver);
+    }
 }
