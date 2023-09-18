@@ -53,13 +53,16 @@
 
 
     <LinearLayout
+        android:id="@+id/first_player"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/continue_button"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="100dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/continue_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recycler_user">
+
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -68,7 +71,7 @@
             android:gravity="center_vertical"
             android:text="@string/first_move"
             android:fontFamily="monospace"/>
-<!--        //TODO: Make it better PK -->
+
         <androidx.appcompat.widget.AppCompatToggleButton
             android:id="@+id/togglePlayer1"
             android:layout_width="10dp"
@@ -87,11 +90,14 @@
             android:text="continue"
             android:textSize="18sp"
             android:paddingHorizontal="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginStart="100dp"
             android:enabled="false"
             android:background="@drawable/input_box_design"
 
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/first_player"
             app:layout_constraintBottom_toBottomOf="parent"
             />
 
