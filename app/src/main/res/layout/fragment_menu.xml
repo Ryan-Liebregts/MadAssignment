@@ -103,6 +103,7 @@
             android:layout_marginTop="40dp"
             android:background="@drawable/rounded_rectangle_border"
             android:src="@drawable/custom_player_vs_ai_icon"
+            android:backgroundTint="#b08b6d"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/board_size_selector" />
@@ -113,6 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/rounded_rectangle_border"
+            android:backgroundTint="#b08b6d"
             android:src="@drawable/custom_player_vs_player_icon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -140,10 +142,10 @@
         android:src="@drawable/light_spot2"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.041"
+        app:layout_constraintHorizontal_bias="0.01"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.07" />
+        app:layout_constraintVertical_bias="0.01" />
 
     <ImageView
         android:id="@+id/lightSpot3"

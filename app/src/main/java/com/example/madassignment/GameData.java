@@ -28,7 +28,7 @@ public class GameData  extends ViewModel {
     public MutableLiveData<Character[][]> gameBoard;
     public MutableLiveData<ArrayList<Integer[]>> moveList;
     public MutableLiveData<Boolean> isGameOver;
-
+    public MutableLiveData<Integer> timerLength;
 
     public GameData(){
         boardSize = new MediatorLiveData<Integer>();
@@ -96,6 +96,9 @@ public class GameData  extends ViewModel {
 
         isGameOver = new MediatorLiveData<Boolean>();
         isGameOver.setValue(false);
+
+        timerLength = new MediatorLiveData<Integer>();
+        timerLength.setValue(11000);
 
     }
 
@@ -289,4 +292,13 @@ public class GameData  extends ViewModel {
     public void setIsGameOver(boolean pIsGameOver){
         isGameOver.setValue(pIsGameOver);
     }
+
+    public int getTimerLength(){
+        return timerLength.getValue();
+    }
+
+    public void setTimerLength(int pTimerLength){
+        timerLength.setValue(pTimerLength);
+    }
+
 }
