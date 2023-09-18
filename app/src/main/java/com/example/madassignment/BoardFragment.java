@@ -225,7 +225,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 retrieveGameBoardState();
                 // Initialise move list
                 moveList = gameData.getMoveList();
-                gameData.setNeedSaveGameState(false);
             // If previous game state was a game over, reset board
             if(gameData.getIsGameOver() == true){
                 resetGame(); //Reset the board
@@ -247,24 +246,37 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         // If game mode is player vs ai, and player 1 doest not go first, AI moves
         if(!isPlayer1GoingFirst && gameData.getGameMode() == 1){
-            gameData.setWhoseTurn(3); //Set whose turn to AI
-            aiMove(gameBoard);
-            isPlayer1sTurn = true;
-            gameData.setWhoseTurn(1); //Set whose turn to players
+            if(gameData.getNeedSaveGameState() == true){
+                gameData.setWhoseTurn(gameData.getWhoseTurn());
+            } else {
+                gameData.setWhoseTurn(3); //Set whose turn to AI
+                aiMove(gameBoard);
+                isPlayer1sTurn = true;
+                gameData.setWhoseTurn(1); //Set whose turn to players
+            }
+            gameData.setGameBoard(gameBoard);
+            gameData.setMoveList(moveList);
         }
 
         // If game mode is pvp and player 1 is not going first, set whose turn to player 2
         // or if player 1 is going first, set whose turn to player 1
         if(!isPlayer1GoingFirst && gameData.getGameMode() == 2){
-            gameData.setWhoseTurn(2); //Set whose turn to player 2
+            if(gameData.getNeedSaveGameState() == true){
+                gameData.setWhoseTurn(gameData.getWhoseTurn());
+            } else {
+                gameData.setWhoseTurn(2); //Set whose turn to player 2
+            }
         }
         else if(isPlayer1GoingFirst && gameData.getGameMode() == 2){
-            gameData.setWhoseTurn(1); //Set whose turn to player 1
+            if(gameData.getNeedSaveGameState() == true){
+                gameData.setWhoseTurn(gameData.getWhoseTurn());
+            } else {
+                gameData.setWhoseTurn(1); //Set whose turn to player 1
+            }
         }
+        gameData.setNeedSaveGameState(false);
         // Start timer
         startTimer();
-
-
 
 
         // Reset button listener
@@ -810,10 +822,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             isPlayer1sTurn = true;
         }
 
+        gameData.setGameBoard(gameBoard);
+        gameData.setMoveList(moveList);
+
         // Reset timer
         stopTimer();
         startTimer();
-
     }
 
     // Checks if all spaces are taken
@@ -896,6 +910,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                         gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
                         isPlayer1sTurn = true; //Set isPlayers1s turn to true
                     }
+
+                    gameData.setGameBoard(gameBoard);
+                    gameData.setMoveList(moveList);
 
                 }
             }, delayMillis);

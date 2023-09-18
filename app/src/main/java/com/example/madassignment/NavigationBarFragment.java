@@ -132,6 +132,10 @@ public class NavigationBarFragment extends Fragment {
                     editUserModel.setUserName("");
                     editUserModel.setUserId(0L);
                     navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                    if (navigationData.getHistoricalClickedValue() == 1) {
+                        gameData.setNeedSaveGameState(true);
+                        System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
+                    }
                 }
                 else if (navigationData.getClickedValue() == 4) {
                     navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
