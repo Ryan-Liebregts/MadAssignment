@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
@@ -101,6 +102,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
     EditUser editUserModel;
     Handler handler = new Handler();
+    static CountDownTimer countDownTimer;
+    long delayMillis = 300;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -114,8 +117,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         gameOverText = view.findViewById(R.id.gameoverText);
         undoButton = view.findViewById(R.id.undo_button);
         winCondition = view.findViewById(R.id.win_condition_icon);
-        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.piece_mp3);
-        mediaPlayer.setVolume(volume, volume);
         winConditionIcon = view.findViewById(R.id.win_condition_icon);
 
         // Set game over text as invisible
@@ -229,6 +230,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             gameData.setWhoseTurn(3); //Set whose turn to AI
             aiMove(gameBoard);
             isPlayer1sTurn = true;
+            gameData.setWhoseTurn(1); //Set whose turn to players
         }
 
         // If game mode is pvp and player 1 is not going first, set whose turn to player 2
@@ -450,47 +452,36 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     // Function for AI's marker placement
     public void aiMove(char[][] pGameBoard){
 
-        long delayMillis = 500;
+        do {
+            Random rand = new Random();
 
-        // Use the postDelayed() method to execute code after the specified delay.
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Select a position on the board until an empty space is found then place ai marker
-                do {
-                    Random rand = new Random();
-
-                    int aiMarkerCordsRow = rand.nextInt(pGameBoard.length), aiMarkerCordsCol = rand.nextInt(pGameBoard.length); // Randomly select board position
-                    if(pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] != '-') validInput = false;
-                    else {
-                        pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] = otherMarker;
-                        otherLocI = aiMarkerCordsRow;
-                        otherLocJ = aiMarkerCordsCol;
-                        validInput = true;
-                    }
-                } while(!validInput);
-
-                int adapterDataIndex = (otherLocI * pGameBoard.length) + otherLocJ; // Determine where AI placed marker in terms of adapter data arraylist index
-                adapter.data.get(adapterDataIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
-                adapter.data.get(adapterDataIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
-                adapter.notifyDataSetChanged(); //Notify adapter to update UI
-
-                // Add move to move list
-                int[] move = {otherLocI, otherLocJ};
-                gameData.setPlayer2Moves(gameData.getPlayer2Moves() + 1);
-                moveList.add(move);
-
-                //TODO: Printing game board for testing purposes, can be deleted
-                for (int i = 0; i < gameBoard.length; i++) {
-                    for (int j = 0; j < gameBoard.length; j++) {
-                        System.out.print(gameBoard[i][j]);
-                    }
-                    System.out.println("");
-                }
-
-                gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
+            int aiMarkerCordsRow = rand.nextInt(pGameBoard.length), aiMarkerCordsCol = rand.nextInt(pGameBoard.length); // Randomly select board position
+            if(pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] != '-') validInput = false;
+            else {
+                pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] = otherMarker;
+                otherLocI = aiMarkerCordsRow;
+                otherLocJ = aiMarkerCordsCol;
+                validInput = true;
             }
-        }, delayMillis);
+        } while(!validInput);
+
+        int adapterDataIndex = (otherLocI * pGameBoard.length) + otherLocJ; // Determine where AI placed marker in terms of adapter data arraylist index
+        adapter.data.get(adapterDataIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
+        adapter.data.get(adapterDataIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
+        adapter.notifyDataSetChanged(); //Notify adapter to update UI
+
+        // Add move to move list
+        int[] move = {otherLocI, otherLocJ};
+        gameData.setPlayer2Moves(gameData.getPlayer2Moves() + 1);
+        moveList.add(move);
+
+        //TODO: Printing game board for testing purposes, can be deleted
+        for (int i = 0; i < gameBoard.length; i++) {
+            for (int j = 0; j < gameBoard.length; j++) {
+                System.out.print(gameBoard[i][j]);
+            }
+            System.out.println("");
+        }
     }
 
     // Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]
@@ -711,11 +702,24 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         if(!isPlayer1GoingFirst && gameData.getGameMode() == 1){
             gameData.setWhoseTurn(3); //Set whose turn to AI
             aiMove(gameBoard); // AI moves
+            gameData.setWhoseTurn(1); //set who turn to player 1
+            isPlayer1sTurn = true;
+
+        }
+        else if(isPlayer1GoingFirst && gameData.getGameMode() == 1){
+            gameData.setWhoseTurn(1); //Set whose turn to player 1
+            isPlayer1sTurn = true;
         }
 
         // If game mode is pvp, set to appropriate players turn
-        if(!isPlayer1GoingFirst && gameData.getGameMode() == 2) gameData.setWhoseTurn(2); //Set whose turn to player 2
-        else if(isPlayer1GoingFirst && gameData.getGameMode() == 2) gameData.setWhoseTurn(1); //Set whose turn to player 1
+        if(!isPlayer1GoingFirst && gameData.getGameMode() == 2) {
+            gameData.setWhoseTurn(2); //Set whose turn to player 2
+            isPlayer1sTurn = false;
+        }
+        else if(isPlayer1GoingFirst && gameData.getGameMode() == 2){
+            gameData.setWhoseTurn(1); //Set whose turn to player 1
+            isPlayer1sTurn = true;
+        }
 
         // Reset timer
         stopTimer();
@@ -791,9 +795,21 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         if (!isThereAWinner && !isDraw && gameData.getGameMode() == 1) {
             gameData.setWhoseTurn(3); // Set whose turn to AI
             isPlayer1sTurn = false;
-            aiMove(gameBoard); // AI moves
-            isThereAWinner = checkIfThereIsWinner(gameBoard, winConditionInput, otherLocI, otherLocJ, isPlayer1sTurn);
-            isDraw = ((isAllSpacesTaken(gameBoard)) && (!isThereAWinner)); // It is a draw if all spaces on the board are taken and there is no winner
+
+            // Use the postDelayed() method to execute code after the specified delay.
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    aiMove(gameBoard); // AI moves
+                    isThereAWinner = checkIfThereIsWinner(gameBoard, winConditionInput, otherLocI, otherLocJ, isPlayer1sTurn);
+                    isDraw = ((isAllSpacesTaken(gameBoard)) && (!isThereAWinner)); // It is a draw if all spaces on the board are taken and there is no winner
+                    if(!isThereAWinner && !isDraw) {
+                        gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
+                        isPlayer1sTurn = true; //Set isPlayers1s turn to true
+                    }
+
+                }
+            }, delayMillis);
         }
 
         // If on pvp mode, change to other players turn if there are no winner or no draw
@@ -806,15 +822,21 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             isPlayer1sTurn = true;
         }
 
-        // If game is over, end game
-        if(isThereAWinner || isDraw) {
-            endGame(isPlayer1sTurn, isDraw);
-        }
-        else{
-            // Reset timer
-            stopTimer();
-            startTimer();
-        }
+        // Delay ending game, so that ai move delay can update board in time
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                // If game is over, end game
+                if (isThereAWinner || isDraw) {
+                    endGame(isPlayer1sTurn, isDraw);
+                } else {
+                    // Reset timer
+                    stopTimer();
+                    startTimer();
+                }
+            }
+        }, delayMillis);
     }
 
     // Gets data from adapter and updates game board
@@ -873,52 +895,44 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         }
     }
 
-    // Start the timer
+    // Start the count down timer
     // Code below is a modified version of the code from:
-    // https://stackoverflow.com/questions/4597690/how-to-set-timer-in-android
-    // https://stackoverflow.com/questions/14393423/how-to-make-a-countdown-timer-in-java/14393573#14393573
-    // https://stackoverflow.com/questions/11707066/timer-in-java-thread/11707987#11707987
-    // https://stackoverflow.com/questions/5161951/android-only-the-original-thread-that-created-a-view-hierarchy-can-touch-its-vi
+    //https://stackoverflow.com/questions/10032003/how-to-make-a-countdown-timer-in-android
     public void startTimer(){
-        System.out.println("Starting Timer"); // Prints starting timer for testing purposes/
-        startTime = SystemClock.elapsedRealtime(); // Obtain current time from system clock
-        boardTimer = new Timer(); // Create new timer object
-
-        // Repeatedly run code 1000 times a second
-        boardTimer.scheduleAtFixedRate(new TimerTask() {
-            public void run() {
-                long currentTime = SystemClock.elapsedRealtime();  // Obtain current time again from system clock
-                long passedTime = currentTime - startTime; // Obtain the difference between times
-
-                // Run the following code on the UI thread
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        int sec = (int) (passedTime / 1000); // Convert milliseconds to seconds
-                        int min = sec / 60; // Convert seconds to minutes
-                        int hours = min / 60; // Convert minutes to hours
-                        timerText.setText(String.format("%02d:%02d:%02d", hours, min % 60, sec % 60)); // Update timer text
-                    }
-                });
+        countDownTimer = new CountDownTimer(gameData.getTimerLength(), 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                int secondsRemaining = (int) millisUntilFinished / 1000; // Obtain seconds remaining
+                int minutesRemaining = secondsRemaining / 60; // Obtain minutes remaining
+                timerText.setText(String.format("%02d:%02d", minutesRemaining, secondsRemaining)); // Set text
             }
-        }, 0, 1000);
-        timerRunning = true;  // Set timer running to true;
+
+            // When the timer finishes, execute code
+            @Override
+            public void onFinish() {
+                timerText.setText("00:00"); // Set timer text to 00:00
+
+                // Whoever turn it is, reverse it
+                if(isPlayer1sTurn) {
+                    isPlayer1sTurn = false;
+                }
+                else{
+                    isPlayer1sTurn = true;
+                }
+                endGame(isPlayer1sTurn, isDraw); // End game
+            }
+        };
+
+        countDownTimer.start(); // Start countdown timer
     }
 
-    // Stop the timer
+    // Stop the count down timer
     public static void stopTimer(){
-        if (boardTimer != null) {
-            boardTimer.cancel(); // If timer exists, cancel timer
+        if (countDownTimer != null) {
+            countDownTimer.cancel(); // If countdowntimer exists, cancel it
         }
-        timerRunning = false; // Set timer running to false;
-        System.out.println("Stopping Timer"); // Prints stopping timer for testing purposes/
     }
 
-    private void playSoundEffect() {
-        if (mediaPlayer != null) {
-            mediaPlayer.seekTo(0); // Reset the playback position to the beginning
-            mediaPlayer.start(); // Start playing the sound effect
-        }
-    }
     public void gameOverAnim(String winMessage) {
         notification_anim = ValueAnimator.ofFloat(20, 30);
         notification_anim.setRepeatCount(ValueAnimator.INFINITE); // Play once, then reverse
