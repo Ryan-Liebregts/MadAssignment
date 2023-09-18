@@ -23,6 +23,7 @@ public class GameData  extends ViewModel {
 
     public MutableLiveData<Boolean> isPlayer1GoingFirst;
     public MutableLiveData<Boolean> isInvalidMove;
+    public MutableLiveData<Integer> timerLength;
 
 
     public GameData(){
@@ -73,6 +74,9 @@ public class GameData  extends ViewModel {
 
         player2Moves = new MediatorLiveData<Integer>();
         player2Moves.setValue(0);
+
+        timerLength = new MediatorLiveData<Integer>();
+        timerLength.setValue(11000);
 
     }
 
@@ -185,6 +189,14 @@ public class GameData  extends ViewModel {
 
     public int getPlayer2Moves() {
         return player2Moves.getValue();
+    }
+
+    public int getTimerLength(){
+        return timerLength.getValue();
+    }
+
+    public void setTimerLength(int pTimerLength){
+        timerLength.setValue(pTimerLength);
     }
 
 }
