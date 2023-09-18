@@ -114,8 +114,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         gameOverText = view.findViewById(R.id.gameoverText);
         undoButton = view.findViewById(R.id.undo_button);
         winCondition = view.findViewById(R.id.win_condition_icon);
-        mediaPlayer = MediaPlayer.create(getActivity(), R.raw.piece_mp3);
-        mediaPlayer.setVolume(volume, volume);
         winConditionIcon = view.findViewById(R.id.win_condition_icon);
 
         // Set game over text as invisible
@@ -136,7 +134,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         }
 
 
-        ///this is just an error case just in case we somehow get to teh board and dont have a user selected
+        ///this is just an error case just in case we somehow get to the board and don't have a user selected
         if ((gameData.getGameMode() == 1 && userModel.getUserId() == 0) || (gameData.getGameMode() == 2 && userModel.getUserId() == 0 && userModel.getUserId2() == 0)) {
             navModel.setClickedValue(0);
             System.out.println("HI I am exiting");
@@ -911,13 +909,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         }
         timerRunning = false; // Set timer running to false;
         System.out.println("Stopping Timer"); // Prints stopping timer for testing purposes/
-    }
-
-    private void playSoundEffect() {
-        if (mediaPlayer != null) {
-            mediaPlayer.seekTo(0); // Reset the playback position to the beginning
-            mediaPlayer.start(); // Start playing the sound effect
-        }
     }
     public void gameOverAnim(String winMessage) {
         notification_anim = ValueAnimator.ofFloat(20, 30);

@@ -101,6 +101,9 @@ public class MenuFragment extends Fragment {
         if (boardSize == 3) {
             boardSizeLeft.setVisibility(View.INVISIBLE);
             boardImageContainer.setImageResource(R.drawable.three_size_grid);
+            if (gameData.getWinCondition() == 3) {
+                winConditionRight.setVisibility(View.INVISIBLE);
+            }
         }
         if (boardSize == 4) {
             boardSizeLeft.setVisibility(View.VISIBLE);
@@ -202,6 +205,13 @@ public class MenuFragment extends Fragment {
 
         return view;
     }
+
+    /* ---------------------------------------------------------------------------------------------
+    Function: fadeAnimation()
+    Author: Ryan
+    Modifications: -
+    Purpose: Defines the behaviour of the light-spot animations for the background
+    --------------------------------------------------------------------------------------------- */
 
     public void fadeAnimation(ImageView light_spot, int offset) {
         // Create a fade-in animation
@@ -341,6 +351,10 @@ public class MenuFragment extends Fragment {
                 boardImageContainer.setImageResource(R.drawable.three_size_grid);
                 boardSizeLeft.setVisibility(View.INVISIBLE);
                 boardSizeRight.setVisibility(View.VISIBLE);
+
+                if (gameData.getWinCondition() == 3) {
+                    winConditionRight.setVisibility(View.INVISIBLE);
+                }
                 break;
             case 4:
                 boardSizeLeft.setEnabled(true);

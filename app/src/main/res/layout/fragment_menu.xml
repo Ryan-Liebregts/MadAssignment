@@ -32,6 +32,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:visibility="invisible"
                 android:backgroundTint="#00FFFFFF"
                 android:clickable="false"
                 android:src="@drawable/icon_left" />
@@ -49,6 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:visibility="invisible"
                 android:backgroundTint="#00FFFFFF"
                 android:rotationY="180"
                 android:src="@drawable/icon_left" />

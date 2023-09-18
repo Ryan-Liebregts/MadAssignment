@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataViewHolder> {
@@ -46,7 +48,25 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
         BoardButtonData singleData = data.get(position);
         holder.boardButton.setImageResource(singleData.getImageResource());
         holder.boardButton.setEnabled(singleData.getEnabledState());
-        if (position % 2 == 1) holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
+
+        /* Uses the modulus to make every second square dark on the board
+            This only works for the 3x3 and 5x5 board as they are even numbered
+            and will produce a nice checkerboard effect. Different code is required for
+            the 4x4 board, refer below. - Ryan
+         */
+
+        if (position % 2 == 1 && (gameData.getBoardSize() == 3 || gameData.getBoardSize() == 5)) {
+            holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
+        }
+
+        // List providing the positions of 4x4 board we wish to be dark
+        List<Integer> positionsToCheck = Arrays.asList(0, 2, 5, 7, 8, 10, 13, 15);
+
+        if (gameData.getBoardSize() == 4 && positionsToCheck.contains(position)) {
+            holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
+        }
+
+
 
         holder.boardButton.setOnClickListener(new View.OnClickListener() {
             @Override
