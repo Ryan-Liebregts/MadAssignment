@@ -16,6 +16,7 @@ public class BoardButtonData {
     }
 
     public void setImageResource(int pImageResource) {
+        System.out.println("setting image resource");
         imageSource = pImageResource;
     }
 
