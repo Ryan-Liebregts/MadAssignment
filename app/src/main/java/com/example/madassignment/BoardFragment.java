@@ -1152,6 +1152,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                     isPlayer1sTurn = true;
                 }
 
+                hasTimerRanOut = true;
+
                 endGame(isPlayer1sTurn, isDraw); // End game
             }
         };
