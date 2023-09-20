@@ -27,7 +27,6 @@ public class UserIconAdapter extends RecyclerView.Adapter<UserIconVH>{
 
     private LifecycleOwner test;
 
-    // TODO: PK Commenting
     public UserIconAdapter(ArrayList<Integer> data, CreateUser userData, LifecycleOwner Test, EditUser editUserModel){
         this.data = data;
         this.userModel = userData;

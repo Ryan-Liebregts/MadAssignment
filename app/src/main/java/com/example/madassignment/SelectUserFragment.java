@@ -24,11 +24,7 @@ import java.util.concurrent.RecursiveAction;
 
 public class SelectUserFragment extends Fragment {
 
-    /* -----------------------------------------------------------------------------------------
-            Function: Initialise View models + Elements
-            Author: Parakram
-            Description: TODO
-     ---------------------------------------------------------------------------------------- */
+
     private List<User> data;
     public List<Integer> dataSymbol;
     public ToggleButton toggleUser;
@@ -63,7 +59,6 @@ public class SelectUserFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: Initialise layout elements
             Author: Parakram
-            Description: TODO
          ---------------------------------------------------------------------------------------- */
         recyclerView = view.findViewById(R.id.recycler_user);
         symbolRecyclerView = view.findViewById(R.id.recycler_symbol);
@@ -103,7 +98,6 @@ public class SelectUserFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: Initialise Recycler Grid elements
             Author: Parakram
-            Description: TODO
          ---------------------------------------------------------------------------------------- */
         //get data
         data = getUserData();
@@ -225,7 +219,6 @@ public class SelectUserFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: continueButton Click Listener
             Author: Parakram
-            Description: TODO
          ---------------------------------------------------------------------------------------- */
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,7 +232,6 @@ public class SelectUserFragment extends Fragment {
     /* -----------------------------------------------------------------------------------------
                 Function: getLeaderBoardData()
                 Author: Parakram
-                Description: TODO
              ---------------------------------------------------------------------------------------- */
     public List<User> getUserData() {
         UserDao userDao = initialiseDB();

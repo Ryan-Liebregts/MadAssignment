@@ -95,7 +95,6 @@
                 android:src="@drawable/icon_left" />
         </LinearLayout>
 
-        <!--        TODO add guideline-->
         <ImageButton
             android:id="@+id/aiButton"
             android:layout_width="wrap_content"

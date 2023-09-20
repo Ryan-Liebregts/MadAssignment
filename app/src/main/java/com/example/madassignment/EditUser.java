@@ -6,15 +6,16 @@ import androidx.lifecycle.ViewModel;
 
 public class EditUser extends ViewModel {
 
-    // TODO: PK Commenting
-    public MutableLiveData<String> userName;
-    public MutableLiveData<Integer> userIcon;
-    public MutableLiveData<Long> userId;
+    // This ViewModel is used to store data for editing a user character
 
-    public MutableLiveData<Long> deleteUserId;
+    public MutableLiveData<String> userName; // thsi is the new username
+    public MutableLiveData<Integer> userIcon; // this is the userIcon
+    public MutableLiveData<Long> userId; //permatnent userID
 
-    public MutableLiveData<Integer> deleteUserPosition;
-    public MutableLiveData<Integer> userCount;
+    public MutableLiveData<Long> deleteUserId; // the userID of the user we decide to delete
+
+    public MutableLiveData<Integer> deleteUserPosition; //the position of hte user in the RecycleView that we decide to delete
+    public MutableLiveData<Integer> userCount; //The amount of users
 
 
     public EditUser(){

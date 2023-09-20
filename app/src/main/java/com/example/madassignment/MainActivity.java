@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
     /* -----------------------------------------------------------------------------------------
             Function: Initialise View models + Elements
             Author: Parakram + Ryan
-            Description: TODO
      ---------------------------------------------------------------------------------------- */
     private ImageView background;
     NavigationBarFragment navBarFragment = new NavigationBarFragment();

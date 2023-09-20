@@ -13,7 +13,8 @@ import java.util.List;
 
 public class SymbolSelectAdapter extends RecyclerView.Adapter<SelectUserVH> {
 
-    // TODO: PK Commenting
+    //This is code for the adapter that populates the marker selection in the userSelect fragment
+    //This allows for the markers to be selected
     List<Integer> data;
 
     UserData userModel;

@@ -377,7 +377,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         return view;
     }
 
-    //TODO: - COMMENT PK
+    //This function allows the fragment to load the game users directly from the database
     public void loadUsers() {
         UserDao userDao = initialiseDB();
         User player1 = userDao.getUserByID(userModel.getUserId());
@@ -449,7 +449,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
     }
 
-    //TODO: - COMMENT PK
+    //This is for setting hte users data on the baord fragment
     public void setGameUserData(View view) {
         // Initialising the setting the symbol for naughts or crosses
         player1Symbol.setImageResource(userModel.getUserSymbol1());
@@ -938,7 +938,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             invalidMoveText.setVisibility(View.INVISIBLE);
         }
 
-        /* TODO: Printing game board for testing purposes, can be deleted
         for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard.length; j++) {
                 System.out.print(gameBoard[i][j]);
