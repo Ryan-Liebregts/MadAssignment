@@ -69,6 +69,7 @@ public class NavigationBarFragment extends Fragment {
             navigationData == 3 -> Profile Fragment
             navigationData == 4 -> Leaderboard Fragment
             navigationData == 5 -> User Select Fragment
+            navigationData == 6 -> Users Fragment
             navigationData == 99 -> Menu Animation Fragment
          */
 
@@ -169,7 +170,12 @@ public class NavigationBarFragment extends Fragment {
                 }
 
                 else if (navigationData.getClickedValue() == 6) {
-                    navigationData.setClickedValue(2);
+                    if (editUserModel.getUserCount() > 0) {
+                        navigationData.setClickedValue(2);
+                    }
+                    else {
+                        navigationData.setClickedValue(0);
+                    }
 
                 }
             }
