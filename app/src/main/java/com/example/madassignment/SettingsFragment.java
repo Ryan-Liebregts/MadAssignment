@@ -35,10 +35,6 @@ public class SettingsFragment extends Fragment {
     private AnimationDrawable animationDrawable;
     private NavigationData navModel;
 
-    // Define the list arrays for the spinners
-    String[] boardSizes = {"3 x 3", "4 x 4", "5 x 5"};
-    String[] winConditions = {"3", "4", "5"};
-
     public SettingsFragment() {
         // Required empty public constructor
     }

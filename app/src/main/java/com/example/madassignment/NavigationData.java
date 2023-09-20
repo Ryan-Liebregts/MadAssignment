@@ -10,7 +10,6 @@ public class NavigationData extends ViewModel {
 
     public MutableLiveData<Integer> clickedValue; // Primary navigation data
     public MutableLiveData<Integer> historicalClickedValue; // Secondary Navigation data if required to traverse back to previous page
-
     public MutableLiveData<Integer> animationTitleClickedValue; // Expresses if the title animation has played
 
     public NavigationData(){
@@ -38,7 +37,5 @@ public class NavigationData extends ViewModel {
     public int getAnimationClickedValue() { return animationTitleClickedValue.getValue();}
 
     public void setAnimationClickedValue(int value) { animationTitleClickedValue.setValue(value);}
-
-
 
 }

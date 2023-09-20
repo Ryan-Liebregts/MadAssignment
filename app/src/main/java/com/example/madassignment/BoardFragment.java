@@ -302,17 +302,17 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
                 Animation reset = AnimationUtils.loadAnimation(getActivity(),R.anim.reset_rotation_anim);
 
-                // Animation listener for pressing reset button
+                // Animation listener for reset button
                 reset.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        // Animation started - Changes colour of the button to show it has been pressed
+                        // Animation start - changes button to cyan
                         resetButton.setColorFilter(cyan);
                     }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        // Animation ended - removes colour filter at the end of the animation
+                        // Animation end - removes cyan
                         resetButton.setColorFilter(null);
                     }
 
