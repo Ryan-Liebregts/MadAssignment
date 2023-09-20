@@ -39,6 +39,9 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
     @Override
     public void onBindViewHolder(@NonNull EditDeleteUserVH holder, int position) {
         User singleRow = data.get(position);
+        System.out.println("the data for this erow is " + position +" " + singleRow.getUserName());
+
+
         holder.userIcon.setImageResource(singleRow.getUserIcon());
         System.out.println(singleRow.getUserName());
         holder.userNameTextBox.setText(singleRow.getUserName());
@@ -51,7 +54,7 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
         holder.userDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                deleteUser(position, singleRow.getId(), holder);
+                deleteUser(position, singleRow.getId(), holder, singleRow);
             }
         });
 
@@ -74,9 +77,10 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
     }
 
 
-    public void deleteUser(int index, long id, EditDeleteUserVH holder) {
+    public void deleteUser(int index, long id, EditDeleteUserVH holder, User singleRow) {
+        editUserModel.setDeleteUserPosition(holder.getAdapterPosition());
         editUserModel.setDeleteUserId(id);
-        editUserModel.setDeleteUserPosition(index);
+
     }
     @Override
     public int getItemCount() {

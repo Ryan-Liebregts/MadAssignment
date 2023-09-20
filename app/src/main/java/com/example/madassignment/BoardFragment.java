@@ -229,11 +229,15 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
 
+        gameData.setNeedSaveGameState(true);
         // If need to get previous game state, retrieve previous game state information
         if(gameData.getNeedSaveGameState() == true){
                 System.out.println("Hello I think you need the old game state TEST");
-                retrieveGameBoardState();
-                // Initialise move list
+                if (gameData.getMoveList().size() != 0) {
+                    retrieveGameBoardState();
+                    // Initialise move list
+                }
+
                 moveList = gameData.getMoveList();
             // If previous game state was a game over, reset board
             if(gameData.getIsGameOver() == true){

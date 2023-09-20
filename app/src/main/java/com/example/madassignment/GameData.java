@@ -94,6 +94,8 @@ public class GameData  extends ViewModel {
         gameBoard.setValue(placeholdGameBoard);
 
         moveList = new MediatorLiveData<ArrayList<Integer[]>>();
+        ArrayList<Integer[]> test = new ArrayList<Integer[]>();
+        moveList.setValue(test);
 
         isGameOver = new MediatorLiveData<Boolean>();
         isGameOver.setValue(false);
@@ -246,20 +248,23 @@ public class GameData  extends ViewModel {
         ArrayList<int[]> primitiveMoveList = new ArrayList<int[]>();
         int[] move;
 
-        System.out.println("getting move");
-        if (moveList.getValue().size() > 0) {
-            for (int i = 0; i < moveList.getValue().size(); i++) {
-                move = new int[moveList.getValue().get(0).length];
-                for (int j = 0; j < moveList.getValue().get(0).length; j++) {
-                    move[j] = (int) moveList.getValue().get(i)[j];
+        if (moveList.getValue() != null) {
+            System.out.println("getting move");
+            if (moveList.getValue().size() > 0) {
+                for (int i = 0; i < moveList.getValue().size(); i++) {
+                    move = new int[moveList.getValue().get(0).length];
+                    for (int j = 0; j < moveList.getValue().get(0).length; j++) {
+                        move[j] = (int) moveList.getValue().get(i)[j];
+                    }
+                    primitiveMoveList.add(move);
                 }
-                primitiveMoveList.add(move);
             }
-        }
-        for (int i = 0; i < primitiveMoveList.size(); i++) {
-            for (int j = 0; j < primitiveMoveList.get(0).length; j++) {
-                System.out.println(primitiveMoveList.get(i)[j]);
+            for (int i = 0; i < primitiveMoveList.size(); i++) {
+                for (int j = 0; j < primitiveMoveList.get(0).length; j++) {
+                    System.out.println(primitiveMoveList.get(i)[j]);
+                }
             }
+            return primitiveMoveList;
         }
         return primitiveMoveList;
     }
