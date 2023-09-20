@@ -111,7 +111,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         //load users from DB by id
         loadUsersFromDB();
 
-
         /* -----------------------------------------------------------------------------------------
             Function: Initialise layout elements
             Author: Jules
@@ -231,6 +230,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         // If need to get previous game state, retrieve previous game state information
         if(gameData.getNeedSaveGameState() == true){
+                System.out.println("Hello I think you need the old game state TEST");
                 retrieveGameBoardState();
                 // Initialise move list
                 moveList = gameData.getMoveList();
@@ -241,6 +241,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             }
             // Else create default data
         } else {
+            System.out.println("Hello I think you dont thge need the old game state TEST");
             // Create board filled with '-'
             for (int i = 0; i < boardSize; i++) {
                 for (int j = 0; j < boardSize; j++) {
@@ -252,6 +253,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             // Initialise move list
             moveList = new ArrayList<int[]>();
         }
+        //set to false again
+        gameData.setNeedSaveGameState(false);
+
 
 
         // If game mode is player vs ai, and player 1 goes first, p1 moves
@@ -293,7 +297,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 gameData.setWhoseTurn(1); //Set whose turn to player 1
             }
         }
-        gameData.setNeedSaveGameState(false);
         // Start timer
         startTimer();
 
@@ -497,6 +500,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 editUserModel.setUserIcon(userModel.getUserIcon());
                 stopTimer();
                 navModel.setClickedValue(3);
+                gameData.setNeedSaveGameState(true);
                 navModel.setHistoricalClickedValue(1);
             }
         });
@@ -509,6 +513,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 editUserModel.setUserIcon(userModel.getUserIcon());
                 stopTimer();
                 navModel.setClickedValue(3);
+                gameData.setNeedSaveGameState(true);
                 navModel.setHistoricalClickedValue(1);
             }
         });
@@ -522,6 +527,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                     editUserModel.setUserIcon(userModel.getUserIcon2());
                     stopTimer();
                     navModel.setClickedValue(3);
+                    gameData.setNeedSaveGameState(true);
+
                     navModel.setHistoricalClickedValue(1);
                 }
             });
@@ -534,6 +541,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                     editUserModel.setUserIcon(userModel.getUserIcon2());
                     stopTimer();
                     navModel.setClickedValue(3);
+                    gameData.setNeedSaveGameState(true);
                     navModel.setHistoricalClickedValue(1);
                 }
             });
@@ -732,6 +740,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     // Ends the game
     // Disables all board buttons, and displays game over text
     public void endGame(boolean pIsPlayer1sTurn, boolean pIsDraw){
+        //set the need state to false because game has ended
+        //initialise the boolean to store need save game state as false
+
         //initialise DB
         UserDao userDao = initialiseDB();
         //update the amount of games played
@@ -809,6 +820,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     // Restarts game
     // Enables board buttons and clears game board
     public void resetGame() {
+        //set the game dat ato reset
+        gameData.setNeedSaveGameState(false);
+
         // Sets game over text to invisible
         gameData.setPlayer2Moves(0);
         gameData.setPlayer1Moves(0);
