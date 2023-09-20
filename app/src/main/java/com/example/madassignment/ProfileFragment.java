@@ -196,6 +196,8 @@ public class ProfileFragment extends Fragment {
                 }
                 else{
                     saveUser();
+                    int userCount = editUser.getUserCount();
+                    editUser.setUserCount(userCount + 1);
                 }
                navModel.setClickedValue(navModel.getHistoricalClickedValue());
 
