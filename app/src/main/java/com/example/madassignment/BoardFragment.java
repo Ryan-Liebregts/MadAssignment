@@ -33,15 +33,10 @@ import android.widget.TextView;
 import java.util.*;
 
 public class BoardFragment extends Fragment implements BoardButtonAdapter.AdapterCallback {
-
-    private Button settingsButton; // TODO: remove if unnecessary
     private ImageButton undoButton, resetButton;
-
     private NavigationData navModel;
     private UserData userModel;
-    private GameData gameModel; // TODO: remove if unnecessary
     private ValueAnimator notification_anim;
-
     private ImageView winCondition;
     private ImageButton player1Icon;
     private ImageButton player1IconDull;
@@ -49,11 +44,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     private ImageButton player2IconDull;
     private TextView player1Moves;
     private TextView player2Moves;
-    private int gameMode; // TODO: remove if unnecessary
     private TextView player1Name;
     private TextView player2Name;
     private ImageView player1Symbol;
-    private ImageView winConditionIcon; // TODO: remove if unnecessary
     private ImageView player2Symbol;
 
     private char[][] gameBoard;
@@ -64,7 +57,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     private int otherLocI;
     private int otherLocJ;
     private int cyan = Color.CYAN;
-    private boolean isPlayer1GoingFirst, isThereAWinner, validInput = true, isPlayer1sTurn, isDraw, isGameOver;
+    private boolean isPlayer1GoingFirst, isThereAWinner, validInput = true, isPlayer1sTurn, isDraw;
     private char playerMarker, otherMarker;
     private TextView gameOverText;
     private TextView invalidMoveText;
@@ -72,16 +65,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     private GameData gameData;
     private BoardButtonAdapter adapter;
     private RecyclerView rv;
-    private static Timer boardTimer; // TODO: Remove if unnecessary
-    private long startTime; // TODO: Remove if unnecessary
-    static boolean timerRunning = false; // TODO: Remove if unnecessary
     private TextView timerText;
     private ArrayList<int[]> moveList;
-
-    int player1moves; // TODO: Remove if unnecessary
-
-    int player2moves; // TODO: Remove if unnecessary
-
     private EditUser editUserModel;
     private Handler handler = new Handler();
     static CountDownTimer countDownTimer;
@@ -109,13 +94,13 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
         //load users from DB by id
-        loadUsersFromDB();
+        loadUsers();
 
 
         /* -----------------------------------------------------------------------------------------
             Function: Initialise layout elements
             Author: Jules
-            Description: TODO
+            Description: Initialises data within the fragment
          ---------------------------------------------------------------------------------------- */
         resetButton = view.findViewById(R.id.reset_button);
         gameOverText = view.findViewById(R.id.gameoverText);
@@ -162,9 +147,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         //This function handles settings hte game user data such as icons and symbols and username on the board
         setGameUserData(view);
 
-        // Set board size
-        boardSize = gameData.getBoardSize();
-
         // Set locI, locJ, otherLocI and otherLocJ values to 0
         locI = 0;
         locJ = 0;
@@ -174,15 +156,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Set isThereAWinner and isDraw to false
         isThereAWinner = false;
         isDraw = false;
-        isGameOver = false;
 
         // Is the player going first?
         if(userModel.getFirstMove() == 1) gameData.setIsPlayer1GoingFirst(true);
         else if(userModel.getFirstMove() == 2) gameData.setIsPlayer1GoingFirst(false);
-
         isPlayer1GoingFirst = gameData.getIsPlayer1GoingFirst();
-        if(isPlayer1GoingFirst) isPlayer1sTurn = true;
-        else isPlayer1sTurn = false;
+        isPlayer1sTurn = isPlayer1GoingFirst;
 
         // Set player and ai marker
         playerMarker = gameData.getPlayer1MarkerSymbol();
@@ -190,7 +169,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             otherMarker = gameData.getAIMarkerSymbol();
         }
         else{
-            otherMarker = gameData.getPlayer2MarkerSymbol(); //VARIABLE NAME SHOULD BE CHANGED BUT HAS TO STAY LIKE THIS FOR NOW CAUSE ILL NEED TO CHANGE YI XIANGS BIT AND I CBF READING THE CODE FOR IT NOW ITS TOO CONFUSING
+            otherMarker = gameData.getPlayer2MarkerSymbol();
         }
 
         // Win condition from game data used to dynamically show on board the game
@@ -216,7 +195,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         /* -----------------------------------------------------------------------------------------
             Function: Create Recyclerview Grid
             Author: Jules
-            Description: TODO
+            Description: Create the RecyclerView Grid for the board based on board game size
          ---------------------------------------------------------------------------------------- */
         rv = view.findViewById(R.id.recyclerView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), boardSize, GridLayoutManager.VERTICAL,false);
@@ -224,16 +203,17 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         adapter = new BoardButtonAdapter(data, BoardFragment.this);
         rv.setAdapter(adapter);
 
-        // Initialise board to size
+        // Initialise board
         gameBoard = new char[boardSize][boardSize];
 
         System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
 
         // If need to get previous game state, retrieve previous game state information
         if(gameData.getNeedSaveGameState() == true){
-                retrieveGameBoardState();
-                // Initialise move list
-                moveList = gameData.getMoveList();
+            retrieveGameBoardState();
+            System.out.println("TESTING");
+            // Initialise move list
+            moveList = gameData.getMoveList();
             // If previous game state was a game over, reset board
             if(gameData.getIsGameOver() == true){
                 resetGame(); //Reset the board
@@ -259,7 +239,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             if(gameData.getNeedSaveGameState() == true){
                 gameData.setWhoseTurn(gameData.getWhoseTurn());
             } else {
-                gameData.setWhoseTurn(1);
+                gameData.setWhoseTurn(1); //Set whose turn to player 1
             }
         }
 
@@ -269,12 +249,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 gameData.setWhoseTurn(gameData.getWhoseTurn());
             } else {
                 gameData.setWhoseTurn(3); //Set whose turn to AI
-                aiMove(gameBoard);
+                aiMove(gameBoard); // AI moves
                 isPlayer1sTurn = true;
                 gameData.setWhoseTurn(1); //Set whose turn to players
             }
-            gameData.setGameBoard(gameBoard);
-            gameData.setMoveList(moveList);
+            gameData.setGameBoard(gameBoard); // Update game board in game data
+            gameData.setMoveList(moveList); // Update move list in game data
         }
 
         // If game mode is pvp and player 1 is not going first, set whose turn to player 2
@@ -294,9 +274,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             }
         }
         gameData.setNeedSaveGameState(false);
+
         // Start timer
         startTimer();
-
 
         /* -----------------------------------------------------------------------------------------
             Function: Reset Button ClickListener
@@ -346,8 +326,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             Description: Provides the rotation and colour change for the undo button
             - Modified by Jules to implement the undo logic
          ---------------------------------------------------------------------------------------- */
-
-        // Reset button listener - Added by Ryan
         undoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -382,15 +360,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         return view;
     }
-    //load user data from db
-    public void loadUsersFromDB() {
-        //initiaise DB
-        System.out.println("Hi I am loading users");
+
+    //TODO: - COMMENT PK
+    public void loadUsers() {
         UserDao userDao = initialiseDB();
-        //get each player from database by id set in userData viewModel
         User player1 = userDao.getUserByID(userModel.getUserId());
         User player2 = userDao.getUserByID(userModel.getUserId2());
-        //set the userData viewmodel with 100% correct values from DB
         userModel.setUserIcon(player1.getUserIcon());
         userModel.setUserName(player1.getUserName());
         if (gameData.getGameMode() != 1) {
@@ -401,14 +376,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
     //set the user data above the board
 
-    /* ---------------------------------------------------------------------------
-    Function: retrieveGameBoardState
-    Author: Yi Xiang
-    Notifications: -
-    Purpose: updates UI with the gameboard
-     --------------------------------------------------------------------------- */
     public void retrieveGameBoardState(){
-        System.out.println("yeah saving was required");
+        System.out.println("1: yeah saving was required");
         // sets current fragment gameBoard to previous gameBoard
         gameBoard = gameData.getGameBoard();
         for (int i = 0; i < gameBoard.length; i++) {
@@ -424,14 +393,14 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 for (int j = 0; j < gameBoard[0].length; j++) {
                     // update all AI symbols with drawable
                     if (gameBoard[i][j] == gameData.getAIMarkerSymbol()) {
-                        System.out.println("entered ai marker");
+                        System.out.println("2: entered ai marker");
                         // update all player symbols with drawable
                         adapterDataStateIndex = (i * gameData.getBoardSize()) + j;
                         System.out.println(adapterDataStateIndex);
                         adapter.data.get(adapterDataStateIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
                         adapter.data.get(adapterDataStateIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
                     } else if (gameBoard[i][j] == gameData.getPlayer1MarkerSymbol()) {
-                        System.out.println("entered player marker");
+                        System.out.println("3: entered player marker");
                         // update all player symbols with drawable
                         adapterDataStateIndex = (i * gameData.getBoardSize()) + j;
                         adapter.data.get(adapterDataStateIndex).setMarkerSymbol(gameData.getPlayer1MarkerSymbol()); // Set board button data to appropriate symbol
@@ -464,6 +433,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
     }
 
+    //TODO: - COMMENT PK
     public void setGameUserData(View view) {
         // Initialising the setting the symbol for naughts or crosses
         player1Symbol.setImageResource(userModel.getUserSymbol1());
@@ -473,14 +443,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         player1IconDull.setImageResource(userModel.getUserIcon());
         player1Name.setText(userModel.getUserName());
         player1Moves.setText("0 Moves");
-        System.out.println("Hi setting moves");
         player2Moves.setText("0 Moves");
 
 
         if (gameData.getGameMode() == 1) {
             player2Icon.setImageResource(R.drawable.robot_icon);
             player2IconDull.setImageResource(R.drawable.robot_icon);
-            System.out.println("Hi setting name");
             player2Name.setText("AI");
         }
         else {
@@ -573,23 +541,29 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         });
     }
 
-    // Function for AI's marker placement
+    /* -----------------------------------------------------------------------------------------
+        Function: aiMove(char[][] pGameBoard)
+        Author: Jules
+        Description: Provides the logic for the AI's marker placement
+        ---------------------------------------------------------------------------------------- */
     public void aiMove(char[][] pGameBoard){
 
+        // Do While loop repeated runs until a empty position in the game board is found
         do {
-            Random rand = new Random();
+            Random rand = new Random(); //Set random seed
 
             int aiMarkerCordsRow = rand.nextInt(pGameBoard.length), aiMarkerCordsCol = rand.nextInt(pGameBoard.length); // Randomly select board position
-            if(pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] != '-') validInput = false;
+
+            if(pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] != '-') validInput = false; // If selected position is already validInput is set to false
             else {
-                pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] = otherMarker;
-                otherLocI = aiMarkerCordsRow;
-                otherLocJ = aiMarkerCordsCol;
-                validInput = true;
+                pGameBoard[aiMarkerCordsRow][aiMarkerCordsCol] = otherMarker; // Game board position is set to AI marker
+                otherLocI = aiMarkerCordsRow; // Set otherLocI to randomly selected row position
+                otherLocJ = aiMarkerCordsCol; // Set otherLocJ to randomly selected column position
+                validInput = true; // validInput is set to true
             }
         } while(!validInput);
 
-        int adapterDataIndex = (otherLocI * pGameBoard.length) + otherLocJ; // Determine where AI placed marker in terms of adapter data arraylist index
+        int adapterDataIndex = (otherLocI * pGameBoard.length) + otherLocJ; // Determine where AI placed marker in adapter data arraylist index
         adapter.data.get(adapterDataIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
         adapter.data.get(adapterDataIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
         adapter.notifyDataSetChanged(); //Notify adapter to update UI
@@ -599,21 +573,22 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         gameData.setPlayer2Moves(gameData.getPlayer2Moves() + 1);
         moveList.add(move);
 
-        //TODO: Printing game board for testing purposes, can be deleted
+        /*
+        //Printing game board for testing purposes, can be deleted
         for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard.length; j++) {
                 System.out.print(gameBoard[i][j]);
             }
             System.out.println("");
-        }
+        } */
     }
 
     /* ---------------------------------------------------------------------------
-    Function: checkConsecutiveMarkers
-    Author: Yi Xiang
-    Notifications: -
-    Purpose: Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]
-     --------------------------------------------------------------------------- */
+        Function: checkConsecutiveMarkers
+        Author: Yi Xiang
+        Notifications: -
+        Purpose: Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]
+        --------------------------------------------------------------------------- */
     public boolean checkConsecutiveMarkers(char[][] pGameBoard, int pWinConditionInput, int pLocI, int pLocJ, boolean pIsPlayer1sTurn, int pNextI, int pNextJ){
         int playerMarkerCount;
         int otherMarkerCount;
@@ -704,11 +679,11 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     }
 
     /* ---------------------------------------------------------------------------
-    Function: checkIfThereIsWinner
-    Author: Yi Xiang
-    Notifications: -
-    Purpose: checks if there is a winner on the board, if so return true
-     --------------------------------------------------------------------------- */
+        Function: checkIfThereIsWinner
+        Author: Yi Xiang
+        Notifications: -
+        Purpose: checks if there is a winner on the board, if so return true
+        --------------------------------------------------------------------------- */
     public boolean checkIfThereIsWinner(char[][] pGameBoard, int pWinConditionInput, int pLocI, int pLocJ, boolean pIsPlayer1sTurn){
         // Checks if there are enough markers in a row to meet the win condition
         // Horizontal [0,+1]
@@ -729,14 +704,19 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         return false;
     }
 
-    // Ends the game
-    // Disables all board buttons, and displays game over text
+    /* -----------------------------------------------------------------------------------------
+        Function: endGame(boolean pIsPlayer1sTurn, boolean pIsDraw)
+        Author: Jules + Yi Xiang + Parakram
+        Description: Ends the game by disabling buttons, display appropriate game over text
+        and updating database
+        ---------------------------------------------------------------------------------------- */
     public void endGame(boolean pIsPlayer1sTurn, boolean pIsDraw){
+
         //initialise DB
         UserDao userDao = initialiseDB();
+
         //update the amount of games played
         gameData.setIsGameOver(true);
-        System.out.println("enters endgame");
 
         if (gameData.getGameMode() == 1) {
             userDao.updateUserGamesPlayed(userModel.getUserId());
@@ -806,13 +786,19 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         gameOverText.setVisibility(View.VISIBLE);
     }
 
-    // Restarts game
-    // Enables board buttons and clears game board
+    /* -----------------------------------------------------------------------------------------
+        Function: resetGame()
+        Author: Jules + Yi Xiang
+        Description: Resets game by clearing game board data and adapter data
+        ---------------------------------------------------------------------------------------- */
     public void resetGame() {
-        // Sets game over text to invisible
+
+
         gameData.setPlayer2Moves(0);
         gameData.setPlayer1Moves(0);
         gameData.setIsGameOver(false);
+
+        // Sets game over text to invisible
         gameOverText.setVisibility(View.INVISIBLE);
         invalidMoveText.setVisibility(View.INVISIBLE);
 
@@ -845,7 +831,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         if(!isPlayer1GoingFirst && gameData.getGameMode() == 1){
             gameData.setWhoseTurn(3); //Set whose turn to AI
             aiMove(gameBoard); // AI moves
-            gameData.setWhoseTurn(1); //set who turn to player 1
+            gameData.setWhoseTurn(1); //Set who turn to player 1
             isPlayer1sTurn = true;
 
         }
@@ -872,14 +858,18 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         startTimer();
     }
 
-    // Checks if all spaces are taken
+    /* -----------------------------------------------------------------------------------------
+        Function: isAllSpacesTaken(char[][] pGameBoard)
+        Author: Jules
+        Description: Checks if all spaces are filled on the board
+        ---------------------------------------------------------------------------------------- */
     public boolean isAllSpacesTaken(char[][] pGameBoard) {
         for (int i = 0; i < pGameBoard.length; i++) {
             for (int j = 0; j < pGameBoard.length; j++) {
-                if(pGameBoard[i][j] == '-') return false;
+                if(pGameBoard[i][j] == '-') return false; // Return false if there is an empty space
             }
         }
-        return true;
+        return true; // Return true if all spaces are taken
     }
 
     /* ---------------------------------------------------------------------------
@@ -887,7 +877,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     Author: Yi Xiang
     Notifications: -
     Purpose: set UI text of invalid move to visible
-     --------------------------------------------------------------------------- */
+        --------------------------------------------------------------------------- */
     public void invalidMoveClicked() {
         invalidMoveText.setText("INVALID MOVE!");
         System.out.println("invalid clicked");
@@ -901,8 +891,15 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         }
     }
 
+
+    /* ---------------------------------------------------------------------------
+        Function: onItemClicked(int pPosition)
+        Author: Jules
+        Purpose: Function is executed when a board button is pressed
+        --------------------------------------------------------------------------- */
     @Override
     public void onItemClicked(int pPosition) {
+
         // Sync adapter data with game board
         updateGameBoard(adapter.data);
 
@@ -910,34 +907,43 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             invalidMoveText.setVisibility(View.INVISIBLE);
         }
 
-/*        //TODO: Printing game board for testing purposes, can be deleted
+        /* TODO: Printing game board for testing purposes, can be deleted
         for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard.length; j++) {
                 System.out.print(gameBoard[i][j]);
             }
             System.out.println("");
-        }
-*/
+        } */
+
         // Set isPlayer1sTurn to appropriate value and Determines button location in array from list position
         if(gameData.whoseTurn.getValue() == 1){
+            // Button position is determine in game board based on adapter data index
             locI = pPosition / gameData.getBoardSize();
             locJ = pPosition % gameData.getBoardSize();
+
+            //Set isPlayer1sTurn to true
             isPlayer1sTurn = true;
+
+            //Add move to move plist
             int[] move = {locI, locJ};
             gameData.setPlayer1Moves(gameData.getPlayer1Moves()+ 1);
             moveList.add(move);
         }
         else if(gameData.whoseTurn.getValue() == 2){
+            // Button position is determine in game board based on adapter data index
             otherLocI = pPosition / gameData.getBoardSize();
             otherLocJ = pPosition % gameData.getBoardSize();
+
+            //Set isPlayer1sTurn to false
             isPlayer1sTurn = false;
+
+            //Add move to move plist
             int[] move = {otherLocI, otherLocJ};
             gameData.setPlayer2Moves(gameData.getPlayer2Moves()+ 1);
             moveList.add(move);
         }
 
-        // Check if there is a winner or a draw
-        // It is a draw if all spaces on the board are taken and there is no winner
+        // Check if there is a winner or a draw, it is a draw if all spaces on the board are taken and there is no winner
         if(gameData.whoseTurn.getValue() == 1) isThereAWinner = checkIfThereIsWinner(gameBoard, winConditionInput, locI, locJ, isPlayer1sTurn);
         else if(gameData.whoseTurn.getValue() == 2) isThereAWinner = checkIfThereIsWinner(gameBoard, winConditionInput, otherLocI, otherLocJ, isPlayer1sTurn);
         isDraw = ((isAllSpacesTaken(gameBoard)) && (!isThereAWinner));
@@ -945,20 +951,25 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // If game mode is player vs ai, and game is not over, AI moves, and then checks if there is a winner or draw
         if (!isThereAWinner && !isDraw && gameData.getGameMode() == 1) {
             gameData.setWhoseTurn(3); // Set whose turn to AI
-            isPlayer1sTurn = false;
+            isPlayer1sTurn = false; //Set isPlayer1sTurn to false
 
             // Use the postDelayed() method to execute code after the specified delay.
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     aiMove(gameBoard); // AI moves
+
+                    // Check if there is a winner or a draw
                     isThereAWinner = checkIfThereIsWinner(gameBoard, winConditionInput, otherLocI, otherLocJ, isPlayer1sTurn);
-                    isDraw = ((isAllSpacesTaken(gameBoard)) && (!isThereAWinner)); // It is a draw if all spaces on the board are taken and there is no winner
+                    isDraw = ((isAllSpacesTaken(gameBoard)) && (!isThereAWinner));
+
+                    // If there is no winner or draw change turn to player 1
                     if(!isThereAWinner && !isDraw) {
                         gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
                         isPlayer1sTurn = true; //Set isPlayers1s turn to true
                     }
 
+                    // Update game board and move list in gameData
                     gameData.setGameBoard(gameBoard);
                     gameData.setMoveList(moveList);
 
@@ -968,17 +979,17 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         // If on pvp mode, change to other players turn if there are no winner or no draw
         if(!isThereAWinner && !isDraw && gameData.getGameMode() == 2 && gameData.whoseTurn.getValue() == 1){
-            gameData.whoseTurn.setValue(2);
+            gameData.whoseTurn.setValue(2); //Set whoseTurn to 2 (Player 2's Turn)
             isPlayer1sTurn = false;
         }
         else if(!isThereAWinner && !isDraw && gameData.getGameMode() == 2 && gameData.whoseTurn.getValue() == 2){
-            gameData.whoseTurn.setValue(1);
+            gameData.whoseTurn.setValue(1); //Set whoseTurn to 1 (Player 1's Turn)
             isPlayer1sTurn = true;
         }
 
         // If game is over, end game
         if(isThereAWinner || isDraw) {
-            endGame(isPlayer1sTurn, isDraw);
+            endGame(isPlayer1sTurn, isDraw); // End game
         }
         else{
             // Reset timer
@@ -986,6 +997,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             startTimer();
         }
 
+        // Update game board and move list in gameData
         gameData.setGameBoard(gameBoard);
         gameData.setMoveList(moveList);
 
@@ -1006,25 +1018,35 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         }, delayMillis);
     }
 
-    // Gets data from adapter and updates game board
+    /* ---------------------------------------------------------------------------
+        Function: updateGameBoard(ArrayList pData)
+        Author: Jules
+        Purpose: Updates the game board with the adapter data
+        --------------------------------------------------------------------------- */
     public void updateGameBoard(ArrayList pData){
         int index = 0;
         for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard.length; j++) {
-                gameBoard[i][j] = adapter.data.get(index).getMarkerSymbol();
-                index++;
+                gameBoard[i][j] = adapter.data.get(index).getMarkerSymbol(); // Set position in game board to appropriate marker
+                index++; // Increment index
             }
         }
-        gameData.setGameBoard(gameBoard);
+        gameData.setGameBoard(gameBoard); // Update game board in gameData
     }
 
     public UserDao initialiseDB() {
         return UserDbInstance.getDatabase(getContext()).userDao();
     }
 
-    // Undo the user's previous move
+    /* -----------------------------------------------------------------------------------------
+        Function: undoMove()
+        Author: Jules
+        Description: Undo the previous move
+        ---------------------------------------------------------------------------------------- */
     public void undoMove(){
+        // If the moveList is not empty
         if(moveList.size() > 0){
+            // If player vs ai, and its the players turn
             if(gameData.getGameMode() == 1 && gameData.getWhoseTurn() == 1){
                 int adapterDataIndex = (moveList.get(moveList.size() - 1)[0] * gameBoard.length) + moveList.get(moveList.size() - 1)[1]; // Get most recent marker placement
                 adapter.data.get(adapterDataIndex).setMarkerSymbol('-'); // Change adapter data to remove marker
@@ -1037,10 +1059,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 adapter.data.get(adapterDataIndex).setImageResource(0); // Change adapter data to remove marker
                 adapter.notifyDataSetChanged(); //Notify adapter to update UI
                 moveList.remove(moveList.size() - 1); // Remove most recent move from move list
+
                 gameData.setPlayer1Moves(gameData.getPlayer1Moves() -1);
                 gameData.setPlayer2Moves(gameData.getPlayer2Moves() -1);
 
             }
+            //If player vs player, and its player 1s turn
             else if(gameData.getGameMode() == 2 && gameData.getWhoseTurn() == 1){
                 int adapterDataIndex = (moveList.get(moveList.size() - 1)[0] * gameBoard.length) + moveList.get(moveList.size() - 1)[1]; // Get most recent marker placement
                 adapter.data.get(adapterDataIndex).setMarkerSymbol('-'); // Change adapter data to remove marker
@@ -1048,8 +1072,10 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 adapter.notifyDataSetChanged(); //Notify adapter to update UI
                 moveList.remove(moveList.size() - 1); // Remove most recent move from move list
                 gameData.setWhoseTurn(2); //Set player 2's turn
+
                 gameData.setPlayer2Moves(gameData.getPlayer2Moves() -1);
             }
+            //If player vs player, and its player 2s turn
             else if(gameData.getGameMode() == 2 && gameData.getWhoseTurn() == 2){
                 int adapterDataIndex = (moveList.get(moveList.size() - 1)[0] * gameBoard.length) + moveList.get(moveList.size() - 1)[1]; // Get most recent marker placement
                 adapter.data.get(adapterDataIndex).setMarkerSymbol('-'); // Change adapter data to remove marker
@@ -1057,19 +1083,26 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 adapter.notifyDataSetChanged(); //Notify adapter to update UI
                 moveList.remove(moveList.size() - 1); // Remove most recent move from move list
                 gameData.setWhoseTurn(1); //Set player 1's turn
+
                 gameData.setPlayer1Moves(gameData.getPlayer1Moves() -1);
 
             }
-            updateGameBoard(adapter.data);
-            gameData.setMoveList(moveList);
+
+            updateGameBoard(adapter.data); //Update the game board with the adapter data
+            gameData.setMoveList(moveList); // Update game board in gameData
         }
     }
 
-    // Start the count down timer
-    // Code below is a modified version of the code from:
-    //https://stackoverflow.com/questions/10032003/how-to-make-a-countdown-timer-in-android
+    /* ----------------------------------------------------------------------------------------------------------------------------
+        Function: startTimer()
+        Author: Jules
+        Description: Start the count down timer
+        Source: Modified version from https://stackoverflow.com/questions/10032003/how-to-make-a-countdown-timer-in-android
+        ----------------------------------------------------------------------------------------------------------------------- */
     public void startTimer(){
+        // Initialise count down
         countDownTimer = new CountDownTimer(gameData.getTimerLength(), 1000) {
+            //Every second the code is executed
             @Override
             public void onTick(long millisUntilFinished) {
                 int secondsRemaining = (int) millisUntilFinished / 1000; // Obtain seconds remaining
@@ -1077,7 +1110,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 timerText.setText(String.format("%02d:%02d", minutesRemaining, secondsRemaining)); // Set text
             }
 
-            // When the timer finishes, execute code
+            // When the timer finishes the code is executed
             @Override
             public void onFinish() {
                 timerText.setText("00:00"); // Set timer text to 00:00
@@ -1089,6 +1122,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 else{
                     isPlayer1sTurn = true;
                 }
+
                 endGame(isPlayer1sTurn, isDraw); // End game
             }
         };
@@ -1096,7 +1130,11 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         countDownTimer.start(); // Start countdown timer
     }
 
-    // Stop the count down timer
+    /* -----------------------------------------------------------------------------------------
+        Function: undoMove()
+        Author: Jules
+        Description: Stop the count down timer
+        ---------------------------------------------------------------------------------------- */
     public static void stopTimer(){
         if (countDownTimer != null) {
             countDownTimer.cancel(); // If countdowntimer exists, cancel it
