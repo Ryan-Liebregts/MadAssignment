@@ -100,7 +100,7 @@ public class SelectUserFragment extends Fragment {
         });
         //set recycler
         //get data
-        data = getLeaderBoardData();
+        data = getUserData();
         dataSymbol = getIconData();
         //define grid
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4,
@@ -225,14 +225,19 @@ public class SelectUserFragment extends Fragment {
         return view;
     }
 
-    public List<User> getLeaderBoardData() {
+    public List<User> getUserData() {
         UserDao userDao = initialiseDB();
         data = null;
         data = userDao.getAllUsers();
+        //create new fake user row for the button that will be displayed always in the RecycleView to add new user
         User button = new User();
+        //give very large ID that won't be attainable
         button.setId(100000l);
+        //set username that can be identified
         button.setUserName("button");
+        //set the user icon image resource ID
         button.setUserIcon(R.drawable.add_icon);
+        //add to data list
         data.add(button);
         return data;
     }

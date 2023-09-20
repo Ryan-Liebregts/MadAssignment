@@ -153,9 +153,11 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 aiButton.setColorFilter(cyan);
-
+                //set navigation value for the given clicked button to navigate to next page
                 navModel.setClickedValue(5);
+                //set historic value for back button to work back to this page
                 navModel.setHistoricalClickedValue(0);
+                //set gamemode for PvAI mode
                 gameData.setGameMode(1);
             }
         });
@@ -163,10 +165,13 @@ public class MenuFragment extends Fragment {
         playerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // animation - RYAN
                 playerButton.setColorFilter(cyan);
-
+                //set navigation value for the given clicked button to navigate to next page
                 navModel.setClickedValue(5);
+                //set historic value for back button to work back to this page
                 navModel.setHistoricalClickedValue(0);
+                //set gamemode for PvP mode
                 gameData.setGameMode(2);
                 System.out.println("The value of the game mose has been set ot " + gameData.getGameMode());
 
@@ -269,13 +274,16 @@ public class MenuFragment extends Fragment {
         light_spot.startAnimation(fadeIn);
     }
 
+
     public void handleWinConditionClick(int direction ){
         winCondition = gameData.getWinCondition();
+        //This means the left button is clicked
         if(direction == -1) {
             System.out.println("The left button is clicked");
             winCondition += direction;
             gameData.setWinCondition(winCondition);
         }
+        //this means the right button is clicked
         else {
             System.out.println("The right button is clicked");
             if(winCondition < gameData.getBoardSize()){

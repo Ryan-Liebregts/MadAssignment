@@ -8,21 +8,15 @@ import androidx.lifecycle.ViewModel;
 
 public class UserData extends ViewModel {
 
-    public MutableLiveData<String> userName;
-    public MutableLiveData<Integer> userIcon;
-
-    public MutableLiveData<Long> userId;
-
-    public MutableLiveData<Long> userId2;
-
-    public MutableLiveData<String> userName2;
-    public MutableLiveData<Integer> userIcon2;
-
-    public MutableLiveData<Integer> userSymbol1;
-    public MutableLiveData<Integer> userSymbol2;
-
-
-    public MutableLiveData<Integer> firstMove;
+    public MutableLiveData<String> userName; // user name for user 1
+    public MutableLiveData<Integer> userIcon;// user icon image resource id for user 1
+    public MutableLiveData<Long> userId; // user Id of the user loaded from the room database for user 1
+    public MutableLiveData<Long> userId2; // user Id of the user loaded from the room database for user 2
+    public MutableLiveData<String> userName2;// user name for user 2
+    public MutableLiveData<Integer> userIcon2;// user icon image resource id for user 2
+    public MutableLiveData<Integer> userSymbol1;// image resource id for marker of user 1
+    public MutableLiveData<Integer> userSymbol2;// image resource id for marker of user 2
+    public MutableLiveData<Integer> firstMove;// integer value 1|2 indicating which user moves first
 
     public UserData(){
         userName = new MediatorLiveData<String>();

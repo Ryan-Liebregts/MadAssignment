@@ -354,9 +354,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     }
     //load user data from db
     public void loadUsers() {
+        //initiaise DB
         UserDao userDao = initialiseDB();
+        //get each player from database by id set in userData viewModel
         User player1 = userDao.getUserByID(userModel.getUserId());
         User player2 = userDao.getUserByID(userModel.getUserId2());
+        //set the userData viewmodel with 100% correct values from DB
         userModel.setUserIcon(player1.getUserIcon());
         userModel.setUserName(player1.getUserName());
         if (gameData.getGameMode() != 1) {

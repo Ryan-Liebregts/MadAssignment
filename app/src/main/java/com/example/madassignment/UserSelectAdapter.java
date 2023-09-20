@@ -125,24 +125,30 @@ public class UserSelectAdapter extends RecyclerView.Adapter<SelectUserVH> {
 
     public void processClick(SelectUserVH holder, int imageResId, User singleRow ) {
         System.out.println("Hello I just got clicked");
+        //this if condition is for PvAI mode hence only one user needs to be selected
         if (gameData.getGameMode() == 1) {
+            //if you click on an icon already been clicked then it will unselect it
             if(userModel.getUserId()  == singleRow.getId()) {
                 userModel.setUserName("");
                 userModel.setUserIcon(0);
                 userModel.setUserId(0);
             }
+            //if it has not been clicked then it will select it
             else {
                 userModel.setUserName(singleRow.getUserName());
                 userModel.setUserIcon(imageResId);
                 userModel.setUserId(singleRow.getId());
             }
         }
+        // this else condition is for PvP mode
         else{
+            //if no user has been selected then the first click is user 1
             if(userModel.getUserId() == 0 && userModel.getUserId2() == 0) {
                 userModel.setUserName(singleRow.getUserName());
                 userModel.setUserIcon(imageResId);
                 userModel.setUserId(singleRow.getId());
             }
+            //if user 1 is selected then if you click on it again it will unselect or if you click on a new icon it will select user 2
             else if(userModel.getUserId() != 0 && userModel.getUserId2() == 0) {
                 if(userModel.getUserId()  == singleRow.getId()) {
                     userModel.setUserName("");
@@ -154,6 +160,7 @@ public class UserSelectAdapter extends RecyclerView.Adapter<SelectUserVH> {
                     userModel.setUserIcon2(imageResId);
                     userModel.setUserId2(singleRow.getId());
                 }
+            //if user 2 is selected then if you click on it again it will unselect or if you click on a new icon it will select user 1
             } else if (userModel.getUserId() == 0 && userModel.getUserId2() != 0) {
                 if(userModel.getUserId2()  == singleRow.getId()) {
                     userModel.setUserName2("");
@@ -166,6 +173,7 @@ public class UserSelectAdapter extends RecyclerView.Adapter<SelectUserVH> {
                     userModel.setUserId(singleRow.getId());
                 }
             }
+            //if both users are selected you have to click on one of them to unselect it you cannot do anything else
             else {
                 if(userModel.getUserId2()  == singleRow.getId()) {
                     userModel.setUserName2("");
