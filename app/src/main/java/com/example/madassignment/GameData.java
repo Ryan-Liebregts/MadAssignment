@@ -33,7 +33,6 @@ public class GameData  extends ViewModel {
     public MutableLiveData<Integer> timerLength; // Timer length
 
     public GameData(){
-        System.out.println("CUNNTTTTTTTTTT");
         boardSize = new MediatorLiveData<Integer>();
         boardSize.setValue(3);
 
@@ -42,7 +41,6 @@ public class GameData  extends ViewModel {
 
         gameMode = new MediatorLiveData<Integer>();
         gameMode.setValue(1);
-        System.out.println("Hi I got reinitialised");
         //gameType 1 = vs AI
         //gameType 2 = vs player2
 

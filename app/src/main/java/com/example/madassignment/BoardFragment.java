@@ -210,12 +210,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         gameBoard = new char[boardSize][boardSize];
 
         System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
-
-        gameData.setNeedSaveGameState(true);
+        if(navModel.getHistoricalClickedValue() != 2 || navModel.getHistoricalClickedValue() != 5) {
+            gameData.setNeedSaveGameState(true);
+        }
         // If need to get previous game state, retrieve previous game state information
         if(gameData.getNeedSaveGameState() == true){
 
-                System.out.println("Hello I think you need the old game state TEST");
                 if (gameData.getMoveList().size() != 0) {
                     retrieveGameBoardState();
                     // Initialise move list
@@ -229,7 +229,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             }
             // Else create default data
         } else {
-            System.out.println("Hello I think you dont thge need the old game state TEST");
             // Create board filled with '-'
             for (int i = 0; i < boardSize; i++) {
                 for (int j = 0; j < boardSize; j++) {
@@ -409,14 +408,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 for (int j = 0; j < gameBoard[0].length; j++) {
                     // update all AI symbols with drawable
                     if (gameBoard[i][j] == gameData.getAIMarkerSymbol()) {
-                        System.out.println("2: entered ai marker");
                         // update all player symbols with drawable
                         adapterDataStateIndex = (i * gameData.getBoardSize()) + j;
                         System.out.println(adapterDataStateIndex);
                         adapter.data.get(adapterDataStateIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
                         adapter.data.get(adapterDataStateIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
                     } else if (gameBoard[i][j] == gameData.getPlayer1MarkerSymbol()) {
-                        System.out.println("3: entered player marker");
                         // update all player symbols with drawable
                         adapterDataStateIndex = (i * gameData.getBoardSize()) + j;
                         adapter.data.get(adapterDataStateIndex).setMarkerSymbol(gameData.getPlayer1MarkerSymbol()); // Set board button data to appropriate symbol
@@ -435,7 +432,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                         adapter.data.get(adapterDataStateIndex).setMarkerSymbol(gameData.getPlayer2MarkerSymbol()); // Set board button data to appropriate symbol
                         adapter.data.get(adapterDataStateIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
                     } else if (gameBoard[i][j] == gameData.getPlayer1MarkerSymbol()) {
-                        System.out.println("entered player marker");
                         // update all player symbols with drawable
                         adapterDataStateIndex = (i * gameData.getBoardSize()) + j;
                         adapter.data.get(adapterDataStateIndex).setMarkerSymbol(gameData.getPlayer1MarkerSymbol()); // Set board button data to appropriate symbol
@@ -1225,9 +1221,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         stopTimer();
         startTimer();
 
-        // Save game-related data to the bundle
-        outState.putBoolean("needSaveState", gameData.getNeedSaveGameState());
-        // Save other relevant data
     }
+
 
 }

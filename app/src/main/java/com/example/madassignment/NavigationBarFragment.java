@@ -132,12 +132,10 @@ public class NavigationBarFragment extends Fragment {
                 if(navigationData.getClickedValue() == 0) {
                     // Reset board data
                     gameData.setNeedSaveGameState(false);
-                    gameData.setMoveList(null);
                 }
 
                 if(navigationData.getClickedValue() == 1) {
                     // If we are on the Board Fragment, take us back to the Menu Fragment
-                    System.out.println("set value to false for save state");
                     gameData.setNeedSaveGameState(false);
                     navigationData.setClickedValue(0);
                 }
