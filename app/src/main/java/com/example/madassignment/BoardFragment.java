@@ -106,6 +106,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        System.out.println("Hello re rendering " + gameData.getNeedSaveGameState());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
         //load users from DB by id
@@ -253,9 +254,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             // Initialise move list
             moveList = new ArrayList<int[]>();
         }
-        //set to false again
-        gameData.setNeedSaveGameState(false);
-
 
 
         // If game mode is player vs ai, and player 1 goes first, p1 moves
@@ -411,7 +409,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     Purpose: updates UI with the gameboard
      --------------------------------------------------------------------------- */
     public void retrieveGameBoardState(){
-        System.out.println("yeah saving was required");
         // sets current fragment gameBoard to previous gameBoard
         gameBoard = gameData.getGameBoard();
         for (int i = 0; i < gameBoard.length; i++) {
@@ -476,14 +473,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         player1IconDull.setImageResource(userModel.getUserIcon());
         player1Name.setText(userModel.getUserName());
         player1Moves.setText("0 Moves");
-        System.out.println("Hi setting moves");
         player2Moves.setText("0 Moves");
 
 
         if (gameData.getGameMode() == 1) {
             player2Icon.setImageResource(R.drawable.robot_icon);
             player2IconDull.setImageResource(R.drawable.robot_icon);
-            System.out.println("Hi setting name");
             player2Name.setText("AI");
         }
         else {
@@ -1107,7 +1102,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             }
         };
 
-        countDownTimer.start(); // Start countdown timer
+        countDownTimer.start(); // SStart countdown timer
     }
 
     // Stop the count down timer

@@ -31,6 +31,7 @@ public class GameData  extends ViewModel {
     public MutableLiveData<Integer> timerLength;
 
     public GameData(){
+        System.out.println("CUNNTTTTTTTTTT");
         boardSize = new MediatorLiveData<Integer>();
         boardSize.setValue(3);
 
