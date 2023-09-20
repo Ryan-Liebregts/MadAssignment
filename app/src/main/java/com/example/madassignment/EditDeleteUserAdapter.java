@@ -20,12 +20,15 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
 
     private NavigationData navModel;
 
+    private UserData userModel;
+
     private EditUser editUserModel;
 
-    public EditDeleteUserAdapter(List<User> data, NavigationData navModel, EditUser editUserModel){
+    public EditDeleteUserAdapter(List<User> data, NavigationData navModel, EditUser editUserModel, UserData userModel){
         this.data = data;
         this.navModel = navModel;
         this.editUserModel = editUserModel;
+        this.userModel = userModel;
     }
 
     @NonNull
@@ -39,13 +42,12 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
     @Override
     public void onBindViewHolder(@NonNull EditDeleteUserVH holder, int position) {
         User singleRow = data.get(position);
-        System.out.println("the data for this erow is " + position +" " + singleRow.getUserName());
-
-
+        //only allowed to delete non-selected users
+        if (userModel.getUserId() == singleRow.getId() || userModel.getUserId2() == singleRow.getId() ) {
+            holder.userDeleteButton.setEnabled(false);
+        }
         holder.userIcon.setImageResource(singleRow.getUserIcon());
-        System.out.println(singleRow.getUserName());
         holder.userNameTextBox.setText(singleRow.getUserName());
-
         /* -----------------------------------------------------------------------------------------
                 Function: userDelete Click Listener
                 Author: Parakram
