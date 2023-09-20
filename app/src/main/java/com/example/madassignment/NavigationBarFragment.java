@@ -166,7 +166,7 @@ public class NavigationBarFragment extends Fragment {
                 }
                 else if (navigationData.getClickedValue() == 5) {
                     // If we are on the User Select Fragment, take us back to the Menu Fragment
-                    navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                    navigationData.setClickedValue(0);
                 }
 
                 else if (navigationData.getClickedValue() == 6) {

@@ -183,8 +183,6 @@ public class MenuFragment extends Fragment {
                 aiButton.setColorFilter(cyan);
                 //set navigation value for the given clicked button to navigate to next page
                 navModel.setClickedValue(5);
-                //set historic value for back button to work back to this page
-                navModel.setHistoricalClickedValue(0);
                 //set gamemode for PvAI mode
                 gameData.setGameMode(1);
             }
@@ -204,8 +202,6 @@ public class MenuFragment extends Fragment {
                 playerButton.setColorFilter(cyan);
                 //set navigation value for the given clicked button to navigate to next page
                 navModel.setClickedValue(5);
-                //set historic value for back button to work back to this page
-                navModel.setHistoricalClickedValue(0);
                 //set gamemode for PvP mode
                 gameData.setGameMode(2);
                 System.out.println("The value of the game mose has been set ot " + gameData.getGameMode());
