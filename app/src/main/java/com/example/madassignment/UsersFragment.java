@@ -62,8 +62,9 @@ public class UsersFragment extends Fragment {
                 GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         data = getUsers();
+        System.out.println("The size is" + data.size());
         //set adapter
-        EditDeleteUserAdapter editDeleteUserAdapter =new EditDeleteUserAdapter(data, navModel, editUserModel);
+        EditDeleteUserAdapter editDeleteUserAdapter =new EditDeleteUserAdapter(data, navModel, editUserModel, userDataModel);
         recyclerView.setAdapter(editDeleteUserAdapter);
 
         /* -----------------------------------------------------------------------------------------
@@ -89,27 +90,19 @@ public class UsersFragment extends Fragment {
             public void onChanged(Long integer) {
                 if (integer != 0) {
                     //do remove logic
-                    if (editUserModel.getUserName() != userDataModel.getUserName() || editUserModel.getUserName() != userDataModel.getUserName2()) {
-
                         UserDao userDao = initialiseDB();
+                        System.out.println("being deleted id " + integer);
                         userDao.deleteUser(integer);
-
-                        int userCount = editUserModel.getUserCount();
+                        System.out.println("The data being removed is at index at users" + editUserModel.getDeleteUserPosition());
                         data.remove(editUserModel.getDeleteUserPosition());
-                        if(editUserModel.getUserCount() != 0) {
-                            editUserModel.setUserCount(userCount - 1);
-                        }
                         editDeleteUserAdapter.notifyItemRemoved(editUserModel.getDeleteUserPosition());
-
-
                         //restore state
                         editUserModel.setDeleteUserPosition(0);
                         editUserModel.setDeleteUserId(0L);
-
-                    }
                 }
             }
         });
+
         return view;
     }
 

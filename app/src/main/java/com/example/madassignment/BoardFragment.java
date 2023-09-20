@@ -91,11 +91,11 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        System.out.println("Hello re rendering " + gameData.getNeedSaveGameState());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
         //load users from DB by id
         loadUsers();
-
 
         /* -----------------------------------------------------------------------------------------
             Function: Initialise layout elements
@@ -208,12 +208,17 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
 
+        gameData.setNeedSaveGameState(true);
         // If need to get previous game state, retrieve previous game state information
         if(gameData.getNeedSaveGameState() == true){
-            retrieveGameBoardState();
-            System.out.println("TESTING");
-            // Initialise move list
-            moveList = gameData.getMoveList();
+
+                System.out.println("Hello I think you need the old game state TEST");
+                if (gameData.getMoveList().size() != 0) {
+                    retrieveGameBoardState();
+                    // Initialise move list
+                }
+
+                moveList = gameData.getMoveList();
             // If previous game state was a game over, reset board
             if(gameData.getIsGameOver() == true){
                 resetGame(); //Reset the board
@@ -221,6 +226,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             }
             // Else create default data
         } else {
+            System.out.println("Hello I think you dont thge need the old game state TEST");
             // Create board filled with '-'
             for (int i = 0; i < boardSize; i++) {
                 for (int j = 0; j < boardSize; j++) {
@@ -273,8 +279,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 gameData.setWhoseTurn(1); //Set whose turn to player 1
             }
         }
-        gameData.setNeedSaveGameState(false);
-
         // Start timer
         startTimer();
 
@@ -377,7 +381,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     //set the user data above the board
 
     public void retrieveGameBoardState(){
-        System.out.println("1: yeah saving was required");
+
         // sets current fragment gameBoard to previous gameBoard
         gameBoard = gameData.getGameBoard();
         for (int i = 0; i < gameBoard.length; i++) {
@@ -465,6 +469,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 editUserModel.setUserIcon(userModel.getUserIcon());
                 stopTimer();
                 navModel.setClickedValue(3);
+                gameData.setNeedSaveGameState(true);
                 navModel.setHistoricalClickedValue(1);
             }
         });
@@ -477,6 +482,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 editUserModel.setUserIcon(userModel.getUserIcon());
                 stopTimer();
                 navModel.setClickedValue(3);
+                gameData.setNeedSaveGameState(true);
                 navModel.setHistoricalClickedValue(1);
             }
         });
@@ -490,6 +496,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                     editUserModel.setUserIcon(userModel.getUserIcon2());
                     stopTimer();
                     navModel.setClickedValue(3);
+                    gameData.setNeedSaveGameState(true);
+
                     navModel.setHistoricalClickedValue(1);
                 }
             });
@@ -502,6 +510,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                     editUserModel.setUserIcon(userModel.getUserIcon2());
                     stopTimer();
                     navModel.setClickedValue(3);
+                    gameData.setNeedSaveGameState(true);
                     navModel.setHistoricalClickedValue(1);
                 }
             });
@@ -712,6 +721,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         ---------------------------------------------------------------------------------------- */
     public void endGame(boolean pIsPlayer1sTurn, boolean pIsDraw){
 
+
         //initialise DB
         UserDao userDao = initialiseDB();
 
@@ -793,7 +803,10 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         ---------------------------------------------------------------------------------------- */
     public void resetGame() {
 
+        //set the game dat ato reset
+        gameData.setNeedSaveGameState(false);
 
+        // Sets game over text to invisible
         gameData.setPlayer2Moves(0);
         gameData.setPlayer1Moves(0);
         gameData.setIsGameOver(false);
@@ -1127,7 +1140,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             }
         };
 
-        countDownTimer.start(); // Start countdown timer
+        countDownTimer.start(); // SStart countdown timer
     }
 
     /* -----------------------------------------------------------------------------------------

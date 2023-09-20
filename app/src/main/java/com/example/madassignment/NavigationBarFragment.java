@@ -133,11 +133,15 @@ public class NavigationBarFragment extends Fragment {
 
                 if(navigationData.getClickedValue() == 1) {
                     // If we are on the Board Fragment, take us back to the Menu Fragment
+                    System.out.println("set value to false for save state");
+                    gameData.setNeedSaveGameState(false);
                     navigationData.setClickedValue(0);
                 }
                 if (navigationData.getClickedValue() == 2){
-                    System.out.println("The current clicked value is:" + navigationData.getClickedValue());
-                    System.out.println("The historic clicked value is:" + navigationData.getHistoricalClickedValue());
+                    // if at settings and going back to board then save state
+                    if (navigationData.getSettingsHistoricalValue() == 1) {
+                        gameData.setNeedSaveGameState(true);
+                    }
                     //there is separate variable to navigate bake to the page that the settings button was pressed from
                     navigationData.setClickedValue(navigationData.getSettingsHistoricalValue());
 
@@ -154,15 +158,11 @@ public class NavigationBarFragment extends Fragment {
                     //go back to the recent page you came from
                     navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
                     //code to store state if needed
-                    if (navigationData.getHistoricalClickedValue() == 1) {
-                        gameData.setNeedSaveGameState(true); //notify to upload previous game state
-                        System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
-                    }
+
                 }
                 else if (navigationData.getClickedValue() == 4) {
                     navigationData.setClickedValue(2);
                     // TODO: Determine if the user is already in a game and if so go to BOARD fragment otherwise MENU fragment
-
                 }
                 else if (navigationData.getClickedValue() == 5) {
                     // If we are on the User Select Fragment, take us back to the Menu Fragment
