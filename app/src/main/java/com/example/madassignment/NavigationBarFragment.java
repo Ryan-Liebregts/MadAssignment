@@ -85,7 +85,7 @@ public class NavigationBarFragment extends Fragment {
                 Animation settings = AnimationUtils.loadAnimation(getActivity(),R.anim.settings_rotation_anim);
                 settingsButton.startAnimation(settings);
 
-                navigationData.setHistoricalClickedValue(navigationData.getClickedValue());
+                navigationData.setSettingsHistoricalValue(navigationData.getClickedValue());
                 navigationData.setClickedValue(2);
 
             }
@@ -135,17 +135,14 @@ public class NavigationBarFragment extends Fragment {
                     navigationData.setClickedValue(0);
                 }
                 if (navigationData.getClickedValue() == 2){
-                    if (navigationData.getHistoricalClickedValue() != 3) {
-                        gameData.setNeedSaveGameState(true); //notify to upload previous game state
-                        System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
-                        navigationData.setClickedValue(1);
-                    }
-                    else {
-                        navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
-                    }
+                    System.out.println("The current clicked value is:" + navigationData.getClickedValue());
+                    System.out.println("The historic clicked value is:" + navigationData.getHistoricalClickedValue());
+                    //there is separate variable to navigate bake to the page that the settings button was pressed from
+                    navigationData.setClickedValue(navigationData.getSettingsHistoricalValue());
+
                 }
                 else if (navigationData.getClickedValue() == 3) {
-                    //restore state
+                    //restore state of the ViewModels for next visit to profile fragment
                     userModel.setUserIcon(0);
                     userModel.setUserName("");
                     editUserModel.setDeleteUserId(0L);
@@ -153,14 +150,16 @@ public class NavigationBarFragment extends Fragment {
                     editUserModel.setUserIcon(0);
                     editUserModel.setUserName("");
                     editUserModel.setUserId(0L);
+                    //go back to the recent page you came from
                     navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                    //code to store state if needed
                     if (navigationData.getHistoricalClickedValue() == 1) {
                         gameData.setNeedSaveGameState(true); //notify to upload previous game state
                         System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
                     }
                 }
                 else if (navigationData.getClickedValue() == 4) {
-                    navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
+                    navigationData.setClickedValue(2);
                     // TODO: Determine if the user is already in a game and if so go to BOARD fragment otherwise MENU fragment
 
                 }

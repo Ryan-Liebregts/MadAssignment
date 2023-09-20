@@ -12,6 +12,8 @@ public class NavigationData extends ViewModel {
     public MutableLiveData<Integer> historicalClickedValue; // Secondary Navigation data if required to traverse back to previous page
     public MutableLiveData<Integer> animationTitleClickedValue; // Expresses if the title animation has played
 
+    public MutableLiveData<Integer> settingsHistoricalValue; //Mutable value to stpre wjere the settings button was clicked to go back to original page
+
     public NavigationData(){
         clickedValue = new MediatorLiveData<Integer>();
         clickedValue.setValue(0);
@@ -21,6 +23,9 @@ public class NavigationData extends ViewModel {
 
         animationTitleClickedValue = new MediatorLiveData<Integer>();
         animationTitleClickedValue.setValue(0);
+
+        settingsHistoricalValue = new MediatorLiveData<Integer>();
+        settingsHistoricalValue.setValue(0);
 
     }
     public int getClickedValue(){
@@ -37,5 +42,9 @@ public class NavigationData extends ViewModel {
     public int getAnimationClickedValue() { return animationTitleClickedValue.getValue();}
 
     public void setAnimationClickedValue(int value) { animationTitleClickedValue.setValue(value);}
+
+    public int getSettingsHistoricalValue() { return settingsHistoricalValue.getValue();}
+
+    public void setSettingsHistoricalValue(int value) { settingsHistoricalValue.setValue(value);}
 
 }

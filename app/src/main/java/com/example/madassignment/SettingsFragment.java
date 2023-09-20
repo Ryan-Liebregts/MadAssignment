@@ -80,7 +80,6 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 navModel.setClickedValue(6);
-                navModel.setHistoricalClickedValue(2);
             }
         });
 
@@ -92,7 +91,6 @@ public class SettingsFragment extends Fragment {
         leaderBoardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                navModel.setHistoricalClickedValue(navModel.getClickedValue());
                 navModel.setClickedValue(4);
             }
         });
