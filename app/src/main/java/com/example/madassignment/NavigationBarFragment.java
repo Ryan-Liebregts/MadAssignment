@@ -50,8 +50,7 @@ public class NavigationBarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_navigation_bar, container, false);
-        NavigationData navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
-
+        //NavigationData navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
         /* -----------------------------------------------------------------------------------------
             Function: Initialise layout elements
             Author: Ryan
@@ -129,6 +128,11 @@ public class NavigationBarFragment extends Fragment {
 
                 backButton.startAnimation(back);
 
+                if(navigationData.getClickedValue() == 0) {
+                    // Reset board data
+                    gameData.setNeedSaveGameState(false);
+                    gameData.setMoveList(null);
+                }
 
                 if(navigationData.getClickedValue() == 1) {
                     // If we are on the Board Fragment, take us back to the Menu Fragment

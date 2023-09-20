@@ -59,7 +59,7 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
                 Description: Defines the checkerboard aesthetic by setting the background resource
                     as required
          ---------------------------------------------------------------------------------------- */
-        if (position % 2 == 1 && gameData.getBoardSize() != 4) {
+        if (position % 2 == 1 && (gameData.getBoardSize() == 3 || gameData.getBoardSize() == 5)) {
             // 3x3 and 5x5 board have an odd number of elements so we can utilize the modulus
             holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
         }
@@ -70,6 +70,10 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
             // 4x4 board has an even number of elements so we must hard code the list of elements
             // to be changed
             holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
+        }
+        if (gameData.getBoardSize() == 4 && position == 4) {
+            // Fix to weird bug where position 4 would turn dark brown after AI move
+            holder.boardButton.setBackgroundResource(R.drawable.wood_background_light);
         }
 
         /* -----------------------------------------------------------------------------------------
