@@ -5,6 +5,11 @@ public class BoardButtonData {
     private char markerSymbol;
     private boolean enabledState;
 
+    /* -----------------------------------------------------------------------------------------
+        Function: BoardButtonData
+        Author: Jules
+        Description: Information associated with each button in the adapter data
+     ---------------------------------------------------------------------------------------- */
     public BoardButtonData(int imageResource, int position) {
         this.imageSource = 0;
         this.markerSymbol = '-';

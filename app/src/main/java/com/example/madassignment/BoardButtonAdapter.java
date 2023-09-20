@@ -22,7 +22,11 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
     AdapterCallback callback;
     Handler handler = new Handler();
 
-    // Interface to call back to the fragment
+    /* -----------------------------------------------------------------------------------------
+        Function: AdapterCallback
+        Author: Jules
+        Description: The interface allows communication to fragment when button is pressed
+     ---------------------------------------------------------------------------------------- */
     public interface AdapterCallback{
         void onItemClicked(int position);
         void invalidMoveClicked();
@@ -45,9 +49,9 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
 
     @Override
     public void onBindViewHolder(@NonNull BoardButtonDataViewHolder holder, int position){
-        BoardButtonData singleData = data.get(position);
-        holder.boardButton.setImageResource(singleData.getImageResource());
-        holder.boardButton.setEnabled(singleData.getEnabledState());
+        BoardButtonData singleData = data.get(position); // Obtain board button
+        holder.boardButton.setImageResource(singleData.getImageResource()); // Set board button image resource
+        holder.boardButton.setEnabled(singleData.getEnabledState()); //Set board button enable state
 
         /* -----------------------------------------------------------------------------------------
                 Function: Board Aesthetics
@@ -68,6 +72,11 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
             holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
         }
 
+        /* -----------------------------------------------------------------------------------------
+                Function: onClick(View view)
+                Author: Jules
+                Description: Runs everytime a board button is clicked
+         ---------------------------------------------------------------------------------------- */
         holder.boardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,19 +87,20 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
                     if (singleData.getMarkerSymbol() == '-') {
                         System.out.println("space -");
                         if (gameData.getWhoseTurn() == 1) { //If player1s turn place their marker
-                            holder.boardButton.setImageResource(userData.getUserSymbol1());
-                            singleData.setImageResource(userData.getUserSymbol1());
-                            singleData.setMarkerSymbol(gameData.getPlayer1MarkerSymbol());
+                            holder.boardButton.setImageResource(userData.getUserSymbol1()); // Sets image resource of the button to player 1's marker
+                            singleData.setImageResource(userData.getUserSymbol1()); // Sets the button in adapter data to player 1's marker
+                            singleData.setMarkerSymbol(gameData.getPlayer1MarkerSymbol()); // Sets the button in adapter data to player 1's symbol
                         } else if (gameData.getWhoseTurn() == 2) { //If player2s turn place their marker
-                            holder.boardButton.setImageResource(userData.getUserSymbol2());
-                            singleData.setImageResource(userData.getUserSymbol2());
-                            singleData.setMarkerSymbol(gameData.getPlayer2MarkerSymbol());
+                            holder.boardButton.setImageResource(userData.getUserSymbol2()); // Sets image resource of the button to player 2's marker
+                            singleData.setImageResource(userData.getUserSymbol2()); // Sets the button in adapter data to player 2's marker
+                            singleData.setMarkerSymbol(gameData.getPlayer2MarkerSymbol()); // Sets the button in adapter data to player 2's symbol
                         }
+                    // If position is not empty
                     } else {
                         System.out.println("space filled");
                         gameData.setIsInvalidMove(true); // notifies that move is invalid
                         System.out.println(Boolean.toString(gameData.getIsInvalidMove()));
-                        callback.invalidMoveClicked();
+                        callback.invalidMoveClicked(); //Call back to Fragment through the interface
                         return;
                     }
 

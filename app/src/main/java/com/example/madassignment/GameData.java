@@ -7,28 +7,30 @@ import java.util.*;
 
 public class GameData  extends ViewModel {
 
-    public MutableLiveData<Integer> boardSize;
-    public MutableLiveData<Integer> winCondition;
-    public MutableLiveData<Integer> gameMode;
-    public MutableLiveData<Integer> player1Marker;
-    public MutableLiveData<Character> player1MarkerSymbol;
-    public MutableLiveData<Integer> player2Marker;
-    public MutableLiveData<Character> player2MarkerSymbol;
-    public MutableLiveData<Integer> aiMarker;
-    public MutableLiveData<Character> aiMarkerSymbol;
-    public MutableLiveData<Integer> whoseTurn;
-
-    public MutableLiveData<Integer> player1Moves;
-
-    public MutableLiveData<Integer> player2Moves;
-
-    public MutableLiveData<Boolean> isPlayer1GoingFirst;
-    public MutableLiveData<Boolean> isInvalidMove;
-    public MutableLiveData<Boolean> needSaveGameState;
-    public MutableLiveData<Character[][]> gameBoard;
-    public MutableLiveData<ArrayList<Integer[]>> moveList;
-    public MutableLiveData<Boolean> isGameOver;
-    public MutableLiveData<Integer> timerLength;
+    /* -----------------------------------------------------------------------------------------
+    Function: Initialise adapter variables
+    Author: Parakram + Jules + Yi Xiang
+    Description: Initialises data within the fragment
+    ---------------------------------------------------------------------------------------- */
+    public MutableLiveData<Integer> boardSize; // Board size
+    public MutableLiveData<Integer> winCondition; // How many markers in a row to win the game
+    public MutableLiveData<Integer> gameMode; // Current game mode
+    public MutableLiveData<Integer> player1Marker; // Drawable for player 1's marker
+    public MutableLiveData<Character> player1MarkerSymbol; // Symbol for player 1 (Used by game board to discern whose marker is who)
+    public MutableLiveData<Integer> player2Marker; // Drawable for player 2's marker
+    public MutableLiveData<Character> player2MarkerSymbol; // Symbol for player 2 (Used by game board to discern whose marker is who)
+    public MutableLiveData<Integer> aiMarker; // Drawable for AI's marker
+    public MutableLiveData<Character> aiMarkerSymbol; // Symbol for player AI (Used by game board to discern whose marker is who)
+    public MutableLiveData<Integer> whoseTurn; // Current players turn
+    public MutableLiveData<Integer> player1Moves; // Player 1's move count
+    public MutableLiveData<Integer> player2Moves; // Player 2's move count
+    public MutableLiveData<Boolean> isPlayer1GoingFirst; // Is player 1 going moving first
+    public MutableLiveData<Boolean> isInvalidMove; // Is the previous move invalid
+    public MutableLiveData<Boolean> needSaveGameState; // Is SaveGameState required
+    public MutableLiveData<Character[][]> gameBoard; // Array of the game board
+    public MutableLiveData<ArrayList<Integer[]>> moveList; // ArrayList containing each move
+    public MutableLiveData<Boolean> isGameOver; // Is the game over
+    public MutableLiveData<Integer> timerLength; // Timer length
 
     public GameData(){
         System.out.println("CUNNTTTTTTTTTT");
