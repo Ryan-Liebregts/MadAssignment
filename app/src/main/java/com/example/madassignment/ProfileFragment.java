@@ -24,7 +24,11 @@ import java.util.ArrayList;
 
 public class ProfileFragment extends Fragment {
 
-
+    /* -----------------------------------------------------------------------------------------
+            Function: Initialise View models + Elements
+            Author: Parakram
+            Description: TODO
+     ---------------------------------------------------------------------------------------- */
     private ArrayList<Integer> data;
     private RecyclerView recyclerView;
 
@@ -36,9 +40,9 @@ public class ProfileFragment extends Fragment {
 
     private EditUser editUser;
 
-    private String userName;
+    private String userName; // TODO: remove if unnecessary
 
-    int userIcon;
+    int userIcon; // TODO: remove if unnecessary
 
     private ConstraintLayout profileFragmentBackground;
 
@@ -69,17 +73,30 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
 
-        // Animates the background gradient
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise layout elements
+            Author: Parakram
+            Description: TODO
+         ---------------------------------------------------------------------------------------- */
+        saveUserButton = view.findViewById(R.id.save_user_button);
+        userNameTextBox = view.findViewById(R.id.user_text);
+        recyclerView = view.findViewById(R.id.recycler_icon);
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise animation elements
+            Author: Ryan
+            Description: Sets the fade in and fade out characteristics of the background
+         ---------------------------------------------------------------------------------------- */
         profileFragmentBackground = (ConstraintLayout) view.findViewById(R.id.profile_fragment);
         animationDrawable = (AnimationDrawable) profileFragmentBackground.getBackground();
         animationDrawable.setEnterFadeDuration(3000);
         animationDrawable.setExitFadeDuration(2000);
 
-        //get view elements
-        saveUserButton = view.findViewById(R.id.save_user_button);
-        userNameTextBox = view.findViewById(R.id.user_text);
-        recyclerView = view.findViewById(R.id.recycler_icon);
-        //set recycler grid
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise Recycler Grid elements
+            Author: Parakram
+            Description: TODO
+         ---------------------------------------------------------------------------------------- */
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4,
                 GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
@@ -96,6 +113,11 @@ public class ProfileFragment extends Fragment {
             userNameTextBox.setText(editUser.getUserName());
         }
 
+        /* -----------------------------------------------------------------------------------------
+            Function: userNameTextBox Click Listener
+            Author: Parakram
+            Description: TODO
+         ---------------------------------------------------------------------------------------- */
         userNameTextBox.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
                 System.out.println(s);
@@ -161,7 +183,11 @@ public class ProfileFragment extends Fragment {
             });
 
         }
-
+        /* -----------------------------------------------------------------------------------------
+            Function: saveUserButton Click Listener
+            Author: Parakram
+            Description: TODO
+         ---------------------------------------------------------------------------------------- */
         saveUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -178,7 +204,11 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-
+        /* -----------------------------------------------------------------------------------------
+                Function: Icon Data Array
+                Author: Ryan
+                Description: Adds drawable elements to the icon data array
+         ---------------------------------------------------------------------------------------- */
     public ArrayList<Integer> getIconData() {
         data = new ArrayList<Integer>();
         data.add(R.drawable.user_icon1);
@@ -198,8 +228,6 @@ public class ProfileFragment extends Fragment {
         data.add(R.drawable.user_icon15);
         data.add(R.drawable.user_icon16);
 
-        // TODO: Add more user icons when time
-
         return data;
     }
 
@@ -207,7 +235,11 @@ public class ProfileFragment extends Fragment {
         return UserDbInstance.getDatabase(getContext()).userDao();
     }
 
-
+        /* -----------------------------------------------------------------------------------------
+                Function: saveUser()
+                Author: Parakram
+                Description: TODO
+         ---------------------------------------------------------------------------------------- */
     public void saveUser() {
         UserDao userDao = initialiseDB();
         User user = new User();
@@ -219,6 +251,11 @@ public class ProfileFragment extends Fragment {
         userModel.setUserIcon(0);
         userModel.setUserName("");
     }
+        /* -----------------------------------------------------------------------------------------
+                Function: updateUser()
+                Author: Parakram
+                Description: TODO
+         ---------------------------------------------------------------------------------------- */
 
     public void updateUser() {
         UserDao userDao = initialiseDB();
@@ -229,7 +266,11 @@ public class ProfileFragment extends Fragment {
         editUser.setUserIcon(0);
     }
 
-    // Starts the animation when fragment is active
+    /* ---------------------------------------------------------------------------------------------
+            Function: onResume()
+            Author: Ryan
+            Description: Starts the animation if the fragment is active
+     -------------------------------------------------------------------------------------------- */
     @Override
     public void onResume() {
         super.onResume();
@@ -238,7 +279,11 @@ public class ProfileFragment extends Fragment {
         }
     }
 
-    // Pauses the animation when the fragment is not active
+    /* ---------------------------------------------------------------------------------------------
+            Function: onPause()
+            Author: Ryan
+            Description: Stops the animation if the fragment is not active
+     -------------------------------------------------------------------------------------------- */
     @Override
     public void onPause() {
         super.onPause();

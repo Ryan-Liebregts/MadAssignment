@@ -13,7 +13,7 @@ import java.util.List;
 
 public class LeaderBoardDataAdapter  extends RecyclerView.Adapter<LeaderBoardVH> {
 
-    List<User> data;
+    private List<User> data;
 
     public LeaderBoardDataAdapter(List<User> data){
         this.data = data;

@@ -16,30 +16,28 @@ import android.widget.ImageView;
 
 public class MenuFragment extends Fragment {
 
-    // Define UI Components
+    /* -----------------------------------------------------------------------------------------
+            Function: Initialise View models + Elements
+            Author: Parakram + Ryan
+            Description: TODO
+     ---------------------------------------------------------------------------------------- */
     private ImageButton aiButton;
     private ImageButton playerButton;
     private ImageView lightSpot1;
     private ImageView lightSpot2;
     private ImageView lightSpot3;
     private ImageView lightSpot4;
-
     private ImageButton winConditionLeft;
     private ImageButton winConditionRight;
-
     private ImageButton boardSizeLeft;
     private ImageButton boardSizeRight;
     private ImageView winImageContainer;
-
     private UserData userModel;
     private ImageView boardImageContainer;
     private int winCondition;
     private int boardSize;
     private int cyan = Color.CYAN;
-
-    // Define ViewModels
     private NavigationData navModel;
-
     private GameData gameData;
 
     public MenuFragment() {
@@ -50,6 +48,7 @@ public class MenuFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Define view models
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         gameData = new ViewModelProvider(getActivity()).get(GameData.class);
         userModel = new ViewModelProvider(getActivity()).get(UserData.class);
@@ -65,7 +64,12 @@ public class MenuFragment extends Fragment {
         //clear all stored user data from previous games
         userModel.resetUserData();
 
-        // Define Buttons
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise layout elements
+            Author: Parakram + Ryan
+            Description: Defines all necessary layout elements from their layout ID, also
+                initialises navigation data to see if title card animation has been played
+         ---------------------------------------------------------------------------------------- */
         winConditionLeft = view.findViewById(R.id.left_win_button);
         winConditionRight= view.findViewById(R.id.right_win_button);
         boardSizeRight = view.findViewById(R.id.right_board_button);
@@ -76,8 +80,6 @@ public class MenuFragment extends Fragment {
         lightSpot2 = view.findViewById(R.id.lightSpot2);
         lightSpot3 = view.findViewById(R.id.lightSpot3);
         lightSpot4 = view.findViewById(R.id.lightSpot4);
-
-        //define images
         winImageContainer = view.findViewById(R.id.win_condition);
         boardImageContainer = view.findViewById(R.id.board_size);
 
@@ -85,50 +87,71 @@ public class MenuFragment extends Fragment {
         aiButton.setColorFilter(null);
         playerButton.setColorFilter(null);
 
+        // Initialises navigation to title card animation if it has not played before
+        if(navModel.getAnimationClickedValue() == 0) {
+            navModel.setClickedValue(99);
+        }
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Applies fade animation to lightspots
+            Author: Ryan
+            Description: Defines the menu and light spot elements
+         ---------------------------------------------------------------------------------------- */
         fadeAnimation(lightSpot1, 1);
         fadeAnimation(lightSpot2, 0);
         fadeAnimation(lightSpot3, 0);
         fadeAnimation(lightSpot4, 1);
 
-        if(navModel.getAnimationClickedValue() == 0) {
-            navModel.setClickedValue(99);
-        }
+        /* -----------------------------------------------------------------------------------------
+            Function: Logic initialisations
+            Author: Ryan
+            Description: Initialises win condition + board size elements based on view model data.
+                This code is to ensure if the screen is rotated, and the fragment is being recreated
+                no data is lost.
+         ---------------------------------------------------------------------------------------- */
 
+        // Initialise win condition and board size from view model
         winCondition = gameData.getWinCondition();
         boardSize = gameData.getBoardSize();
 
         // Initializations, maintains correctness if orientation change has occurred
         if (boardSize == 3) {
+            // If board size is 3, win condition can only be 3 so it removes win condition arrows
             boardSizeLeft.setVisibility(View.INVISIBLE);
-            boardImageContainer.setImageResource(R.drawable.three_size_grid);
+            boardImageContainer.setImageResource(R.drawable.three_size_grid); // Initialises drawable
             if (gameData.getWinCondition() == 3) {
                 winConditionRight.setVisibility(View.INVISIBLE);
             }
         }
         if (boardSize == 4) {
+            // If board size is 4, win condition can only be 3 or 4. Removes contradictory arrows
             boardSizeLeft.setVisibility(View.VISIBLE);
             boardSizeRight.setVisibility(View.VISIBLE);
-            boardImageContainer.setImageResource(R.drawable.four_size_grid);
+            boardImageContainer.setImageResource(R.drawable.four_size_grid); // Initialises drawable
         }
+        // If board size is 5, removes right arrow as we cannot go larger.
         if (boardSize == 5) {
             boardSizeRight.setVisibility(View.INVISIBLE);
-            boardImageContainer.setImageResource(R.drawable.five_size_grid);
+            boardImageContainer.setImageResource(R.drawable.five_size_grid); // Initialises drawable
         }
 
         // Initializations, maintains correctness if orientation change has occurred
         if (winCondition == 3) {
             if (boardSize == 3) {
+                // Removes possibility to change win condition at minimum board size
                 winConditionLeft.setVisibility(View.INVISIBLE);
                 winConditionRight.setVisibility(View.INVISIBLE);
             }
             else {
+                // Allows win condition increase if board size != 3
                 winConditionLeft.setVisibility(View.INVISIBLE);
                 winConditionRight.setVisibility(View.VISIBLE);
             }
-            winImageContainer.setImageResource(R.drawable.three_win_condition);
+            winImageContainer.setImageResource(R.drawable.three_win_condition); // Initialises WC
         }
         if (winCondition == 4) {
             if (boardSize == 4){
+                // Removes possibility to change win condition to impossible combination
                 winConditionLeft.setVisibility(View.INVISIBLE);
                 winConditionRight.setVisibility(View.VISIBLE);
             }
@@ -136,19 +159,24 @@ public class MenuFragment extends Fragment {
                 winConditionLeft.setVisibility(View.VISIBLE);
                 winConditionRight.setVisibility(View.VISIBLE);
             }
-            winImageContainer.setImageResource(R.drawable.four_win_condition);
+            winImageContainer.setImageResource(R.drawable.four_win_condition); // Initialises WC
         }
         if (winCondition == 5) {
             if (boardSize == 5){
+                // Removes possibility to change win condition beyond 5
                 winConditionLeft.setVisibility(View.VISIBLE);
                 winConditionRight.setVisibility(View.INVISIBLE);
             }
-            winImageContainer.setImageResource(R.drawable.five_win_condition);
+            winImageContainer.setImageResource(R.drawable.five_win_condition); // Initialises WC
         }
 
-        /* Both AI_Button and Player_Button currently only direct to the board fragment
-            this is to be changed when the backend for the AI & player back-end is added.
-         */
+        /* -----------------------------------------------------------------------------------------
+            Function: AI Button Click Listener
+            Author: Ryan
+            Description: Colour change animation on click
+                - Modified by Parakaram to navigate to the user select fragment with desired
+                    game mode
+         ---------------------------------------------------------------------------------------- */
         aiButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -160,6 +188,13 @@ public class MenuFragment extends Fragment {
             }
         });
 
+        /* -----------------------------------------------------------------------------------------
+            Function: AI Button Click Listener
+            Author: Ryan
+            Description: Colour change animation on click
+                - Modified by Parakaram to navigate to the user select fragment with desired
+                    game mode
+         ---------------------------------------------------------------------------------------- */
         playerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,6 +208,11 @@ public class MenuFragment extends Fragment {
             }
         });
 
+        /* -----------------------------------------------------------------------------------------
+            Function: Win Condition + Board Size Click Listeners
+            Author: Parakram
+            Description: Defines the navigation location for the specific buttons
+         ---------------------------------------------------------------------------------------- */
         winConditionLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -194,7 +234,6 @@ public class MenuFragment extends Fragment {
             }
         });
 
-
         boardSizeRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -202,10 +241,14 @@ public class MenuFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
+    /* ---------------------------------------------------------------------------------------------
+        Function: fadeAnimation()
+        Author: Ryan
+        Description: Defines a function to apply a continuous fade-in, fade-out animation to element
+     -------------------------------------------------------------------------------------------- */
     public void fadeAnimation(ImageView light_spot, int offset) {
         // Create a fade-in animation
         // Offset integer allows for variability in light spot fade behaviour
@@ -284,7 +327,13 @@ public class MenuFragment extends Fragment {
             }
         }
 
-        // Updated by Ryan to hide the win condition arrows if they are not applicable eg 5 win for 3x3 board
+        /* -----------------------------------------------------------------------------------------
+            Function: Win Condition Logic
+            Author: Ryan + Parakram
+            Description: Defines win condition behaviour. This code is to ensure no impossible
+                combinations of win condition and board size can occur (refer to initialise logic
+                for thoroughly commented code).
+         ---------------------------------------------------------------------------------------- */
 
         switch (winCondition) {
             case 3:
@@ -324,6 +373,13 @@ public class MenuFragment extends Fragment {
         }
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: Board Size Logic
+            Author: Ryan + Parakram + Yi Xiang
+            Description: Defines board size behaviour. This code is to ensure no impossible
+                combinations of win condition and board size can occur (refer to initialise logic
+                for thoroughly commented code).
+         ---------------------------------------------------------------------------------------- */
     public void handleBoardSizeClick(int direction){
         boardSize = gameData.getBoardSize();
         if(direction == -1) {

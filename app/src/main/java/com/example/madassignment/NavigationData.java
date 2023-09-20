@@ -8,10 +8,10 @@ import java.util.LinkedList;
 
 public class NavigationData extends ViewModel {
 
-    public MutableLiveData<Integer> clickedValue;
-    public MutableLiveData<Integer> historicalClickedValue;
+    public MutableLiveData<Integer> clickedValue; // Primary navigation data
+    public MutableLiveData<Integer> historicalClickedValue; // Secondary Navigation data if required to traverse back to previous page
 
-    public MutableLiveData<Integer> animationTitleClickedValue;
+    public MutableLiveData<Integer> animationTitleClickedValue; // Expresses if the title animation has played
 
     public NavigationData(){
         clickedValue = new MediatorLiveData<Integer>();
