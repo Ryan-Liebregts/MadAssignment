@@ -220,6 +220,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Initialise board to size
         gameBoard = new char[boardSize][boardSize];
 
+        System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
+
         // If need to get previous game state, retrieve previous game state information
         if(gameData.getNeedSaveGameState() == true){
                 retrieveGameBoardState();
@@ -242,6 +244,16 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
             // Initialise move list
             moveList = new ArrayList<int[]>();
+        }
+
+
+        // If game mode is player vs ai, and player 1 goes first, p1 moves
+        if(isPlayer1GoingFirst && gameData.getGameMode() == 1){
+            if(gameData.getNeedSaveGameState() == true){
+                gameData.setWhoseTurn(gameData.getWhoseTurn());
+            } else {
+                gameData.setWhoseTurn(1);
+            }
         }
 
         // If game mode is player vs ai, and player 1 doest not go first, AI moves
@@ -367,6 +379,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
     //set the user data above the board
 
+    /* ---------------------------------------------------------------------------
+    Function: retrieveGameBoardState
+    Author: Yi Xiang
+    Notifications: -
+    Purpose: updates UI with the gameboard
+     --------------------------------------------------------------------------- */
     public void retrieveGameBoardState(){
         System.out.println("yeah saving was required");
         // sets current fragment gameBoard to previous gameBoard
@@ -384,8 +402,10 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 for (int j = 0; j < gameBoard[0].length; j++) {
                     // update all AI symbols with drawable
                     if (gameBoard[i][j] == gameData.getAIMarkerSymbol()) {
+                        System.out.println("entered ai marker");
                         // update all player symbols with drawable
                         adapterDataStateIndex = (i * gameData.getBoardSize()) + j;
+                        System.out.println(adapterDataStateIndex);
                         adapter.data.get(adapterDataStateIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
                         adapter.data.get(adapterDataStateIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
                     } else if (gameBoard[i][j] == gameData.getPlayer1MarkerSymbol()) {
@@ -575,7 +595,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         }
     }
 
-    // Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]
+    /* ---------------------------------------------------------------------------
+    Function: checkConsecutiveMarkers
+    Author: Yi Xiang
+    Notifications: -
+    Purpose: Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]
+     --------------------------------------------------------------------------- */
     public boolean checkConsecutiveMarkers(char[][] pGameBoard, int pWinConditionInput, int pLocI, int pLocJ, boolean pIsPlayer1sTurn, int pNextI, int pNextJ){
         int playerMarkerCount;
         int otherMarkerCount;
@@ -665,8 +690,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         return false;
     }
 
-
-    // Checks if there is a winner on the board
+    /* ---------------------------------------------------------------------------
+    Function: checkIfThereIsWinner
+    Author: Yi Xiang
+    Notifications: -
+    Purpose: checks if there is a winner on the board, if so return true
+     --------------------------------------------------------------------------- */
     public boolean checkIfThereIsWinner(char[][] pGameBoard, int pWinConditionInput, int pLocI, int pLocJ, boolean pIsPlayer1sTurn){
         // Checks if there are enough markers in a row to meet the win condition
         // Horizontal [0,+1]
@@ -840,6 +869,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         return true;
     }
 
+    /* ---------------------------------------------------------------------------
+    Function: invalidMoveClicked
+    Author: Yi Xiang
+    Notifications: -
+    Purpose: set UI text of invalid move to visible
+     --------------------------------------------------------------------------- */
     public void invalidMoveClicked() {
         invalidMoveText.setText("INVALID MOVE!");
         System.out.println("invalid clicked");

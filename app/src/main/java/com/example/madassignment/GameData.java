@@ -43,7 +43,7 @@ public class GameData  extends ViewModel {
         //gameType 1 = vs AI
         //gameType 2 = vs player2
 
-        player1Marker = new MediatorLiveData<Integer>(); //TODO: Implement a method of players choosing marker
+        player1Marker = new MediatorLiveData<Integer>();
         player1Marker.setValue(R.drawable.cross);
 
         player2Marker = new MediatorLiveData<Integer>();
@@ -52,7 +52,7 @@ public class GameData  extends ViewModel {
         aiMarker = new MediatorLiveData<Integer>();
         aiMarker.setValue(R.drawable.circle);
 
-        player1MarkerSymbol = new MediatorLiveData<Character>();  //TODO: Implement a method of players choosing marker
+        player1MarkerSymbol = new MediatorLiveData<Character>();
         player1MarkerSymbol.setValue('x');
 
         player2MarkerSymbol = new MediatorLiveData<Character>();

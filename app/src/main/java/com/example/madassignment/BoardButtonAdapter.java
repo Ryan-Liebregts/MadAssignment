@@ -78,10 +78,10 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
                         }
                     } else {
                         System.out.println("space filled");
-                        gameData.setIsInvalidMove(true);
+                        gameData.setIsInvalidMove(true); // notifies that move is invalid
                         System.out.println(Boolean.toString(gameData.getIsInvalidMove()));
                         callback.invalidMoveClicked();
-                        return;// Do nothing if position is already filled
+                        return;
                     }
 
                     //Call back to Fragment through the interface

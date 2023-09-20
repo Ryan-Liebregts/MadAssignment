@@ -114,7 +114,7 @@ public class NavigationBarFragment extends Fragment {
                 }
                 if (navigationData.getClickedValue() == 2){
                     if (navigationData.getHistoricalClickedValue() != 3) {
-                        gameData.setNeedSaveGameState(true);
+                        gameData.setNeedSaveGameState(true); //notify to upload previous game state
                         System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
                         navigationData.setClickedValue(1);
                     }
@@ -133,7 +133,7 @@ public class NavigationBarFragment extends Fragment {
                     editUserModel.setUserId(0L);
                     navigationData.setClickedValue(navigationData.getHistoricalClickedValue());
                     if (navigationData.getHistoricalClickedValue() == 1) {
-                        gameData.setNeedSaveGameState(true);
+                        gameData.setNeedSaveGameState(true); //notify to upload previous game state
                         System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
                     }
                 }
