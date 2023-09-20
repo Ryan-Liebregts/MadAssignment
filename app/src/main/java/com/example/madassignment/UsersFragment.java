@@ -25,6 +25,7 @@ public class UsersFragment extends Fragment {
      ---------------------------------------------------------------------------------------- */
     private List<User> data;
     private EditUser editUserModel;
+    private UserData userDataModel;
     private Button createNewUser;
     private NavigationData navModel;
     private RecyclerView recyclerView;
@@ -39,6 +40,7 @@ public class UsersFragment extends Fragment {
         super.onCreate(savedInstanceState);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
         editUserModel = new ViewModelProvider(getActivity()).get(EditUser.class);
+        userDataModel = new ViewModelProvider(getActivity()).get(UserData.class);
     }
 
     @Override
@@ -86,15 +88,25 @@ public class UsersFragment extends Fragment {
             @Override
             public void onChanged(Long integer) {
                 if (integer != 0) {
-                    System.out.println("Hello I am deleting");
                     //do remove logic
-                    UserDao userDao = initialiseDB();
-                    userDao.deleteUser(integer);
-                    data.remove(editUserModel.getDeleteUserPosition());
-                    editDeleteUserAdapter.notifyItemRemoved(editUserModel.getDeleteUserPosition());
-                    //restore state
-                    editUserModel.setDeleteUserPosition(0);
-                    editUserModel.setDeleteUserId(0L);
+                    if (editUserModel.getUserName() != userDataModel.getUserName() || editUserModel.getUserName() != userDataModel.getUserName2()) {
+
+                        UserDao userDao = initialiseDB();
+                        userDao.deleteUser(integer);
+
+                        int userCount = editUserModel.getUserCount();
+                        data.remove(editUserModel.getDeleteUserPosition());
+                        if(editUserModel.getUserCount() != 0) {
+                            editUserModel.setUserCount(userCount - 1);
+                        }
+                        editDeleteUserAdapter.notifyItemRemoved(editUserModel.getDeleteUserPosition());
+
+
+                        //restore state
+                        editUserModel.setDeleteUserPosition(0);
+                        editUserModel.setDeleteUserId(0L);
+
+                    }
                 }
             }
         });
