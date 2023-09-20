@@ -12,9 +12,12 @@ import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity {
 
+    /* -----------------------------------------------------------------------------------------
+            Function: Initialise View models + Elements
+            Author: Parakram + Ryan
+            Description: TODO
+     ---------------------------------------------------------------------------------------- */
     private ImageView background;
-
-    // Declare viewModel parameters
     NavigationBarFragment navBarFragment = new NavigationBarFragment();
     NavigationData navigationData;
     FragmentManager fm = getSupportFragmentManager();
@@ -32,6 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
         background = findViewById(R.id.backgroundView);
 
+        /* -----------------------------------------------------------------------------------------
+                Function: Fragment Navigation
+                Author: Ryan + Parakram
+                Description: Handles the navigation of the application, loading and setting
+                    appropriate backgrounds for the fragments
+                    - Modified by Jules to handle board timer logic to prevent errors
+         ---------------------------------------------------------------------------------------- */
         navigationData.clickedValue.observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
@@ -84,11 +94,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: loadMenuFragment()
+            Author: Ryan + Parakram
+            Description: Determines if body fragment is currently full, if so replace with menu
+                otherwise add menu fragment
+     ---------------------------------------------------------------------------------------- */
     private void loadMenuFragment() {
         // Defines other fragments
         MenuFragment menuFragment = new MenuFragment();
         Fragment mainContainer = fm.findFragmentById(R.id.body_container);
-
 
         //If currently active, removes boardFragment
         if (mainContainer != null) {
@@ -100,6 +115,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: loadMenuAnimationFragment()
+            Author: Ryan
+            Description: Determines if body fragment is currently full, if so replace with menu
+                animation otherwise add menu animation fragment
+     ---------------------------------------------------------------------------------------- */
     private void loadMenuAnimationFragment() {
         // Defines other fragments
         MenuAnimationFragment menuAnimationFragment = new MenuAnimationFragment();
@@ -116,6 +137,12 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: loadBoardFragment()
+            Author: Ryan + Parakram
+            Description: Determines if body fragment is currently full, if so replace with board
+                otherwise add board fragment
+     ---------------------------------------------------------------------------------------- */
     private void loadBoardFragment() {
         // Defines  fragments
         BoardFragment boardFragment = new BoardFragment();
@@ -127,11 +154,15 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
             fm.beginTransaction().add(R.id.body_container, boardFragment, "boardFragment").commit();
-
         }
-
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: loadSettingsFragment()
+            Author: Ryan + Parakram
+            Description: Determines if body fragment is currently full, if so replace with
+                settings otherwise add settings fragment
+     ---------------------------------------------------------------------------------------- */
     private void loadSettingsFragment() {
         // Defines  fragments
         SettingsFragment settingsFragment = new SettingsFragment();
@@ -140,13 +171,18 @@ public class MainActivity extends AppCompatActivity {
         //replaces or adds fragment according to if there is already a fragment
         if (bodyContainer != null) {
             fm.beginTransaction().replace(R.id.body_container, settingsFragment, "settingsFragment").commit();
-
         }
         else {
             fm.beginTransaction().add(R.id.body_container, settingsFragment, "settingsFragment").commit();
         }
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: loadProfileFragment()
+            Author: Ryan + Parakram
+            Description: Determines if body fragment is currently full, if so replace with
+                profile otherwise add profile fragment
+     ---------------------------------------------------------------------------------------- */
     private void loadProfileFragment() {
         // Defines  fragments
         ProfileFragment profileFragment = new ProfileFragment();
@@ -155,13 +191,18 @@ public class MainActivity extends AppCompatActivity {
         //replaces or adds fragment according to if there is already a fragment
         if (bodyContainer != null) {
             fm.beginTransaction().replace(R.id.body_container, profileFragment, "profileFragment").commit();
-
         }
         else {
             fm.beginTransaction().add(R.id.body_container, profileFragment, "profileFragment").commit();
         }
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: loadLeaderBoardFragment()
+            Author: Ryan + Parakram
+            Description: Determines if body fragment is currently full, if so replace with
+                leaderboard otherwise add leaderboard fragment
+     ---------------------------------------------------------------------------------------- */
     private void loadLeaderBoardFragment() {
         // Defines  fragments
         LeaderBoardFragment leaderBoardFragment = new LeaderBoardFragment();
@@ -176,6 +217,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: loadUserSelectFragment()
+            Author: Parakram
+            Description: Determines if body fragment is currently full, if so replace with
+                user select otherwise add user select fragment
+     ---------------------------------------------------------------------------------------- */
     private void loadUserSelectFragment() {
         // Defines  fragments
         SelectUserFragment selectUserFragment = new SelectUserFragment();
@@ -190,6 +237,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: loadUserFragment()
+            Author: Parakram
+            Description: Determines if body fragment is currently full, if so replace with
+                user otherwise add user fragment
+     ---------------------------------------------------------------------------------------- */
     private void loadUsersFragment() {
         // Defines  fragments
         UsersFragment usersFragment = new UsersFragment();
@@ -203,8 +256,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
+    /* -----------------------------------------------------------------------------------------
+            Function: loadNavBar()
+            Author: Parakram
+            Description: Determines if navBar fragment is currently full, if so replace with
+                navBar otherwise add navBar fragment
+     ---------------------------------------------------------------------------------------- */
     private void loadNavBar() {
         FragmentManager fm = getSupportFragmentManager();
         Fragment frag = fm.findFragmentById(R.id.navBar_container);

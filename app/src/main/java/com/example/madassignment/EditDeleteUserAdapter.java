@@ -15,11 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH>  {
 
-    List<User> data;
+    // TODO: PK Commenting
+    private List<User> data;
 
-    NavigationData navModel;
+    private NavigationData navModel;
 
-    EditUser editUserModel;
+    private EditUser editUserModel;
 
     public EditDeleteUserAdapter(List<User> data, NavigationData navModel, EditUser editUserModel){
         this.data = data;
@@ -41,6 +42,12 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
         holder.userIcon.setImageResource(singleRow.getUserIcon());
         System.out.println(singleRow.getUserName());
         holder.userNameTextBox.setText(singleRow.getUserName());
+
+        /* -----------------------------------------------------------------------------------------
+                Function: userDelete Click Listener
+                Author: Parakram
+                Description: TODO
+         ---------------------------------------------------------------------------------------- */
         holder.userDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -48,6 +55,11 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
             }
         });
 
+        /* -----------------------------------------------------------------------------------------
+                Function: userEdit Click Listener
+                Author: Parakram
+                Description: TODO
+         ---------------------------------------------------------------------------------------- */
         holder.userEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

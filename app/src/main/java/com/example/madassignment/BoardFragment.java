@@ -34,29 +34,59 @@ import java.util.*;
 
 public class BoardFragment extends Fragment implements BoardButtonAdapter.AdapterCallback {
 
-    private Button settingsButton;
+    private Button settingsButton; // TODO: remove if unnecessary
     private ImageButton undoButton, resetButton;
 
     private NavigationData navModel;
     private UserData userModel;
-    private GameData gameModel;
+    private GameData gameModel; // TODO: remove if unnecessary
     private ValueAnimator notification_anim;
 
-    ImageView winCondition;
-    private MediaPlayer mediaPlayer;
+    private ImageView winCondition;
+    private ImageButton player1Icon;
+    private ImageButton player1IconDull;
+    private ImageButton player2Icon;
+    private ImageButton player2IconDull;
+    private TextView player1Moves;
+    private TextView player2Moves;
+    private int gameMode; // TODO: remove if unnecessary
+    private TextView player1Name;
+    private TextView player2Name;
+    private ImageView player1Symbol;
+    private ImageView winConditionIcon; // TODO: remove if unnecessary
+    private ImageView player2Symbol;
 
-    ImageButton player1Icon;
-    ImageButton player1IconDull;
-    ImageButton player2Icon;
-    ImageButton player2IconDull;
-    TextView player1Moves;
-    TextView player2Moves;
-    int gameMode;
-    TextView player1Name;
-    TextView player2Name;
-    ImageView player1Symbol;
-    ImageView winConditionIcon;
-    ImageView player2Symbol;
+    private char[][] gameBoard;
+    private int boardSize;
+    private int winConditionInput;
+    private int locI;
+    private int locJ;
+    private int otherLocI;
+    private int otherLocJ;
+    private int cyan = Color.CYAN;
+    private boolean isPlayer1GoingFirst, isThereAWinner, validInput = true, isPlayer1sTurn, isDraw, isGameOver;
+    private char playerMarker, otherMarker;
+    private TextView gameOverText;
+    private TextView invalidMoveText;
+    private ArrayList<BoardButtonData> data;
+    private GameData gameData;
+    private BoardButtonAdapter adapter;
+    private RecyclerView rv;
+    private static Timer boardTimer; // TODO: Remove if unnecessary
+    private long startTime; // TODO: Remove if unnecessary
+    static boolean timerRunning = false; // TODO: Remove if unnecessary
+    private TextView timerText;
+    private ArrayList<int[]> moveList;
+
+    int player1moves; // TODO: Remove if unnecessary
+
+    int player2moves; // TODO: Remove if unnecessary
+
+    private EditUser editUserModel;
+    private Handler handler = new Handler();
+    static CountDownTimer countDownTimer;
+    long delayMillis = 300;
+
     public BoardFragment() {
         // Required empty public constructor
     }
@@ -73,53 +103,36 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
     }
 
-    // Variable declaration
-    char[][] gameBoard;
-    int boardSize;
-    int winConditionInput;
-    int locI;
-    int locJ;
-    int otherLocI;
-    int otherLocJ;
-    int cyan = Color.CYAN;
-    float volume = 1.0f;
-    boolean isPlayer1GoingFirst, isThereAWinner, validInput = true, isPlayer1sTurn, isDraw, isGameOver;
-    char playerMarker, otherMarker;
-    private TextView gameOverText;
-    TextView invalidMoveText;
-    ArrayList<BoardButtonData> data;
-    private GameData gameData;
-    BoardButtonAdapter adapter;
-    RecyclerView rv;
-    static Timer boardTimer;
-    long startTime;
-    static boolean timerRunning = false;
-    TextView timerText;
-    ArrayList<int[]> moveList;
-
-    int player1moves;
-
-    int player2moves;
-
-    EditUser editUserModel;
-    Handler handler = new Handler();
-    static CountDownTimer countDownTimer;
-    long delayMillis = 300;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
         //load users from DB by id
-        loadUsers();
-        // Initialise button and text variables
+        loadUsersFromDB();
+
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise layout elements
+            Author: Jules
+            Description: TODO
+         ---------------------------------------------------------------------------------------- */
         resetButton = view.findViewById(R.id.reset_button);
         gameOverText = view.findViewById(R.id.gameoverText);
         undoButton = view.findViewById(R.id.undo_button);
         winCondition = view.findViewById(R.id.win_condition_icon);
-
-        winConditionIcon = view.findViewById(R.id.win_condition_icon);
+        timerText = view.findViewById(R.id.timerTextView);
+        invalidMoveText = view.findViewById(R.id.invalidmoveText);
+        player1Icon = view.findViewById(R.id.player_1_icon);
+        player1IconDull= view.findViewById(R.id.player_1_icon_dull);
+        player1Name = view.findViewById(R.id.player_1_name);
+        player1Moves = view.findViewById(R.id.player_1_moves);
+        player1Symbol = view.findViewById(R.id.player_1_symbol);
+        player2Icon = view.findViewById(R.id.player_2_icon);
+        player2IconDull= view.findViewById(R.id.player_2_icon_dull);
+        player2Name = view.findViewById(R.id.player_2_name);
+        player2Moves = view.findViewById(R.id.player_2_moves);
+        player2Symbol = view.findViewById(R.id.player_2_symbol);
 
         // Set game over text as invisible
         gameOverText.setVisibility(View.INVISIBLE);
@@ -184,25 +197,15 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         winConditionInput = gameData.getWinCondition();
         switch(winConditionInput){
             case 3:
-                winConditionIcon.setImageResource(R.drawable.three_win_condition);
+                winCondition.setImageResource(R.drawable.three_win_condition);
                 break;
             case 4:
-                winConditionIcon.setImageResource(R.drawable.four_win_condition);
+                winCondition.setImageResource(R.drawable.four_win_condition);
                 break;
             case 5:
-                winConditionIcon.setImageResource(R.drawable.five_win_condition);
+                winCondition.setImageResource(R.drawable.five_win_condition);
                 break;
         }
-
-        // Initialise button and text variables
-        resetButton = view.findViewById(R.id.reset_button);
-        gameOverText = view.findViewById(R.id.gameoverText);
-        invalidMoveText = view.findViewById(R.id.invalidmoveText);
-        undoButton = view.findViewById(R.id.undo_button);
-        timerText = view.findViewById(R.id.timerTextView);
-
-        // Set game over text as invisible
-        gameOverText.setVisibility(View.INVISIBLE);
 
         // Create new data array for grid buttons, and filled with empty button data
         data = new ArrayList<BoardButtonData>();
@@ -210,7 +213,11 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             data.add(new BoardButtonData(0, i));
         }
 
-        // Create recyclerview grid
+        /* -----------------------------------------------------------------------------------------
+            Function: Create Recyclerview Grid
+            Author: Jules
+            Description: TODO
+         ---------------------------------------------------------------------------------------- */
         rv = view.findViewById(R.id.recyclerView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), boardSize, GridLayoutManager.VERTICAL,false);
         rv.setLayoutManager(gridLayoutManager);
@@ -219,6 +226,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         // Initialise board to size
         gameBoard = new char[boardSize][boardSize];
+
+        System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
 
         // If need to get previous game state, retrieve previous game state information
         if(gameData.getNeedSaveGameState() == true){
@@ -242,6 +251,16 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
             // Initialise move list
             moveList = new ArrayList<int[]>();
+        }
+
+
+        // If game mode is player vs ai, and player 1 goes first, p1 moves
+        if(isPlayer1GoingFirst && gameData.getGameMode() == 1){
+            if(gameData.getNeedSaveGameState() == true){
+                gameData.setWhoseTurn(gameData.getWhoseTurn());
+            } else {
+                gameData.setWhoseTurn(1);
+            }
         }
 
         // If game mode is player vs ai, and player 1 doest not go first, AI moves
@@ -279,8 +298,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         startTimer();
 
 
-        // Reset button listener
-        // Reset button listener - Modified by Ryan
+        /* -----------------------------------------------------------------------------------------
+            Function: Reset Button ClickListener
+            Author: Jules
+            Description: Resets the game board by calling the reset() function
+            - Modified by Ryan to implement the rotation and colour change animations
+         ---------------------------------------------------------------------------------------- */
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -291,17 +314,17 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
                 Animation reset = AnimationUtils.loadAnimation(getActivity(),R.anim.reset_rotation_anim);
 
-                // Animation listener for pressing reset button
+                // Animation listener for reset button
                 reset.setAnimationListener(new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
-                        // Animation started - Changes colour of the button to show it has been pressed
+                        // Animation start - changes button to cyan
                         resetButton.setColorFilter(cyan);
                     }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-                        // Animation ended - removes colour filter at the end of the animation
+                        // Animation end - removes cyan
                         resetButton.setColorFilter(null);
                     }
 
@@ -316,6 +339,13 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
             }
         });
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Undo Button ClickListener
+            Author: Ryan
+            Description: Provides the rotation and colour change for the undo button
+            - Modified by Jules to implement the undo logic
+         ---------------------------------------------------------------------------------------- */
 
         // Reset button listener - Added by Ryan
         undoButton.setOnClickListener(new View.OnClickListener() {
@@ -353,8 +383,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         return view;
     }
     //load user data from db
-    public void loadUsers() {
+    public void loadUsersFromDB() {
         //initiaise DB
+        System.out.println("Hi I am loading users");
         UserDao userDao = initialiseDB();
         //get each player from database by id set in userData viewModel
         User player1 = userDao.getUserByID(userModel.getUserId());
@@ -370,6 +401,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
     //set the user data above the board
 
+    /* ---------------------------------------------------------------------------
+    Function: retrieveGameBoardState
+    Author: Yi Xiang
+    Notifications: -
+    Purpose: updates UI with the gameboard
+     --------------------------------------------------------------------------- */
     public void retrieveGameBoardState(){
         System.out.println("yeah saving was required");
         // sets current fragment gameBoard to previous gameBoard
@@ -387,8 +424,10 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 for (int j = 0; j < gameBoard[0].length; j++) {
                     // update all AI symbols with drawable
                     if (gameBoard[i][j] == gameData.getAIMarkerSymbol()) {
+                        System.out.println("entered ai marker");
                         // update all player symbols with drawable
                         adapterDataStateIndex = (i * gameData.getBoardSize()) + j;
+                        System.out.println(adapterDataStateIndex);
                         adapter.data.get(adapterDataStateIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
                         adapter.data.get(adapterDataStateIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
                     } else if (gameBoard[i][j] == gameData.getPlayer1MarkerSymbol()) {
@@ -426,18 +465,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     }
 
     public void setGameUserData(View view) {
-        player1Icon = view.findViewById(R.id.player_1_icon);
-        player1IconDull= view.findViewById(R.id.player_1_icon_dull);
-        player1Name = view.findViewById(R.id.player_1_name);
-        player1Moves = view.findViewById(R.id.player_1_moves);
-        player1Symbol = view.findViewById(R.id.player_1_symbol);
-        player2Icon = view.findViewById(R.id.player_2_icon);
-        player2IconDull= view.findViewById(R.id.player_2_icon_dull);
-        player2Name = view.findViewById(R.id.player_2_name);
-        player2Moves = view.findViewById(R.id.player_2_moves);
-        player2Symbol = view.findViewById(R.id.player_2_symbol);
-
-        //setting the symbol for nots or crosses
+        // Initialising the setting the symbol for naughts or crosses
         player1Symbol.setImageResource(userModel.getUserSymbol1());
         player2Symbol.setImageResource(userModel.getUserSymbol2());
 
@@ -578,7 +606,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         }
     }
 
-    // Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]
+    /* ---------------------------------------------------------------------------
+    Function: checkConsecutiveMarkers
+    Author: Yi Xiang
+    Notifications: -
+    Purpose: Check's how many markers there are in a row, with row direction based on [pNextI,pNextJ]
+     --------------------------------------------------------------------------- */
     public boolean checkConsecutiveMarkers(char[][] pGameBoard, int pWinConditionInput, int pLocI, int pLocJ, boolean pIsPlayer1sTurn, int pNextI, int pNextJ){
         int playerMarkerCount;
         int otherMarkerCount;
@@ -668,8 +701,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         return false;
     }
 
-
-    // Checks if there is a winner on the board
+    /* ---------------------------------------------------------------------------
+    Function: checkIfThereIsWinner
+    Author: Yi Xiang
+    Notifications: -
+    Purpose: checks if there is a winner on the board, if so return true
+     --------------------------------------------------------------------------- */
     public boolean checkIfThereIsWinner(char[][] pGameBoard, int pWinConditionInput, int pLocI, int pLocJ, boolean pIsPlayer1sTurn){
         // Checks if there are enough markers in a row to meet the win condition
         // Horizontal [0,+1]
@@ -843,6 +880,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         return true;
     }
 
+    /* ---------------------------------------------------------------------------
+    Function: invalidMoveClicked
+    Author: Yi Xiang
+    Notifications: -
+    Purpose: set UI text of invalid move to visible
+     --------------------------------------------------------------------------- */
     public void invalidMoveClicked() {
         invalidMoveText.setText("INVALID MOVE!");
         System.out.println("invalid clicked");
@@ -1058,6 +1101,11 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         }
     }
 
+    /* -----------------------------------------------------------------------------------------
+            Function: gameOverAnim()
+            Author: Ryan
+            Description: Defines the "pulsing" animation for the GAME OVER text
+         ---------------------------------------------------------------------------------------- */
     public void gameOverAnim(String winMessage) {
         notification_anim = ValueAnimator.ofFloat(20, 30);
         notification_anim.setRepeatCount(ValueAnimator.INFINITE); // Play once, then reverse

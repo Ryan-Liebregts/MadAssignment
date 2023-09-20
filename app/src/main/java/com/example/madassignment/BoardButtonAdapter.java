@@ -48,13 +48,23 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
         BoardButtonData singleData = data.get(position);
         holder.boardButton.setImageResource(singleData.getImageResource());
         holder.boardButton.setEnabled(singleData.getEnabledState());
+
+        /* -----------------------------------------------------------------------------------------
+                Function: Board Aesthetics
+                Author: Ryan
+                Description: Defines the checkerboard aesthetic by setting the background resource
+                    as required
+         ---------------------------------------------------------------------------------------- */
         if (position % 2 == 1 && gameData.getBoardSize() != 4) {
+            // 3x3 and 5x5 board have an odd number of elements so we can utilize the modulus
             holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
         }
 
         List<Integer> positionsToCheck = Arrays.asList(0, 2, 5, 7, 8, 10, 13, 15);
 
         if (gameData.getBoardSize() == 4 && positionsToCheck.contains(position)) {
+            // 4x4 board has an even number of elements so we must hard code the list of elements
+            // to be changed
             holder.boardButton.setBackgroundResource(R.drawable.wood_background_dark);
         }
 
@@ -78,10 +88,10 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
                         }
                     } else {
                         System.out.println("space filled");
-                        gameData.setIsInvalidMove(true);
+                        gameData.setIsInvalidMove(true); // notifies that move is invalid
                         System.out.println(Boolean.toString(gameData.getIsInvalidMove()));
                         callback.invalidMoveClicked();
-                        return;// Do nothing if position is already filled
+                        return;
                     }
 
                     //Call back to Fragment through the interface

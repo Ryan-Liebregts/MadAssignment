@@ -24,23 +24,20 @@ import java.util.List;
 public class SettingsFragment extends Fragment {
 
 
-    // Define Buttons & Spinners
+    /* -----------------------------------------------------------------------------------------
+            Function: Initialise View models + Elements
+            Author: Ryan
+            Description: Initializes data within the fragment
+     ---------------------------------------------------------------------------------------- */
     private ImageButton profileButton;
     private ImageButton leaderBoardButton;
     private ConstraintLayout settingsFragmentBackground;
     private AnimationDrawable animationDrawable;
-
-    // Define Navigation Model
     private NavigationData navModel;
-
-    // Define the list arrays for the spinners
-    String[] boardSizes = {"3 x 3", "4 x 4", "5 x 5"};
-    String[] winConditions = {"3", "4", "5"};
 
     public SettingsFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,17 +51,31 @@ public class SettingsFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-        // Define Buttons
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise layout elements
+            Author: Ryan
+            Description: Defines the layout elements by their layout ID
+         ---------------------------------------------------------------------------------------- */
         profileButton = view.findViewById(R.id.profileButton);
         leaderBoardButton = view.findViewById(R.id.leaderBoardButton);
-        // Animates the background gradient
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise animation elements
+            Author: Ryan
+            Description: Sets the fade in and fade out characteristics of the background
+         ---------------------------------------------------------------------------------------- */
         settingsFragmentBackground = (ConstraintLayout) view.findViewById(R.id.settingsLayout);
         animationDrawable = (AnimationDrawable) settingsFragmentBackground.getBackground();
         animationDrawable.setEnterFadeDuration(3000);
         animationDrawable.setExitFadeDuration(2000);
 
-
-
+        /* -----------------------------------------------------------------------------------------
+            Function: Profile Click Listener
+            Author: Ryan
+            Description: Navigates to the profile fragment
+                - Modified by Parakram to implement traversal behaviour
+         ---------------------------------------------------------------------------------------- */
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +84,11 @@ public class SettingsFragment extends Fragment {
             }
         });
 
+        /* -----------------------------------------------------------------------------------------
+            Function: Leaderboard Click Listener
+            Author: Ryan
+            Description: Navigates to the leaderboard fragment
+         ---------------------------------------------------------------------------------------- */
         leaderBoardButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,17 +97,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        // Create an ArrayAdapter to populate the boardSizeSpinner
-        ArrayAdapter<String> boardSizeAdapter = new ArrayAdapter<String>(
-                requireContext(),
-                android.R.layout.simple_spinner_item,
-                boardSizes
-        );
-
         return view;
     }
 
-    // Starts the animation when fragment is active
+    /* ---------------------------------------------------------------------------------------------
+            Function: onResume()
+            Author: Ryan
+            Description: Starts the animation if the fragment is active
+     -------------------------------------------------------------------------------------------- */
     @Override
     public void onResume() {
         super.onResume();
@@ -100,7 +113,11 @@ public class SettingsFragment extends Fragment {
         }
     }
 
-    // Pauses the animation when the fragment is not active
+    /* ---------------------------------------------------------------------------------------------
+            Function: onPause()
+            Author: Ryan
+            Description: Stops the animation if the fragment is not active
+     -------------------------------------------------------------------------------------------- */
     @Override
     public void onPause() {
         super.onPause();
