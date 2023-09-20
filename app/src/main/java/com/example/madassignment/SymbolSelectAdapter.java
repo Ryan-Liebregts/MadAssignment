@@ -13,6 +13,7 @@ import java.util.List;
 
 public class SymbolSelectAdapter extends RecyclerView.Adapter<SelectUserVH> {
 
+    // TODO: PK Commenting
     List<Integer> data;
 
     UserData userModel;
@@ -75,6 +76,7 @@ public class SymbolSelectAdapter extends RecyclerView.Adapter<SelectUserVH> {
                 else {
                     holder.checkboxButton.setVisibility(View.VISIBLE);
                     holder.userNameText.setText("Player 1");
+                    // Modified by Ryan to use a new drawable icon
                     holder.checkboxButton.setImageResource(R.drawable.number_one_icon);
                     holder.userNameText.setVisibility(View.VISIBLE);
                 }
@@ -93,6 +95,7 @@ public class SymbolSelectAdapter extends RecyclerView.Adapter<SelectUserVH> {
                 }
                 else {
                     holder.checkboxButton.setVisibility(View.VISIBLE);
+                    // Modified by Ryan to use a new drawable icon
                     holder.checkboxButton.setImageResource(R.drawable.number_two_icon);
                     holder.userNameText.setText(player2Name);
                     holder.userNameText.setVisibility(View.VISIBLE);

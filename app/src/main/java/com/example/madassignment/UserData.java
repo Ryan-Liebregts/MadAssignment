@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel;
 
 public class UserData extends ViewModel {
 
+    // TODO: PK Commenting
     public MutableLiveData<String> userName;
     public MutableLiveData<Integer> userIcon;
 

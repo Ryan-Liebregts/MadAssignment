@@ -15,6 +15,7 @@ public class UserIconVH extends RecyclerView.ViewHolder {
     ImageButton userIconSelected;
     public UserIconVH(@NonNull View itemView, ViewGroup parent) {
         super(itemView);
+        // TODO: PK Remove if necessary
 //        int hSize = parent.getMeasuredHeight()/10;
 //        ViewGroup.LayoutParams lp = itemView.getLayoutParams();
 ////        lp.height = hSize;
