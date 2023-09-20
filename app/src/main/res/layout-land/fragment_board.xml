@@ -9,171 +9,236 @@
     tools:context=".BoardFragment">
 
 
-    <TextView
-        android:id="@+id/player_1_moves"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/_2_moves"
-        android:textSize="12sp"
-        android:fontFamily="monospace"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/player_1_icon"
-        app:layout_constraintStart_toStartOf="@id/player_1_icon"
-        app:layout_constraintTop_toBottomOf="@id/player_1_icon"/>
 
-    <ImageButton
-        android:id="@+id/player_1_icon"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:backgroundTint="#00FFFFFF"
-        android:padding="5dp"
-        android:src="@drawable/user_icon1"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/win_condition_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.2"/>
 
-    <ImageButton
-        android:id="@+id/player_1_icon_dull"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/user_icon1"
-        android:background="@drawable/icon_box_design"
-        android:visibility="gone"
-        android:tintMode="multiply"
-        android:backgroundTint="#006A6A6A"
-        app:tint="#6A6A6A"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/win_condition_icon"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.1"/>
 
-    <TextView
-        android:id="@+id/player_1_name"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="monospace"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.3"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.18"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.82"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.95"/>
+
+    <LinearLayout
+        android:id="@+id/player_1_section"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:gravity="center"
-        android:text="@string/test"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/player_1_icon"
-        app:layout_constraintEnd_toEndOf="@id/player_1_icon"
-        app:layout_constraintStart_toStartOf="@id/player_1_icon" />
-
-    <ImageView
-        android:id="@+id/player_1_symbol"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:paddingBottom="10dp"
-        android:src="@drawable/cross"
-        app:layout_constraintStart_toStartOf="@id/player_1_icon"
-        app:layout_constraintEnd_toEndOf="@id/player_1_icon"
-        app:layout_constraintBottom_toTopOf="@id/player_1_name"/>
-
-    <TextView
-        android:id="@+id/vs_text"
-        android:text = "@string/vs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="monospace"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline7"
+        app:layout_constraintEnd_toStartOf="@id/guideline5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/guideline1">
+        <TextView
+            android:id="@+id/player_1_moves"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_2_moves"
+            android:textSize="12sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/player_1_icon"
+            app:layout_constraintStart_toStartOf="@id/player_1_icon"
+            app:layout_constraintTop_toBottomOf="@id/player_1_icon"/>
 
-    <TextView
-        android:id="@+id/player_2_name"
+        <ImageButton
+            android:id="@+id/player_1_icon"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:backgroundTint="#00FFFFFF"
+            android:padding="5dp"
+            android:src="@drawable/user_icon1"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/win_condition_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/player_1_icon_dull"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/user_icon1"
+            android:background="@drawable/icon_box_design"
+            android:visibility="gone"
+            android:tintMode="multiply"
+            android:backgroundTint="#006A6A6A"
+            app:tint="#6A6A6A"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/win_condition_icon"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/player_1_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="monospace"
+            android:gravity="center"
+            android:text="@string/test"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/player_1_icon"
+            app:layout_constraintEnd_toEndOf="@id/player_1_icon"
+            app:layout_constraintStart_toStartOf="@id/player_1_icon" />
+
+        <ImageView
+            android:id="@+id/player_1_symbol"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/cross"
+            app:layout_constraintStart_toStartOf="@id/player_1_icon"
+            app:layout_constraintEnd_toEndOf="@id/player_1_icon"
+            app:layout_constraintBottom_toTopOf="@id/player_1_name"/>
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:id="@+id/player_2_section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:gravity="center"
-        android:textStyle="bold"
-        android:fontFamily="monospace"
-        android:textSize="13sp"
-        android:text="AI"
-        app:layout_constraintEnd_toEndOf="@id/player_2_icon"
-        app:layout_constraintStart_toStartOf="@id/player_2_icon"
-        app:layout_constraintBottom_toTopOf="@id/player_2_icon"/>
-
-    <ImageView
-        android:id="@+id/player_2_symbol"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:paddingBottom="10dp"
-        android:src="@drawable/circle"
-        app:layout_constraintStart_toStartOf="@id/player_2_icon"
-        app:layout_constraintEnd_toEndOf="@id/player_2_icon"
-        app:layout_constraintBottom_toTopOf="@id/player_2_name"/>
-
-
-    <TextView
-        android:id="@+id/player_2_moves"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/_3_moves"
-        android:textSize="12sp"
-        android:fontFamily="monospace"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="@id/player_2_icon"
-        app:layout_constraintStart_toStartOf="@id/player_2_icon"
-        app:layout_constraintTop_toBottomOf="@id/player_2_icon"/>
-
-    <ImageButton
-        android:id="@+id/player_2_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#00FFFFFF"
-        android:src="@drawable/robot_icon"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/guideline7"
+        app:layout_constraintStart_toEndOf="@id/guideline6"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/reset_button"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/guideline1">
+        <TextView
+            android:id="@+id/player_2_moves"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/_3_moves"
+            android:textSize="12sp"
+            android:fontFamily="monospace"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="@id/player_2_icon"
+            app:layout_constraintStart_toStartOf="@id/player_2_icon"
+            app:layout_constraintTop_toBottomOf="@id/player_2_icon"/>
 
-    <ImageButton
-        android:id="@+id/player_2_icon_dull"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/robot_icon"
-        android:background="@drawable/input_box_design"
-        android:visibility="gone"
-        android:tintMode="multiply"
-        android:backgroundTint="#006A6A6A"
-        app:tint="#6A6A6A"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/reset_button"
-        app:layout_constraintTop_toTopOf="parent"/>
+        <ImageButton
+            android:id="@+id/player_2_icon"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:backgroundTint="#00FFFFFF"
+            app:layout_constraintDimensionRatio="1:1"
+            android:src="@drawable/robot_icon"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/reset_button"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/player_2_icon_dull"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/robot_icon"
+            android:background="@drawable/input_box_design"
+            android:visibility="gone"
+            android:tintMode="multiply"
+            android:backgroundTint="#006A6A6A"
+            app:tint="#6A6A6A"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/reset_button"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/player_2_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:fontFamily="monospace"
+            android:textSize="13sp"
+            android:text="AI"
+            app:layout_constraintEnd_toEndOf="@id/player_2_icon"
+            app:layout_constraintStart_toStartOf="@id/player_2_icon"
+            app:layout_constraintBottom_toTopOf="@id/player_2_icon"/>
+
+        <ImageView
+            android:id="@+id/player_2_symbol"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:paddingBottom="10dp"
+            android:src="@drawable/circle"
+            app:layout_constraintStart_toStartOf="@id/player_2_icon"
+            app:layout_constraintEnd_toEndOf="@id/player_2_icon"
+            app:layout_constraintBottom_toTopOf="@id/player_2_name"/>
+
+    </LinearLayout>
+
+
 
     <TextView
         android:id="@+id/timerTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         android:text="00:00:00"
         android:fontFamily="monospace"
         android:textColor="#FF0000"
         android:textStyle="bold"
         android:textSize="25sp"
-        app:layout_constraintTop_toBottomOf="@id/win_condition_icon"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/boardLayout" />
+        app:layout_constraintTop_toBottomOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="@id/guideline3"
+        app:layout_constraintBottom_toTopOf="@id/guideline1" />
 
     <ImageView
-        android:id = "@+id/win_condition_icon"
+        android:id="@+id/win_condition_icon"
         android:layout_width="wrap_content"
+        android:scaleType="fitCenter"
         android:layout_height="30dp"
         android:layout_marginTop="10dp"
         android:src="@drawable/three_win_condition"
-        app:layout_constraintBottom_toTopOf="@id/timerTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="@id/guideline4"
+        app:layout_constraintStart_toStartOf="@id/guideline3"
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -181,12 +246,13 @@
         android:id="@id/boardLayout"
         android:layout_margin="20dp"
         app:layout_constraintDimensionRatio="1:1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/player_2_icon"
-        app:layout_constraintStart_toEndOf="@id/player_1_icon"
-        app:layout_constraintTop_toBottomOf="@+id/timerTextView">
+        app:layout_constraintBottom_toBottomOf="@id/guideline7"
+        app:layout_constraintEnd_toStartOf="@id/guideline6"
+        app:layout_constraintStart_toEndOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline1">
 
-        <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+        <androidx.recyclerview.widget.RecyclerView
+            xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/recyclerView"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -201,12 +267,7 @@
             android:layout_height="match_parent"
             android:src="@drawable/three_size_grid"
             android:visibility="invisible"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintDimensionRatio="1:1" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -218,9 +279,10 @@
         android:layout_weight="1"
         android:backgroundTint="#00FFFFFF"
         android:src="@drawable/undo_vector"
-        app:layout_constraintBottom_toBottomOf="@+id/timerTextView"
-        app:layout_constraintEnd_toStartOf="@+id/win_condition_icon"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@+id/guideline1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <!-- Updated by Ryan to implement animated refresh button -->
     <ImageButton
@@ -230,8 +292,9 @@
         android:layout_weight="1"
         android:backgroundTint="#00FFFFFF"
         android:src="@drawable/refresh_vector"
-        app:layout_constraintBottom_toBottomOf="@id/timerTextView"
-        app:layout_constraintStart_toEndOf="@+id/win_condition_icon"
+        app:layout_constraintBottom_toBottomOf="@id/guideline1"
+        app:layout_constraintStart_toEndOf="@+id/guideline4"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Implemented by Jules -->
@@ -244,10 +307,10 @@
         android:textStyle="bold"
         android:textSize="20sp"
         android:visibility="invisible"
-        app:layout_constraintTop_toTopOf="@id/boardLayout"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/boardLayout" />
+        app:layout_constraintBottom_toBottomOf="@id/guideline7"
+        app:layout_constraintEnd_toStartOf="@id/guideline6"
+        app:layout_constraintStart_toEndOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline1"/>
 
     <TextView
         android:id="@+id/invalidmoveText"
@@ -258,10 +321,10 @@
         android:textSize="30sp"
         android:textStyle="bold"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/guideline7"
+        app:layout_constraintEnd_toStartOf="@id/guideline6"
+        app:layout_constraintStart_toEndOf="@id/guideline5"
+        app:layout_constraintTop_toBottomOf="@+id/guideline1" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

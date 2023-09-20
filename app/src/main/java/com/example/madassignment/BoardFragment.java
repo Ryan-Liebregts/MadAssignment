@@ -473,12 +473,14 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         player1IconDull.setImageResource(userModel.getUserIcon());
         player1Name.setText(userModel.getUserName());
         player1Moves.setText("0 Moves");
+        System.out.println("Hi setting moves");
         player2Moves.setText("0 Moves");
 
 
         if (gameData.getGameMode() == 1) {
             player2Icon.setImageResource(R.drawable.robot_icon);
             player2IconDull.setImageResource(R.drawable.robot_icon);
+            System.out.println("Hi setting name");
             player2Name.setText("AI");
         }
         else {
