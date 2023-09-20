@@ -71,6 +71,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     private Handler handler = new Handler();
     static CountDownTimer countDownTimer;
     long delayMillis = 300;
+    boolean hasTimerRanOut;
+    static boolean currentTimerExists = false;
 
     public BoardFragment() {
         // Required empty public constructor
@@ -279,8 +281,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 gameData.setWhoseTurn(1); //Set whose turn to player 1
             }
         }
+
+        // Set has Timer ran out to false
+        hasTimerRanOut = false;
+
         // Start timer
-        startTimer();
+        if(!currentTimerExists) startTimer();
 
         /* -----------------------------------------------------------------------------------------
             Function: Reset Button ClickListener
@@ -359,6 +365,10 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
                 undoButton.startAnimation(undo);
                 undoMove(); //Undo last player move
+
+                //Reset timer
+                stopTimer();
+                startTimer();
             }
         });
 
@@ -743,38 +753,41 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         moveList.clear();
         gameData.setMoveList(moveList);
 
+        String winMessage = "";
+
         // Sets game over text and player stats
         if(pIsDraw)  {
-            System.out.println("Its a draw");
             String message = "GAME OVER: DRAW!";
             gameOverAnim(message);
         }
         else if(pIsPlayer1sTurn && gameData.getGameMode() == 1 )  {
-            System.out.println("Its game mode 1 and user 1 has won");
-            String winMessage = String.format("GAME OVER: %s WINS!", userModel.getUserName());
+            if(hasTimerRanOut) winMessage = String.format("TIMER OVER: %s WINS!", userModel.getUserName());
+            else winMessage = String.format("GAME OVER: %s WINS!", userModel.getUserName());
+
             gameOverAnim(winMessage);
 
             userDao.updateUserWins(userModel.getUserId());
         }
         else if (!pIsPlayer1sTurn && gameData.getGameMode() == 1) {
-            System.out.println("Its game mode 1 and user AI has won");
-            String winMessage = "GAME OVER: AI WINS!";
+            if(hasTimerRanOut) winMessage = String.format("TIMER OVER: AI WINS!", userModel.getUserName());
+            else winMessage = "GAME OVER: AI WINS!";
+
             gameOverAnim(winMessage);
             userDao.updateUserLosses(userModel.getUserId());
         }
         else if(pIsPlayer1sTurn && gameData.getGameMode() == 2)  {
-            System.out.println("Its game mode 2 and user 1 has won");
-            System.out.println(String.format("GAME OVER: %s WINS!", userModel.getUserName()));
-            String winMessage = String.format("GAME OVER: %s WINS!", userModel.getUserName());
+            if(hasTimerRanOut) winMessage = String.format("TIMER OVER: %s WINS!", userModel.getUserName());
+            else winMessage = String.format("GAME OVER: %s WINS!", userModel.getUserName());
+
             gameOverAnim(winMessage);
 
             userDao.updateUserWins(userModel.getUserId());
             userDao.updateUserLosses(userModel.getUserId2());
         }
         else if (!pIsPlayer1sTurn && gameData.getGameMode() == 2) {
-            System.out.println("Its game mode 2 and user 2 has won");
-            System.out.println(String.format("GAME OVER: %s WINS!", userModel.getUserName2()));
-            String winMessage = String.format("GAME OVER: %s WINS!", userModel.getUserName2());
+            if(hasTimerRanOut) winMessage = String.format("TIMER OVER: %s WINS!", userModel.getUserName2());
+            else winMessage = String.format("GAME OVER: %s WINS!", userModel.getUserName2());
+
             gameOverAnim(winMessage);
 
             userDao.updateUserWins(userModel.getUserId2());
@@ -865,6 +878,9 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         gameData.setGameBoard(gameBoard);
         gameData.setMoveList(moveList);
+
+        // Set hasTimerRanOut to false
+        hasTimerRanOut = false;
 
         // Reset timer
         stopTimer();
@@ -1136,10 +1152,13 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                     isPlayer1sTurn = true;
                 }
 
+                hasTimerRanOut = true;
+
                 endGame(isPlayer1sTurn, isDraw); // End game
             }
         };
 
+        currentTimerExists = true;
         countDownTimer.start(); // SStart countdown timer
     }
 
@@ -1151,6 +1170,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     public static void stopTimer(){
         if (countDownTimer != null) {
             countDownTimer.cancel(); // If countdowntimer exists, cancel it
+            currentTimerExists = false;
         }
     }
 
