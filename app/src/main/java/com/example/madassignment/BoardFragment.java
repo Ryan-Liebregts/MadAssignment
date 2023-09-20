@@ -71,6 +71,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     private Handler handler = new Handler();
     static CountDownTimer countDownTimer;
     long delayMillis = 300;
+    private boolean savedState;
     boolean hasTimerRanOut;
     static boolean currentTimerExists = false;
 
@@ -286,6 +287,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         hasTimerRanOut = false;
 
         // Start timer
+        //startTimer();
         if(!currentTimerExists) startTimer();
 
         /* -----------------------------------------------------------------------------------------
@@ -884,7 +886,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
         // Reset timer
         stopTimer();
-        startTimer();
+        //startTimer();
     }
 
     /* -----------------------------------------------------------------------------------------
@@ -1023,7 +1025,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         else{
             // Reset timer
             stopTimer();
-            startTimer();
+            //startTimer();
         }
 
         // Update game board and move list in gameData
@@ -1041,7 +1043,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 } else {
                     // Reset timer
                     stopTimer();
-                    startTimer();
+                    //startTimer();
                 }
             }
         }, delayMillis);
@@ -1215,6 +1217,15 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         });
 
         notification_anim.start();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Save game-related data to the bundle
+        outState.putBoolean("needSaveState", gameData.getNeedSaveGameState());
+        // Save other relevant data
     }
 
 }
