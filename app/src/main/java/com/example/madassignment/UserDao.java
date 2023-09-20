@@ -10,7 +10,7 @@ import java.util.List;
 @Dao
 public interface UserDao
 {
-    // TODO: PK Commenting
+    // Dao for users
     @Insert
     void insert(User... user);
 

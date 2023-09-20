@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "users")
 public class User {
 
-    // TODO: PK Commenting
+    // Databse for users
     @PrimaryKey(autoGenerate = true)
     private long id;
 

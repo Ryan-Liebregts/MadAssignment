@@ -27,7 +27,6 @@ public class ProfileFragment extends Fragment {
     /* -----------------------------------------------------------------------------------------
             Function: Initialise View models + Elements
             Author: Parakram
-            Description: TODO
      ---------------------------------------------------------------------------------------- */
     private ArrayList<Integer> data;
     private RecyclerView recyclerView;
@@ -40,9 +39,8 @@ public class ProfileFragment extends Fragment {
 
     private EditUser editUser;
 
-    private String userName; // TODO: remove if unnecessary
-
-    int userIcon; // TODO: remove if unnecessary
+    private String userName;
+    int userIcon;
 
     private ConstraintLayout profileFragmentBackground;
 
@@ -76,7 +74,6 @@ public class ProfileFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: Initialise layout elements
             Author: Parakram
-            Description: TODO
          ---------------------------------------------------------------------------------------- */
         saveUserButton = view.findViewById(R.id.save_user_button);
         userNameTextBox = view.findViewById(R.id.user_text);
@@ -95,7 +92,6 @@ public class ProfileFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: Initialise Recycler Grid elements
             Author: Parakram
-            Description: TODO
          ---------------------------------------------------------------------------------------- */
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 4,
                 GridLayoutManager.VERTICAL, false);
@@ -116,7 +112,6 @@ public class ProfileFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: userNameTextBox Click Listener
             Author: Parakram
-            Description: TODO
          ---------------------------------------------------------------------------------------- */
         userNameTextBox.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
@@ -185,7 +180,6 @@ public class ProfileFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
             Function: saveUserButton Click Listener
             Author: Parakram
-            Description: TODO
          ---------------------------------------------------------------------------------------- */
         saveUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,7 +233,6 @@ public class ProfileFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
                 Function: saveUser()
                 Author: Parakram
-                Description: TODO
          ---------------------------------------------------------------------------------------- */
     public void saveUser() {
         UserDao userDao = initialiseDB();
@@ -255,7 +248,6 @@ public class ProfileFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
                 Function: updateUser()
                 Author: Parakram
-                Description: TODO
          ---------------------------------------------------------------------------------------- */
 
     public void updateUser() {

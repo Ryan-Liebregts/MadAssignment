@@ -19,7 +19,6 @@ public class MenuFragment extends Fragment {
     /* -----------------------------------------------------------------------------------------
             Function: Initialise View models + Elements
             Author: Parakram + Ryan
-            Description: TODO
      ---------------------------------------------------------------------------------------- */
     private ImageButton aiButton;
     private ImageButton playerButton;

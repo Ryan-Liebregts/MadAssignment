@@ -3,6 +3,7 @@ package com.example.madassignment;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -208,12 +209,11 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         gameBoard = new char[boardSize][boardSize];
 
 
-        if(navModel.getHistoricalClickedValue() != 2 || navModel.getHistoricalClickedValue() != 5) {
-            gameData.setNeedSaveGameState(true);
-        }
+        int screenOrientation = getResources().getConfiguration().orientation;
+
+
         // If need to get previous game state, retrieve previous game state information
         if(gameData.getNeedSaveGameState() == true){
-
                 if (gameData.getMoveList().size() != 0) {
                     retrieveGameBoardState();
                     // Initialise move list
@@ -374,7 +374,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         return view;
     }
 
-    //TODO: - COMMENT PK
+    //This function allows the fragment to load the game users directly from the database
     public void loadUsers() {
         UserDao userDao = initialiseDB();
         User player1 = userDao.getUserByID(userModel.getUserId());
@@ -442,7 +442,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
 
     }
 
-    //TODO: - COMMENT PK
+    //This is for setting hte users data on the baord fragment
     public void setGameUserData(View view) {
         // Initialising the setting the symbol for naughts or crosses
         player1Symbol.setImageResource(userModel.getUserSymbol1());
@@ -927,13 +927,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             invalidMoveText.setVisibility(View.INVISIBLE);
         }
 
-        /* TODO: Printing game board for testing purposes, can be deleted
         for (int i = 0; i < gameBoard.length; i++) {
             for (int j = 0; j < gameBoard.length; j++) {
                 System.out.print(gameBoard[i][j]);
             }
             System.out.println("");
-        } */
+        }
 
         // Set isPlayer1sTurn to appropriate value and Determines button location in array from list position
         if(gameData.whoseTurn.getValue() == 1){

@@ -6,7 +6,8 @@ import androidx.lifecycle.ViewModel;
 
 public class CreateUser extends ViewModel {
 
-    // TODO: PK Commenting
+    // Like EditUser Viewmodel this is used by the profile fragment to store new username nad icon of a new user
+    // this is then used to create new user on save
     public MutableLiveData<String> userName;
     public MutableLiveData<Integer> userIcon;
 

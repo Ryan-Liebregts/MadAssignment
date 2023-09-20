@@ -47,7 +47,6 @@ public class LeaderBoardFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
                 Function: Initialise Recyclerview
                 Author: Parakram
-                Description: TODO
          ---------------------------------------------------------------------------------------- */
         recyclerView = view.findViewById(R.id.recView);
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 1,
@@ -63,7 +62,6 @@ public class LeaderBoardFragment extends Fragment {
         /* -----------------------------------------------------------------------------------------
                 Function: getLeaderBoardData()
                 Author: Parakram
-                Description: TODO
          ---------------------------------------------------------------------------------------- */
     public List<User> getLeaderBoardData() {
         UserDao userDao = initialiseDB();

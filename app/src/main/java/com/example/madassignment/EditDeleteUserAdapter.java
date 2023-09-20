@@ -51,7 +51,6 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
         /* -----------------------------------------------------------------------------------------
                 Function: userDelete Click Listener
                 Author: Parakram
-                Description: TODO
          ---------------------------------------------------------------------------------------- */
         holder.userDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +62,6 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
         /* -----------------------------------------------------------------------------------------
                 Function: userEdit Click Listener
                 Author: Parakram
-                Description: TODO
          ---------------------------------------------------------------------------------------- */
         holder.userEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
