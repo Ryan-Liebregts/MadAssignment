@@ -120,7 +120,6 @@ public class ProfileFragment extends Fragment {
          ---------------------------------------------------------------------------------------- */
         userNameTextBox.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
-                System.out.println(s);
                 //set ther username for existing user for edit or new user for not edit
                 if (isEdit) {
                     editUser.setUserName(String.valueOf(s));

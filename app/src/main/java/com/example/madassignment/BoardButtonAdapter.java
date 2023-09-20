@@ -89,7 +89,6 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
                 if(gameData.getWhoseTurn() != 3) {
                     // If position is empty place a marker
                     if (singleData.getMarkerSymbol() == '-') {
-                        System.out.println("space -");
                         if (gameData.getWhoseTurn() == 1) { //If player1s turn place their marker
                             holder.boardButton.setImageResource(userData.getUserSymbol1()); // Sets image resource of the button to player 1's marker
                             singleData.setImageResource(userData.getUserSymbol1()); // Sets the button in adapter data to player 1's marker
@@ -101,9 +100,7 @@ public class BoardButtonAdapter extends RecyclerView.Adapter<BoardButtonDataView
                         }
                     // If position is not empty
                     } else {
-                        System.out.println("space filled");
                         gameData.setIsInvalidMove(true); // notifies that move is invalid
-                        System.out.println(Boolean.toString(gameData.getIsInvalidMove()));
                         callback.invalidMoveClicked(); //Call back to Fragment through the interface
                         return;
                     }

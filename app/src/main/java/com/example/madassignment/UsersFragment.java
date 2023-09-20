@@ -62,7 +62,6 @@ public class UsersFragment extends Fragment {
                 GridLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(gridLayoutManager);
         data = getUsers();
-        System.out.println("The size is" + data.size());
         //set adapter
         EditDeleteUserAdapter editDeleteUserAdapter =new EditDeleteUserAdapter(data, navModel, editUserModel, userDataModel);
         recyclerView.setAdapter(editDeleteUserAdapter);
@@ -91,9 +90,7 @@ public class UsersFragment extends Fragment {
                 if (integer != 0) {
                     //do remove logic
                         UserDao userDao = initialiseDB();
-                        System.out.println("being deleted id " + integer);
                         userDao.deleteUser(integer);
-                        System.out.println("The data being removed is at index at users" + editUserModel.getDeleteUserPosition());
                         data.remove(editUserModel.getDeleteUserPosition());
                         editDeleteUserAdapter.notifyItemRemoved(editUserModel.getDeleteUserPosition());
                         //restore state

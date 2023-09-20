@@ -48,7 +48,6 @@ public class LeaderBoardDataAdapter  extends RecyclerView.Adapter<LeaderBoardVH>
         if (singleRow.getUserGames() != 0) {
             percentage = (singleRow.getUserWins() * 100) / singleRow.getUserGames();
         }
-        System.out.println("THis is the percentage" + percentage);
         holder.userPercentage.setText(String.format("%s%%", String.valueOf(percentage)));
 
         holder.userGamesPlayed.setText(String.valueOf(singleRow.getUserGames()));

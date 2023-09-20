@@ -124,7 +124,6 @@ public class UserSelectAdapter extends RecyclerView.Adapter<SelectUserVH> {
 
 
     public void processClick(SelectUserVH holder, int imageResId, User singleRow ) {
-        System.out.println("Hello I just got clicked");
         //this if condition is for PvAI mode hence only one user needs to be selected
         if (gameData.getGameMode() == 1) {
             //if you click on an icon already been clicked then it will unselect it

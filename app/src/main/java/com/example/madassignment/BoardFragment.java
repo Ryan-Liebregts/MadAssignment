@@ -94,7 +94,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        System.out.println("Hello re rendering " + gameData.getNeedSaveGameState());
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_board, container, false);
         //load users from DB by id
@@ -143,7 +142,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         ///this is just an error case just in case we somehow get to teh board and dont have a user selected
         if ((gameData.getGameMode() == 1 && userModel.getUserId() == 0) || (gameData.getGameMode() == 2 && userModel.getUserId() == 0 && userModel.getUserId2() == 0)) {
             navModel.setClickedValue(0);
-            System.out.println("HI I am exiting");
             return view;
         }
         //All code below will only execute if allowed to by the if statement above use multiple returns as an if/else
@@ -209,7 +207,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Initialise board
         gameBoard = new char[boardSize][boardSize];
 
-        System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
+
         if(navModel.getHistoricalClickedValue() != 2 || navModel.getHistoricalClickedValue() != 5) {
             gameData.setNeedSaveGameState(true);
         }
@@ -410,7 +408,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                     if (gameBoard[i][j] == gameData.getAIMarkerSymbol()) {
                         // update all player symbols with drawable
                         adapterDataStateIndex = (i * gameData.getBoardSize()) + j;
-                        System.out.println(adapterDataStateIndex);
                         adapter.data.get(adapterDataStateIndex).setMarkerSymbol(gameData.getAIMarkerSymbol()); // Set board button data to appropriate symbol
                         adapter.data.get(adapterDataStateIndex).setImageResource(userModel.getUserSymbol2()); // Set board button data to appropriate drawable
                     } else if (gameBoard[i][j] == gameData.getPlayer1MarkerSymbol()) {
@@ -907,12 +904,8 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         --------------------------------------------------------------------------- */
     public void invalidMoveClicked() {
         invalidMoveText.setText("INVALID MOVE!");
-        System.out.println("invalid clicked");
-        System.out.println(Boolean.toString(gameData.getIsInvalidMove()));
 
         if(gameData.getIsInvalidMove()) {
-            System.out.println("goes in");
-            System.out.println(Boolean.toString(gameData.getIsInvalidMove()));
 
             invalidMoveText.setVisibility(View.VISIBLE);
         }

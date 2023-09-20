@@ -68,7 +68,6 @@ public class EditDeleteUserAdapter extends RecyclerView.Adapter<EditDeleteUserVH
         holder.userEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("You want to edit this huh?");
                 navModel.setClickedValue(3);
                 navModel.setHistoricalClickedValue(6);
                 editUserModel.setUserIcon(singleRow.getUserIcon());
