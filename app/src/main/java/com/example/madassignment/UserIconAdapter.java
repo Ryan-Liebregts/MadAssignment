@@ -19,15 +19,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserIconAdapter extends RecyclerView.Adapter<UserIconVH>{
-    ArrayList<Integer> data;
+    private ArrayList<Integer> data;
 
-    CreateUser userModel;
+    private CreateUser userModel;
 
-    EditUser editUserModel;
+    private EditUser editUserModel;
 
-    LifecycleOwner test;
+    private LifecycleOwner test;
 
-
+    // TODO: PK Commenting
     public UserIconAdapter(ArrayList<Integer> data, CreateUser userData, LifecycleOwner Test, EditUser editUserModel){
         this.data = data;
         this.userModel = userData;

@@ -18,10 +18,14 @@ import android.widget.ImageView;
 
 public class NavigationBarFragment extends Fragment {
 
+    /* -----------------------------------------------------------------------------------------
+            Function: Initialise View models + Elements
+            Author: Parakram
+            Description: TODO
+     ---------------------------------------------------------------------------------------- */
     private ImageButton settingsButton, backButton;
     private ImageView menuTitle;
     private GameData gameData;
-
     private  CreateUser userModel;
     private EditUser editUserModel;
 
@@ -49,8 +53,14 @@ public class NavigationBarFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_navigation_bar, container, false);
         NavigationData navigationData = new ViewModelProvider(getActivity()).get(NavigationData.class);
 
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise layout elements
+            Author: Ryan
+            Description: Defines layout elements from their layout IDs
+         ---------------------------------------------------------------------------------------- */
         backButton = view.findViewById(R.id.backButton);
         settingsButton = view.findViewById(R.id.settingsButton);
+        menuTitle = view.findViewById(R.id.menuTitle);
 
         /* The navigation integers describe the following fragments:
             navigationData == 0 -> Menu Fragment
@@ -60,13 +70,14 @@ public class NavigationBarFragment extends Fragment {
             navigationData == 4 -> Leaderboard Fragment
             navigationData == 5 -> User Select Fragment
             navigationData == 99 -> Menu Animation Fragment
-
          */
 
-        backButton = view.findViewById(R.id.backButton);
-        settingsButton = view.findViewById(R.id.settingsButton);
-        menuTitle = view.findViewById(R.id.menuTitle);
-
+        /* -----------------------------------------------------------------------------------------
+            Function: Settings Click Listener
+            Author: Parakram
+            Description: Navigates to the settings fragment
+                - Modified by Ryan to implement animation for settings button
+         ---------------------------------------------------------------------------------------- */
         settingsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,6 +90,16 @@ public class NavigationBarFragment extends Fragment {
 
             }
         });
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Back Click Listener
+            Author: Parakram
+            Description: Navigates to the last known fragment (or alternate fragment in special
+                cases).
+                - Modified by Ryan to implement animation for back button and fix some navigation
+                    errors
+                - Modified by Yi Xiang to implement data saving
+         ---------------------------------------------------------------------------------------- */
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -156,6 +177,13 @@ public class NavigationBarFragment extends Fragment {
 
         });
 
+        /* -----------------------------------------------------------------------------------------
+            Function: Navigation Data Observer
+            Author: Parakram
+            Description: Defines the behaviour of the navBar elements on different pages
+                - Modified by Ryan to add menu title visibility
+                - Modified by Ryan to add user page and title card animation behaviour
+         ---------------------------------------------------------------------------------------- */
         navigationData.clickedValue.observe(getActivity(), new Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {

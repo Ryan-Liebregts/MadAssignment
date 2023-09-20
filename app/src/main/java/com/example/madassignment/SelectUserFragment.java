@@ -24,28 +24,21 @@ import java.util.concurrent.RecursiveAction;
 
 public class SelectUserFragment extends Fragment {
 
+    /* -----------------------------------------------------------------------------------------
+            Function: Initialise View models + Elements
+            Author: Parakram
+            Description: TODO
+     ---------------------------------------------------------------------------------------- */
     private List<User> data;
-
     public List<Integer> dataSymbol;
-
     public ToggleButton toggleUser;
-
-
     private GameData gameData;
-
     private RecyclerView recyclerView;
-
     private RecyclerView symbolRecyclerView;
-
     private UserData userModel;
-
     private NavigationData navModel;
-
     private Button continueButton;
-
-
     private ConstraintLayout selectUserFragmentBackground;
-
     private AnimationDrawable animationDrawable;
 
     public SelectUserFragment() {
@@ -59,7 +52,6 @@ public class SelectUserFragment extends Fragment {
         gameData = new ViewModelProvider(getActivity()).get(GameData.class);
         userModel = new ViewModelProvider(getActivity()).get(UserData.class);
         navModel = new ViewModelProvider(getActivity()).get(NavigationData.class);
-
     }
 
     @Override
@@ -67,7 +59,12 @@ public class SelectUserFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view =  inflater.inflate(R.layout.fragment_select_user, container, false);
-        //define components
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise layout elements
+            Author: Parakram
+            Description: TODO
+         ---------------------------------------------------------------------------------------- */
         recyclerView = view.findViewById(R.id.recycler_user);
         symbolRecyclerView = view.findViewById(R.id.recycler_symbol);
         continueButton = view.findViewById(R.id.continue_button);
@@ -82,9 +79,13 @@ public class SelectUserFragment extends Fragment {
         }
         else {
             toggleUser.setTextOff("Player 2");
-
         }
-        // Animates the background gradient
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise animation elements
+            Author: Ryan
+            Description: Sets the fade in and fade out characteristics of the background
+         ---------------------------------------------------------------------------------------- */
         selectUserFragmentBackground = (ConstraintLayout) view.findViewById(R.id.select_user_fragment);
         animationDrawable = (AnimationDrawable) selectUserFragmentBackground.getBackground();
         animationDrawable.setEnterFadeDuration(3000);
@@ -98,7 +99,12 @@ public class SelectUserFragment extends Fragment {
                 userModel.setFirstMove(2);
             }
         });
-        //set recycler
+
+        /* -----------------------------------------------------------------------------------------
+            Function: Initialise Recycler Grid elements
+            Author: Parakram
+            Description: TODO
+         ---------------------------------------------------------------------------------------- */
         //get data
         data = getLeaderBoardData();
         dataSymbol = getIconData();
@@ -216,6 +222,11 @@ public class SelectUserFragment extends Fragment {
                 }
             }});
 
+        /* -----------------------------------------------------------------------------------------
+            Function: continueButton Click Listener
+            Author: Parakram
+            Description: TODO
+         ---------------------------------------------------------------------------------------- */
         continueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick( View view) {
@@ -225,6 +236,11 @@ public class SelectUserFragment extends Fragment {
         return view;
     }
 
+    /* -----------------------------------------------------------------------------------------
+                Function: getLeaderBoardData()
+                Author: Parakram
+                Description: TODO
+             ---------------------------------------------------------------------------------------- */
     public List<User> getLeaderBoardData() {
         UserDao userDao = initialiseDB();
         data = null;
@@ -240,7 +256,11 @@ public class SelectUserFragment extends Fragment {
         return UserDbInstance.getDatabase(getContext()).userDao();
     }
 
-
+        /* -----------------------------------------------------------------------------------------
+                Function: Icon Data Array
+                Author: Ryan
+                Description: Adds drawable elements to the icon data array
+         ---------------------------------------------------------------------------------------- */
     public List<Integer> getIconData(){
         List<Integer> data = new ArrayList<Integer>();
         data.add(R.drawable.cross);
@@ -255,7 +275,11 @@ public class SelectUserFragment extends Fragment {
         return data;
     }
 
-    // The following two methods handle the lifecycle of the animation to prevent errors
+    /* -----------------------------------------------------------------------------------------
+                Function: onViewCreated()
+                Author: Ryan
+                Description: Handles the lifecycle of the animation, starts it when view is created
+         ---------------------------------------------------------------------------------------- */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -268,6 +292,11 @@ public class SelectUserFragment extends Fragment {
         }
     }
 
+    /* -----------------------------------------------------------------------------------------
+                Function: onDestroyView()
+                Author: Ryan
+                Description: Handles the lifecycle of the animation, stops it when view is destroyed
+         ---------------------------------------------------------------------------------------- */
     @Override
     public void onDestroyView() {
         super.onDestroyView();
