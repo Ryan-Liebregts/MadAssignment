@@ -3,6 +3,7 @@ package com.example.madassignment;
 import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -209,13 +210,12 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
         // Initialise board
         gameBoard = new char[boardSize][boardSize];
 
-        System.out.println(Boolean.toString(gameData.getNeedSaveGameState()));
 
-        gameData.setNeedSaveGameState(true);
+        int screenOrientation = getResources().getConfiguration().orientation;
+
+
         // If need to get previous game state, retrieve previous game state information
         if(gameData.getNeedSaveGameState() == true){
-
-                System.out.println("Hello I think you need the old game state TEST");
                 if (gameData.getMoveList().size() != 0) {
                     retrieveGameBoardState();
                     // Initialise move list
@@ -229,7 +229,6 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
             }
             // Else create default data
         } else {
-            System.out.println("Hello I think you dont thge need the old game state TEST");
             // Create board filled with '-'
             for (int i = 0; i < boardSize; i++) {
                 for (int j = 0; j < boardSize; j++) {
@@ -943,7 +942,7 @@ public class BoardFragment extends Fragment implements BoardButtonAdapter.Adapte
                 System.out.print(gameBoard[i][j]);
             }
             System.out.println("");
-        } */
+        }
 
         // Set isPlayer1sTurn to appropriate value and Determines button location in array from list position
         if(gameData.whoseTurn.getValue() == 1){
